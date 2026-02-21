@@ -5,52 +5,57 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 
-export const sidebarData = [
+export const blocksSidebarData = [
     {
-        title: "Get Started",
+        title: "Overview",
         links: [
-            { name: "Index", href: "/docs" },
-            { name: "Installation", href: "/docs/installation" },
+            { name: "Blocks Index", href: "/blocks" },
         ]
     },
     {
-        title: "3D & Physical",
+        title: "Hero Sections",
         links: [
-            { name: "Holographic Card", href: "/docs/3d-physical/holographic-card" },
-            { name: "Kinetic Button", href: "/docs/3d-physical/kinetic-button" },
+            { name: "01 WebGL Aura", href: "/blocks/hero-sections/01" },
+            { name: "02 Glass Singularity", href: "/blocks/hero-sections/02" },
+            { name: "03 Quantum Matrix", href: "/blocks/hero-sections/03" },
+            { name: "04 Liquid Flow", href: "/blocks/hero-sections/04" },
+            { name: "05 Quantum Vortex", href: "/blocks/hero-sections/05" },
+            { name: "06 Neural Silk", href: "/blocks/hero-sections/06" },
         ]
     },
     {
-        title: "Illumination",
+        title: "Bento Grids",
         links: [
-            { name: "Spotlight Card", href: "/docs/illumination/spotlight-card" },
+            { name: "Bento 01", href: "/blocks/bento-grids/01" },
         ]
     },
     {
-        title: "Backgrounds",
+        title: "Feature Showcases",
         links: [
-            { name: "Grid System", href: "/docs/backgrounds/grid-system" },
-            { name: "Radial Noise", href: "/docs/backgrounds/radial-noise" },
+            { name: "Feature 01", href: "/blocks/feature-showcases/01" },
         ]
     },
     {
-        title: "Text Animations",
+        title: "Pricing Tables",
         links: [
-            { name: "Kinetic Text", href: "/docs/text-animations/kinetic-text" },
-            { name: "Scramble Reveal", href: "/docs/text-animations/scramble-reveal" },
-            { name: "Split Text", href: "/docs/text-animations/split-text" },
-            { name: "Blur Text", href: "/docs/text-animations/blur-text" },
-            { name: "Circular Text", href: "/docs/text-animations/circular-text" },
-            { name: "Text Type", href: "/docs/text-animations/text-type" },
-            { name: "Shuffle", href: "/docs/text-animations/shuffle" },
-
-            { name: "Text Pressure", href: "/docs/text-animations/text-pressure" },
-            { name: "Curved Loop", href: "/docs/text-animations/curved-loop" },
+            { name: "Pricing 01", href: "/blocks/pricing-tables/01" },
+        ]
+    },
+    {
+        title: "Testimonials",
+        links: [
+            { name: "Testimonial 01", href: "/blocks/testimonials/01" },
+        ]
+    },
+    {
+        title: "Footers",
+        links: [
+            { name: "Footer 01", href: "/blocks/footers/01" },
         ]
     }
 ];
 
-export function Sidebar() {
+export function BlocksSidebar() {
     const pathname = usePathname();
     const scrollRef = useRef<HTMLElement>(null);
 
@@ -58,13 +63,13 @@ export function Sidebar() {
         const el = scrollRef.current;
         if (!el) return;
 
-        const saved = sessionStorage.getItem("sidebar-scroll-pos");
+        const saved = sessionStorage.getItem("blocks-sidebar-scroll-pos");
         if (saved) {
             el.scrollTop = parseInt(saved, 10);
         }
 
         const handleScroll = () => {
-            sessionStorage.setItem("sidebar-scroll-pos", el.scrollTop.toString());
+            sessionStorage.setItem("blocks-sidebar-scroll-pos", el.scrollTop.toString());
         };
 
         el.addEventListener("scroll", handleScroll, { passive: true });
@@ -74,9 +79,8 @@ export function Sidebar() {
     return (
         <aside ref={scrollRef} data-lenis-prevent className="w-64 flex-shrink-0 hidden md:block border-r border-white/10 bg-black sticky top-[45px] h-[calc(100vh-45px)] overflow-y-auto pt-8 pb-20">
             <div className="px-6 flex flex-col gap-8">
-                {sidebarData.map((category) => (
+                {blocksSidebarData.map((category) => (
                     <div key={category.title}>
-                        {/* Category title */}
                         <h3 className="grad-text text-[11px] font-extrabold uppercase tracking-[0.2em] mb-3">
                             {category.title}
                         </h3>
@@ -94,7 +98,6 @@ export function Sidebar() {
                                                 : "text-white/60 hover:text-white hover:bg-white/[0.03]"
                                         )}
                                     >
-                                        {/* Active Indicator Line */}
                                         {isActive && (
                                             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-r-full bg-gradient-to-b from-white to-white/30" />
                                         )}

@@ -1,95 +1,8 @@
 import { RadialNoise } from "@/components/ui/radial-noise";
 import { CodePreview } from "@/components/site/code-preview";
+import { getComponentSource } from "@/lib/source";
 
-const sourceCode = `"use client";
-
-import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, useSpring, useMotionValue, useMotionTemplate } from "framer-motion";
-import { cn } from "@/lib/utils";
-
-interface RadialNoiseProps extends React.HTMLAttributes<HTMLDivElement> {
-    children?: React.ReactNode;
-    className?: string;
-    spotlightSize?: number;
-    baseColor?: string;
-    glowColor?: string;
-    noiseOpacity?: number;
-    interactive?: boolean;
-    frequency?: number;
-}
-
-export function RadialNoise({
-    children, className,
-    spotlightSize = 400, baseColor = "#050505",
-    glowColor = "rgba(168, 85, 247, 0.4)", // Purple default
-    noiseOpacity = 0.5, interactive = true, frequency = 0.8,
-    ...props
-}: RadialNoiseProps) {
-    const divRef = useRef<HTMLDivElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
-
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const smoothX = useSpring(mouseX, { stiffness: 300, damping: 30, mass: 0.5 });
-    const smoothY = useSpring(mouseY, { stiffness: 300, damping: 30, mass: 0.5 });
-
-    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        if (!divRef.current || !interactive) return;
-        const rect = divRef.current.getBoundingClientRect();
-        mouseX.set(e.clientX - rect.left);
-        mouseY.set(e.clientY - rect.top);
-    }, [mouseX, mouseY, interactive]);
-
-    const handleMouseLeave = useCallback(() => {
-        setIsHovered(false);
-        if (!divRef.current || !interactive) return;
-        const rect = divRef.current.getBoundingClientRect();
-        mouseX.set(rect.width / 2); mouseY.set(rect.height / 2); // Return to center
-    }, [mouseX, mouseY, interactive]);
-
-    useEffect(() => {
-        if (divRef.current) {
-            const rect = divRef.current.getBoundingClientRect();
-            mouseX.set(rect.width / 2); mouseY.set(rect.height / 2);
-        }
-    }, [mouseX, mouseY]);
-
-    const spotlight = useMotionTemplate\`radial-gradient(\${spotlightSize}px circle at \${smoothX}px \${smoothY}px, \${glowColor}, transparent 80%)\`;
-
-    return (
-        <div
-            ref={divRef}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={handleMouseLeave}
-            className={cn("relative w-full h-full overflow-hidden", className)}
-            style={{ backgroundColor: baseColor }}
-            {...props}
-        >
-            <div
-                className="absolute inset-0 z-0 pointer-events-none mix-blend-overlay"
-                style={{
-                    opacity: noiseOpacity,
-                    backgroundImage: \`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='\${frequency}' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")\`,
-                }}
-            />
-            {interactive && (
-                <motion.div
-                    className="absolute inset-0 z-10 pointer-events-none mix-blend-color-dodge transition-opacity duration-1000"
-                    style={{ background: spotlight, opacity: isHovered ? 1 : 0.4 }}
-                />
-            )}
-            {interactive && (
-                <motion.div
-                    className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-1000"
-                    style={{ background: spotlight, opacity: isHovered ? 0.3 : 0.1 }}
-                />
-            )}
-            <div className="relative z-20 h-full w-full">{children}</div>
-        </div>
-    );
-}`;
+const sourceCode = getComponentSource("radial-noise");
 
 export default function RadialNoisePage() {
     return (
@@ -184,8 +97,8 @@ export default function RadialNoisePage() {
             {/* Props */}
             <div className="space-y-6">
                 <h2 className="text-2xl font-extrabold tracking-tighter pb-1 grad-text">Props</h2>
-                <div className="border border-white/[0.05] rounded-[2rem] overflow-hidden bg-[#050505] shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-                    <table className="w-full text-[13px]">
+                <div className="w-full border border-white/[0.05] rounded-[2rem] overflow-x-auto bg-[#050505] shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                    <table className="w-full text-[13px] min-w-[600px]">
                         <thead>
                             <tr className="border-b border-white/[0.05] bg-white/[0.02]">
                                 <th className="text-left px-6 py-4 text-white/40 font-medium text-[11px] uppercase tracking-widest">Prop</th>
@@ -237,7 +150,7 @@ export default function RadialNoisePage() {
                 <h2 className="text-2xl font-extrabold tracking-tighter pb-1 grad-text">Installation</h2>
                 <div className="group relative p-6 rounded-[2rem] border border-white/[0.05] bg-[#050505] overflow-hidden">
                     <p className="text-[11px] text-white/40 mb-3 font-mono uppercase tracking-[0.1em]">1. Install Dependencies</p>
-                    <pre className="flex items-center justify-between font-mono text-[13px] text-emerald-400/90 bg-[#111] p-3 rounded-xl border border-white/[0.05] shadow-inner mb-6">
+                    <pre className="flex items-center justify-between font-mono text-[13px] text-emerald-400/90 bg-[#111] p-3 rounded-xl border border-white/[0.05] shadow-inner mb-6 overflow-x-auto">
                         <code>npm install framer-motion</code>
                     </pre>
                     <p className="text-[11px] text-white/40 mb-3 font-mono uppercase tracking-[0.1em]">2. Copy Source</p>

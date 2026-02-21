@@ -11,7 +11,7 @@ export default function ComponentsLayout({
             <Header />
             <div className="flex-1 flex w-full items-start">
                 <Sidebar />
-                <main className="flex-1 p-8 md:p-12 lg:px-16 min-w-0">
+                <main className="flex-1 p-4 md:p-12 lg:px-16 min-w-0">
                     {children}
                 </main>
             </div>

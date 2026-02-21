@@ -3,8 +3,20 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { LucideCheck, LucideCopy, TerminalSquare, Eye } from "lucide-react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import dynamic from "next/dynamic";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+const SyntaxHighlighter = dynamic(
+    () => import("react-syntax-highlighter").then((mod) => mod.Prism),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="p-8 bg-[#0a0a0a] min-h-[200px] flex items-center justify-center">
+                <span className="text-white/20 font-mono text-xs animate-pulse">Loading...</span>
+            </div>
+        ),
+    }
+);
 
 interface CodePreviewProps {
     children: React.ReactNode;
@@ -15,9 +27,13 @@ export function CodePreview({ children, code }: CodePreviewProps) {
     const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
     const [copied, setCopied] = useState(false);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(code);
-        setCopied(true);
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(code);
+            setCopied(true);
+        } catch {
+            // Clipboard API unavailable (e.g. HTTP context)
+        }
         setTimeout(() => setCopied(false), 2000);
     };
 
@@ -80,7 +96,7 @@ export function CodePreview({ children, code }: CodePreviewProps) {
             {/* Content Area */}
             <div className="relative w-full">
                 {activeTab === "preview" ? (
-                    <div className="relative flex items-center justify-center min-h-[450px] p-8 overflow-hidden bg-black bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:20px_20px]">
+                    <div className="relative flex items-center justify-center min-h-[450px] p-4 md:p-8 overflow-hidden bg-black bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:20px_20px]">
                         {/* Top edge subtle highlight */}
                         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none" />
 

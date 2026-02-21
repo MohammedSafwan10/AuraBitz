@@ -4,11 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LucideGithub, Triangle, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MobileNav } from "./mobile-nav";
+import { SearchModal } from "./search-modal";
 
 const navLinks = [
     { name: "Components", href: "/docs" },
+    { name: "Blocks", href: "/blocks" },
     { name: "Documentation", href: "/docs/installation" },
-    { name: "Pricing", href: "/pricing" },
 ];
 
 export function Header() {
@@ -31,7 +33,9 @@ export function Header() {
                             const isActive =
                                 link.href === "/docs"
                                     ? pathname?.startsWith("/docs") && pathname !== "/docs/installation"
-                                    : pathname === link.href || pathname?.startsWith(link.href + "/");
+                                    : link.href === "/blocks"
+                                        ? pathname?.startsWith("/blocks")
+                                        : pathname === link.href || pathname?.startsWith(link.href + "/");
 
                             return (
                                 <Link
@@ -56,13 +60,18 @@ export function Header() {
 
                 {/* Right: Search + GitHub */}
                 <div className="flex items-center gap-3">
-                    <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:border-white/15 transition-all text-xs">
-                        <Search size={13} className="text-white/30" />
-                        <span className="text-white/50 font-medium group-hover:text-white/80 transition-colors">Search</span>
-                        <kbd className="ml-4 text-[10px] font-mono text-white/20 border border-white/10 rounded px-1.5 py-0.5">⌘K</kbd>
+                    <MobileNav />
+                    <button
+                        onClick={() => document.dispatchEvent(new CustomEvent("open-search"))}
+                        className="flex items-center justify-center w-8 h-8 sm:w-auto sm:h-auto sm:gap-2 sm:px-3 sm:py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] sm:hover:bg-white/[0.03] hover:border-white/15 transition-all text-xs cursor-pointer text-white/40 hover:text-white sm:text-current sm:hover:text-current"
+                        aria-label="Search components"
+                    >
+                        <Search className="w-4 h-4 sm:w-[13px] sm:h-[13px] sm:text-white/30 transition-colors" />
+                        <span className="hidden sm:inline text-white/50 font-medium">Search</span>
+                        <kbd className="hidden sm:inline ml-4 text-[10px] font-mono text-white/20 border border-white/10 rounded px-1.5 py-0.5">⌘K</kbd>
                     </button>
                     <Link
-                        href="https://github.com"
+                        href="https://github.com/MohammedSafwan10/AuraBitz"
                         target="_blank"
                         className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.08] text-white/40 hover:text-white hover:bg-white/[0.08] hover:border-white/15 transition-all"
                     >
@@ -70,6 +79,7 @@ export function Header() {
                     </Link>
                 </div>
             </div>
+            <SearchModal />
         </header>
     );
 }

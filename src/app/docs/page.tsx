@@ -36,7 +36,7 @@ const categories = [
             { name: "Circular Text", href: "/docs/text-animations/circular-text" },
             { name: "Text Type", href: "/docs/text-animations/text-type" },
             { name: "Shuffle", href: "/docs/text-animations/shuffle" },
-            { name: "Shiny Text", href: "/docs/text-animations/shiny-text" },
+
             { name: "Text Pressure", href: "/docs/text-animations/text-pressure" },
             { name: "Curved Loop", href: "/docs/text-animations/curved-loop" }
         ]
