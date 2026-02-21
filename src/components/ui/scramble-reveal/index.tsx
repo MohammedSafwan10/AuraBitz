@@ -35,20 +35,17 @@ export function ScrambleReveal({
     useEffect(() => {
         if (inView) {
             startTimeRef.current = null;
-            // If there's a delay, we might want to scramble the text immediately so it sits scrambled
             if (delay > 0) {
                 const scrambledInit = text.split("").map(c => c === " " ? " " : characters[Math.floor(Math.random() * characters.length)]).join("");
-                setTimeout(() => setDisplayText(scrambledInit), 0);
+                setDisplayText(scrambledInit);
             }
             const timer = setTimeout(() => {
                 setIsAnimating(true);
             }, delay * 1000);
             return () => clearTimeout(timer);
         } else if (!once) {
-            setTimeout(() => {
-                setIsAnimating(false);
-                setDisplayText(text); // reset
-            }, 0);
+            setIsAnimating(false);
+            setDisplayText(text);
         }
     }, [inView, delay, once, text, characters]);
 

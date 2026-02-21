@@ -12,7 +12,6 @@ interface BlurTextProps {
     duration?: number;
     splitBy?: "chars" | "words";
     once?: boolean;
-    animateBy?: "letters" | "words"; // Deprecated, keeping splitBy
 }
 
 export function BlurText({

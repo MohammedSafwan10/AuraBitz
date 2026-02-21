@@ -29,35 +29,38 @@ export function GridSystem({
     const divRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
 
+    const safeColor = color.replace(/[<>"'&]/g, "");
+    const safeInteractiveColor = interactiveColor.replace(/[<>"'&]/g, "");
+
     // Dynamic SVG Generation for absolute precision
     const patternUrl = useMemo(() => {
         let svg = "";
         const c = size / 2;
 
         if (type === "dot") {
-            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${c}" cy="${c}" r="1" fill="${color}"/></svg>`;
+            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${c}" cy="${c}" r="1" fill="${safeColor}"/></svg>`;
         } else if (type === "line") {
-            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M0 0h${size}M0 0v${size}" stroke="${color}" stroke-width="1" fill="none"/></svg>`;
+            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M0 0h${size}M0 0v${size}" stroke="${safeColor}" stroke-width="1" fill="none"/></svg>`;
         } else if (type === "cross") {
             const l = 4; // arm length
-            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M${c} ${c - l}v${l * 2}M${c - l} ${c}h${l * 2}" stroke="${color}" stroke-width="1" fill="none"/></svg>`;
+            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M${c} ${c - l}v${l * 2}M${c - l} ${c}h${l * 2}" stroke="${safeColor}" stroke-width="1" fill="none"/></svg>`;
         }
         return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
-    }, [type, size, color]);
+    }, [type, size, safeColor]);
 
     const highlightUrl = useMemo(() => {
         let svg = "";
         const c = size / 2;
         if (type === "dot") {
-            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${c}" cy="${c}" r="1.5" fill="${interactiveColor}"/></svg>`;
+            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><circle cx="${c}" cy="${c}" r="1.5" fill="${safeInteractiveColor}"/></svg>`;
         } else if (type === "line") {
-            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M0 0h${size}M0 0v${size}" stroke="${interactiveColor}" stroke-width="1" fill="none"/></svg>`;
+            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M0 0h${size}M0 0v${size}" stroke="${safeInteractiveColor}" stroke-width="1" fill="none"/></svg>`;
         } else if (type === "cross") {
             const l = 4;
-            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M${c} ${c - l}v${l * 2}M${c - l} ${c}h${l * 2}" stroke="${interactiveColor}" stroke-width="1.5" fill="none"/></svg>`;
+            svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><path d="M${c} ${c - l}v${l * 2}M${c - l} ${c}h${l * 2}" stroke="${safeInteractiveColor}" stroke-width="1.5" fill="none"/></svg>`;
         }
         return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
-    }, [type, size, interactiveColor]);
+    }, [type, size, safeInteractiveColor]);
 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);

@@ -31,6 +31,8 @@ export function HolographicCard({
         [0.15, 0.4, 0.5, 0.4, 0.15]
     );
 
+    const reflectionOpacity = useTransform(mouseYSpring, [-0.5, 0, 0.5], [0.6, 0.2, 0]);
+
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
@@ -83,7 +85,7 @@ export function HolographicCard({
             <motion.div
                 className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px rounded-t-xl"
                 style={{
-                    opacity: useTransform(mouseYSpring, [-0.5, 0, 0.5], [0.6, 0.2, 0]),
+                    opacity: reflectionOpacity,
                     background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)",
                 }}
             />
