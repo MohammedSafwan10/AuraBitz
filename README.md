@@ -19,9 +19,7 @@
 
 - Atomic component docs live under `/docs`
 - Full landing blocks live under `/blocks`
-- Hero section archive now includes `Hero 01` through `Hero 06`
-- `webgl-raymarch-silk` has been removed from workspace
-- `Hero 06` now uses layered motion-driven DOM visuals (no silk engine dependency)
+- Hero section archive now includes `Hero 01` through `Hero 05`
 
 ---
 
@@ -98,7 +96,6 @@ npm run lint
 - `Hero 03`
 - `Hero 04`
 - `Hero 05`
-- `Hero 06`
 
 ### Additional Block Categories (Scaffolded)
 

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Check, Copy, Terminal } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 function CodeBlock({ code, language = "bash", title }: { code: string; language?: string; title?: string }) {
     const [copied, setCopied] = useState(false);

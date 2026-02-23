@@ -18,7 +18,7 @@ export default function Hero01Page() {
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight">WebGL Liquid Aura</h1>
                 <p className="text-white/40 text-sm mt-2 max-w-xl leading-relaxed font-light">
-                    The ultimate production-ready approach. This layout creates a massive "WebGL Sandwich"—offloading complex liquid mesh distortion to the GPU underneath a pristine, lag-free DOM and typography layer.
+                    The ultimate production-ready approach. This layout creates a massive &quot;WebGL Sandwich&quot;—offloading complex liquid mesh distortion to the GPU underneath a pristine, lag-free DOM and typography layer.
                 </p>
             </div>
 

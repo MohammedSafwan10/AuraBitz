@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface TextPressureProps {
@@ -34,38 +34,38 @@ export function TextPressure({
         chars.push({ char: c, isSpace: c === " " });
     });
 
-    const animate = useCallback(() => {
-        const mx = mouseRef.current.x;
-        const my = mouseRef.current.y;
-
-        charsRef.current.forEach((el) => {
-            if (!el) return;
-            const rect = el.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            const dist = Math.sqrt((mx - cx) ** 2 + (my - cy) ** 2);
-
-            let weight = baseWeight;
-            let scale = baseScale;
-
-            if (dist < radius) {
-                const t = 1 - dist / radius;
-                weight = baseWeight + (maxWeight - baseWeight) * t;
-                scale = baseScale + (maxScale - baseScale) * t;
-            }
-
-            el.style.fontWeight = String(Math.round(weight));
-            el.style.transform = `scale(${scale.toFixed(3)})`;
-        });
-
-        if (isHoveringRef.current) {
-            rafRef.current = requestAnimationFrame(animate);
-        }
-    }, [baseWeight, maxWeight, baseScale, maxScale, radius]);
-
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
+
+        const animate = () => {
+            const mx = mouseRef.current.x;
+            const my = mouseRef.current.y;
+
+            charsRef.current.forEach((el) => {
+                if (!el) return;
+                const rect = el.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dist = Math.sqrt((mx - cx) ** 2 + (my - cy) ** 2);
+
+                let weight = baseWeight;
+                let scale = baseScale;
+
+                if (dist < radius) {
+                    const t = 1 - dist / radius;
+                    weight = baseWeight + (maxWeight - baseWeight) * t;
+                    scale = baseScale + (maxScale - baseScale) * t;
+                }
+
+                el.style.fontWeight = String(Math.round(weight));
+                el.style.transform = `scale(${scale.toFixed(3)})`;
+            });
+
+            if (isHoveringRef.current) {
+                rafRef.current = requestAnimationFrame(animate);
+            }
+        };
 
         const onMouseMove = (e: MouseEvent) => {
             mouseRef.current.x = e.clientX;
@@ -94,7 +94,7 @@ export function TextPressure({
             container.removeEventListener("mouseleave", onMouseLeave);
             cancelAnimationFrame(rafRef.current);
         };
-    }, [animate]);
+    }, [baseWeight, maxWeight, baseScale, maxScale, radius]);
 
     return (
         <div

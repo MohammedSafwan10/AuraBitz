@@ -20,13 +20,16 @@ export const blocksSidebarData = [
             { name: "03 Quantum Matrix", href: "/blocks/hero-sections/03" },
             { name: "04 Liquid Flow", href: "/blocks/hero-sections/04" },
             { name: "05 Quantum Vortex", href: "/blocks/hero-sections/05" },
-            { name: "06 Neural Silk", href: "/blocks/hero-sections/06" },
         ]
     },
     {
         title: "Bento Grids",
         links: [
-            { name: "Bento 01", href: "/blocks/bento-grids/01" },
+            { name: "01 Holographic Glass", href: "/blocks/bento-grids/01" },
+            { name: "02 Fintech Holograph", href: "/blocks/bento-grids/02" },
+            { name: "03 Typographic Brutalism", href: "/blocks/bento-grids/03" },
+            { name: "04 Cyber Security", href: "/blocks/bento-grids/04" },
+            { name: "05 Spatial Canvas", href: "/blocks/bento-grids/05" },
         ]
     },
     {

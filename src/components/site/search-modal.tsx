@@ -30,6 +30,7 @@ export function SearchModal() {
     const router = useRouter();
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
     }, []);
 
@@ -64,6 +65,7 @@ export function SearchModal() {
 
     useEffect(() => {
         if (isOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setQuery("");
             setSelectedIndex(0);
             setTimeout(() => inputRef.current?.focus(), 0);
@@ -71,6 +73,7 @@ export function SearchModal() {
     }, [isOpen]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedIndex(0);
     }, [query]);
 

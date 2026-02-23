@@ -1,0 +1,12 @@
+
+> aurabitz@0.1.0 lint
+> eslint
+
+
+C:\freela\aurabitz\src\components\blocks\bento-03.tsx
+  120:29   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  120:105  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  120:119  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+✖ 3 problems (3 errors, 0 warnings)
+

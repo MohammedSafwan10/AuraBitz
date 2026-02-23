@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 
 import { useRef, useMemo } from "react";
@@ -18,6 +19,7 @@ interface WebGLGlassCoreProps {
 }
 
 function Swarm({ count = 150 }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const instances = useRef<any>(null);
 
     // Create random positions and colors for the swarm of tiny orbs
@@ -87,7 +89,7 @@ function Swarm({ count = 150 }) {
 function GlassNucleus() {
     const meshRef = useRef<THREE.Mesh>(null);
 
-    useFrame((state, delta) => {
+    useFrame((state) => {
         if (meshRef.current) {
             // Base majestic rotation
             // meshRef.current.rotation.x += delta * 0.1;

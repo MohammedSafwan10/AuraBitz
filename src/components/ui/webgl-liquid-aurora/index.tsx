@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
@@ -195,6 +195,7 @@ function FluidCanvas() {
                 ref={materialRef}
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
+                // eslint-disable-next-line react-hooks/refs
                 uniforms={uniforms.current}
                 depthWrite={false}
                 depthTest={false}

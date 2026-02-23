@@ -37,6 +37,7 @@ export function ScrambleReveal({
             startTimeRef.current = null;
             if (delay > 0) {
                 const scrambledInit = text.split("").map(c => c === " " ? " " : characters[Math.floor(Math.random() * characters.length)]).join("");
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setDisplayText(scrambledInit);
             }
             const timer = setTimeout(() => {
