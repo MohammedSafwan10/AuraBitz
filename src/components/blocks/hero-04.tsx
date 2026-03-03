@@ -1,9 +1,10 @@
 "use client";
+import dynamic from "next/dynamic";
 
 import { motion } from "framer-motion";
 import { BlurText } from "@/components/ui/blur-text";
 import { KineticButton } from "@/components/ui/kinetic-button";
-import { WebGLLiquidAurora } from "@/components/ui/webgl-liquid-aurora";
+const WebGLLiquidAurora = dynamic(() => import("@/components/ui/webgl-liquid-aurora").then((mod) => mod.WebGLLiquidAurora), { ssr: false });
 
 export function Hero04() {
     return (

@@ -1,7 +1,8 @@
 "use client";
+import dynamic from "next/dynamic";
 
 import { RadialNoise } from "@/components/ui/radial-noise";
-import { MeshDistortBG } from "@/components/ui/mesh-distort-bg";
+const MeshDistortBG = dynamic(() => import("@/components/ui/mesh-distort-bg").then((mod) => mod.MeshDistortBG), { ssr: false });
 import { KineticButton } from "@/components/ui/kinetic-button";
 import { SplitText } from "@/components/ui/split-text";
 import { ArrowRight, Lock, Fingerprint, Shield, Cpu, Activity, Database } from "lucide-react";

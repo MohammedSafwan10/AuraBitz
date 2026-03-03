@@ -1,8 +1,9 @@
 "use client";
+import dynamic from "next/dynamic";
 
 import { motion } from "framer-motion";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
-import { WebGLGlassCore } from "@/components/ui/webgl-glass-core";
+const WebGLGlassCore = dynamic(() => import("@/components/ui/webgl-glass-core").then((mod) => mod.WebGLGlassCore), { ssr: false });
 import { KineticButton } from "@/components/ui/kinetic-button";
 import { BlurText } from "@/components/ui/blur-text";
 import { ArrowUpRight, BarChart3, Fingerprint, Zap } from "lucide-react";

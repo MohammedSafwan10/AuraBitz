@@ -1,9 +1,10 @@
 "use client";
+import dynamic from "next/dynamic";
 
 import { motion } from "framer-motion";
 import { BlurText } from "@/components/ui/blur-text";
 import { KineticButton } from "@/components/ui/kinetic-button";
-import { MeshDistortBG } from "@/components/ui/mesh-distort-bg";
+const MeshDistortBG = dynamic(() => import("@/components/ui/mesh-distort-bg").then((mod) => mod.MeshDistortBG), { ssr: false });
 
 export function Hero01() {
     return (

@@ -1,9 +1,10 @@
 "use client";
+import dynamic from "next/dynamic";
 
 import { motion } from "framer-motion";
 import { BlurText } from "@/components/ui/blur-text";
 import { KineticButton } from "@/components/ui/kinetic-button";
-import { WebGLParticleField } from "@/components/ui/webgl-particle-field";
+const WebGLParticleField = dynamic(() => import("@/components/ui/webgl-particle-field").then((mod) => mod.WebGLParticleField), { ssr: false });
 
 export function Hero03() {
     return (

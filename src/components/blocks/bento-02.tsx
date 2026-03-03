@@ -1,8 +1,9 @@
 "use client";
+import dynamic from "next/dynamic";
 
 import { motion } from "framer-motion";
 import { HolographicCard } from "@/components/ui/holographic-card";
-import { WebGLLiquidAurora } from "@/components/ui/webgl-liquid-aurora";
+const WebGLLiquidAurora = dynamic(() => import("@/components/ui/webgl-liquid-aurora").then((mod) => mod.WebGLLiquidAurora), { ssr: false });
 import { BlurText } from "@/components/ui/blur-text";
 import { GridSystem } from "@/components/ui/grid-system";
 import { CircleDollarSign, ArrowUpRight, LineChart, Wallet, CreditCard, Activity } from "lucide-react";
