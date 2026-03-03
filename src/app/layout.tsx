@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://aurabitz.nexdark.com"),
   title: {
-    default: "AuraBitz | Premium WebGL & Motion UI Components",
+    default: "AuraBitz | Premium WebGL & Motion UI Component Library",
     template: "%s | AuraBitz",
   },
-  description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks built for Next.js 16+ and Framer Motion.",
+  description: "Explore production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks engineered for Next.js 16+ and Framer Motion. Build stunning interfaces in minutes.",
   keywords: [
     "Next.js components",
     "TailwindCSS blocks",
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://aurabitz.nexdark.com",
-    title: "AuraBitz | Premium WebGL & Motion UI",
-    description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks.",
+    title: "AuraBitz | Premium WebGL & Motion UI Component Library",
+    description: "Explore production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks engineered for Next.js 16+ and Framer Motion. Build stunning interfaces in minutes.",
     siteName: "AuraBitz Component Architecture",
     images: [
       {
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AuraBitz | Premium WebGL & Motion UI",
-    description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks.",
+    title: "AuraBitz | Premium WebGL & Motion UI Component Library",
+    description: "Explore production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks engineered for Next.js 16+ and Framer Motion. Build stunning interfaces in minutes.",
     creator: "@AuraBitz",
     images: ["/og-image.jpg"],
   },
