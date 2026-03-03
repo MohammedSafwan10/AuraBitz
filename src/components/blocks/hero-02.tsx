@@ -1,10 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
+import { WebGLLoader } from "@/components/ui/webgl-loader";
 
 import { motion } from "framer-motion";
 import { BlurText } from "@/components/ui/blur-text";
 import { KineticButton } from "@/components/ui/kinetic-button";
-const WebGLGlassCore = dynamic(() => import("@/components/ui/webgl-glass-core").then((mod) => mod.WebGLGlassCore), { ssr: false });
+const WebGLGlassCore = dynamic(() => import("@/components/ui/webgl-glass-core").then((mod) => mod.WebGLGlassCore), { ssr: false, loading: () => <WebGLLoader /> });
 
 export function Hero02() {
     return (

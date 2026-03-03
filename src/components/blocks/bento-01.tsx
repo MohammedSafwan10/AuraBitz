@@ -1,9 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
+import { WebGLLoader } from "@/components/ui/webgl-loader";
 
 import { motion } from "framer-motion";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
-const WebGLGlassCore = dynamic(() => import("@/components/ui/webgl-glass-core").then((mod) => mod.WebGLGlassCore), { ssr: false });
+const WebGLGlassCore = dynamic(() => import("@/components/ui/webgl-glass-core").then((mod) => mod.WebGLGlassCore), { ssr: false, loading: () => <WebGLLoader /> });
 import { KineticButton } from "@/components/ui/kinetic-button";
 import { BlurText } from "@/components/ui/blur-text";
 import { ArrowUpRight, BarChart3, Fingerprint, Zap } from "lucide-react";

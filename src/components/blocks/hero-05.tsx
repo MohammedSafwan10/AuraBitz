@@ -1,10 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
+import { WebGLLoader } from "@/components/ui/webgl-loader";
 
 import { motion } from "framer-motion";
 import { BlurText } from "@/components/ui/blur-text";
 import { KineticButton } from "@/components/ui/kinetic-button";
-const WebGLParticleVortex = dynamic(() => import("@/components/ui/webgl-particle-vortex").then((mod) => mod.WebGLParticleVortex), { ssr: false });
+const WebGLParticleVortex = dynamic(() => import("@/components/ui/webgl-particle-vortex").then((mod) => mod.WebGLParticleVortex), { ssr: false, loading: () => <WebGLLoader /> });
 
 export function Hero05() {
     return (

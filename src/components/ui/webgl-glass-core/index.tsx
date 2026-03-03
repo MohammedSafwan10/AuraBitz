@@ -6,6 +6,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import {
     MeshTransmissionMaterial,
     Environment,
+    Lightformer,
     Float,
     Instances,
     Instance,
@@ -149,8 +150,12 @@ export function WebGLGlassCore({ className, children }: WebGLGlassCoreProps) {
                     {/* The Refractive Glass Core */}
                     <GlassNucleus />
 
-                    {/* HDRI Environment for realistic glass reflections */}
-                    <Environment preset="city" />
+                    {/* Fully programmatic environment — no external file fetches needed */}
+                    <Environment resolution={128}>
+                        <Lightformer form="ring" intensity={2} position={[0, 5, -5]} scale={10} color="#ffffff" />
+                        <Lightformer form="rect" intensity={1} position={[-5, 2, 2]} scale={5} color="#aaddff" />
+                        <Lightformer form="rect" intensity={0.5} position={[5, 0, -3]} scale={4} color="#eeffee" />
+                    </Environment>
                 </Canvas>
 
                 {/* Vignette mask to softly blend the WebGL canvas into the DOM edges */}

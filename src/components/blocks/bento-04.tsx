@@ -1,8 +1,9 @@
 "use client";
 import dynamic from "next/dynamic";
+import { WebGLLoader } from "@/components/ui/webgl-loader";
 
 import { RadialNoise } from "@/components/ui/radial-noise";
-const MeshDistortBG = dynamic(() => import("@/components/ui/mesh-distort-bg").then((mod) => mod.MeshDistortBG), { ssr: false });
+const MeshDistortBG = dynamic(() => import("@/components/ui/mesh-distort-bg").then((mod) => mod.MeshDistortBG), { ssr: false, loading: () => <WebGLLoader /> });
 import { KineticButton } from "@/components/ui/kinetic-button";
 import { SplitText } from "@/components/ui/split-text";
 import { ArrowRight, Lock, Fingerprint, Shield, Cpu, Activity, Database } from "lucide-react";
