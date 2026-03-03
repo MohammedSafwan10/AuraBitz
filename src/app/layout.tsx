@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://aurabitz.com"),
+  metadataBase: new URL("https://aurabitz.nexdark.com"),
   title: {
     default: "AuraBitz | Premium WebGL & Motion UI Components",
     template: "%s | AuraBitz",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://aurabitz.com",
+    url: "https://aurabitz.nexdark.com",
     title: "AuraBitz | Premium WebGL & Motion UI",
     description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks.",
     siteName: "AuraBitz Component Architecture",
