@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LucideGithub, Triangle, Search } from "lucide-react";
+import { LucideGithub, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
 import { SearchModal } from "./search-modal";
@@ -22,8 +23,8 @@ export function Header() {
                 {/* Left: Logo + Nav */}
                 <div className="flex gap-8 items-center">
                     <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-                        <div className="relative flex items-center justify-center p-1.5 bg-white/10 rounded-lg border border-white/15">
-                            <Triangle className="w-3.5 h-3.5 fill-white text-white rotate-180" />
+                        <div className="relative flex items-center justify-center w-7 h-7 rounded-lg overflow-hidden border border-white/15">
+                            <Image src="/logo-512.png" alt="AuraBitz" width={28} height={28} className="object-cover" />
                         </div>
                         <span className="hidden sm:inline grad-text font-extrabold tracking-tighter text-base">AuraBitz</span>
                     </Link>
