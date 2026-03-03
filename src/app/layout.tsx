@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: "AuraBitz | Premium WebGL & Motion UI Component Library",
     template: "%s | AuraBitz",
   },
-  description: "Explore production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks engineered for Next.js 16+ and Framer Motion. Build stunning interfaces in minutes.",
+  description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy UI blocks for Next.js and Framer Motion. Build stunning interfaces fast.",
   keywords: [
     "Next.js components",
     "TailwindCSS blocks",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://aurabitz.nexdark.com",
     title: "AuraBitz | Premium WebGL & Motion UI Component Library",
-    description: "Explore production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks engineered for Next.js 16+ and Framer Motion. Build stunning interfaces in minutes.",
+    description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy UI blocks for Next.js and Framer Motion. Build stunning interfaces fast.",
     siteName: "AuraBitz Component Architecture",
     images: [
       {
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "AuraBitz | Premium WebGL & Motion UI Component Library",
-    description: "Explore production-ready WebGL backgrounds, kinetic typography, and motion-heavy landing blocks engineered for Next.js 16+ and Framer Motion. Build stunning interfaces in minutes.",
+    description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy UI blocks for Next.js and Framer Motion. Build stunning interfaces fast.",
     creator: "@AuraBitz",
     images: ["/og-image.jpg"],
   },
