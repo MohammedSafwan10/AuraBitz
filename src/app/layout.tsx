@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { LenisProvider } from "@/components/site/lenis-provider";
 import { JsonLd } from "@/components/site/json-ld";
@@ -96,6 +97,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white selection:bg-white/30`}
       >
         <LenisProvider>{children}</LenisProvider>
+        <Script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token":"36565d872cdc4121aa3d62aea4625c12"}'
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
