@@ -46,9 +46,9 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════ */}
       {/* SECTION 1: HERO — Split layout (text left, bento right)   */}
       {/* ═══════════════════════════════════════════════════════════ */}
-      <section className="relative z-10 flex flex-col lg:flex-row items-center justify-between max-w-[1400px] mx-auto w-full px-8 lg:px-12 gap-10 pt-24 pb-12 min-h-[80vh]">
+      <section className="relative z-10 flex flex-col lg:flex-row items-center justify-between max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-12 gap-8 sm:gap-10 pt-20 sm:pt-24 pb-12 min-h-[80vh]">
         {/* LEFT: Hero Text */}
-        <div className="flex-1 flex flex-col items-start text-left max-w-xl">
+        <div className="flex-1 flex flex-col items-start text-left max-w-xl w-full">
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.1 }} custom={0} variants={fadeUp}
             className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-white/10 bg-white/[0.02]"
@@ -59,7 +59,7 @@ export default function Home() {
 
           <motion.h1
             initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.1 }} custom={1} variants={fadeUp}
-            className="text-5xl lg:text-[64px] font-medium tracking-tight leading-[1.05] mb-5 text-white"
+            className="text-[clamp(2.6rem,11vw,4rem)] lg:text-[64px] font-medium tracking-tight leading-[1.05] mb-5 text-white"
           >
             Engineering <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40 italic font-serif">perfection.</span><br />
             Component by component.
@@ -74,7 +74,7 @@ export default function Home() {
 
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.1 }} custom={3} variants={fadeUp}
-            className="flex flex-row items-center gap-3"
+            className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch sm:items-center gap-3"
           >
             <Link href="/docs">
               <KineticButton className="bg-white text-black hover:bg-neutral-200 h-10 px-5 rounded-full text-sm font-medium shadow-[0_0_40px_rgba(255,255,255,0.1)]" magneticPull={0.2}>
@@ -95,7 +95,7 @@ export default function Home() {
           whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)", y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 w-full max-w-xl relative flex items-center justify-center h-[520px] sm:h-[520px]"
+          className="flex-1 w-full max-w-xl relative flex items-center justify-center h-[700px] sm:h-[520px]"
         >
           {/* Progress Indicators */}
           <div className="absolute -left-10 top-1/2 -translate-y-1/2 flex-col gap-3 z-20 pointer-events-none hidden lg:flex">
@@ -158,16 +158,16 @@ export default function Home() {
                 className="w-full flex flex-col gap-4 absolute"
               >
                 {/* Top Hero Card - Text Pressure */}
-                <div className="w-full relative rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center p-8 sm:p-12 hover:border-white/20 transition-all shadow-2xl h-[260px] sm:h-[300px]">
+                <div className="w-full relative rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center p-5 sm:p-12 hover:border-white/20 transition-all shadow-2xl h-[260px] sm:h-[300px]">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
                   <span className="text-[9px] font-mono text-white/40 tracking-widest block text-center mb-6 z-10">02 // TYPOGRAPHY</span>
-                  <div className="flex-1 w-[85vw] max-w-[400px] flex items-center justify-center z-10 pointer-events-auto">
+                  <div className="flex-1 w-full max-w-[400px] flex items-center justify-center z-10 pointer-events-auto px-2 sm:px-0">
                     <TextPressure className="text-white/90 text-4xl sm:text-6xl font-bold tracking-tighter w-full">PRESSURE</TextPressure>
                   </div>
                 </div>
 
                 {/* Bottom Row - Split */}
-                <div className="w-full flex flex-col sm:flex-row gap-4 h-[180px] sm:h-[180px]">
+                <div className="w-full flex flex-col sm:flex-row gap-4 h-auto sm:h-[180px]">
                   {/* Blur Text */}
                   <div className="flex-1 relative rounded-3xl border border-white/10 bg-[#050505] overflow-hidden flex flex-col items-center justify-center p-6 hover:border-white/20 transition-all min-h-[160px]">
                     <BlurText className="text-xl font-medium text-white/90 tracking-tight" delay={0.2}>Gaussian Fade</BlurText>
@@ -194,7 +194,7 @@ export default function Home() {
                 className="w-full flex flex-col gap-4 absolute"
               >
                 {/* Top Hero Card - Split Text */}
-                <div className="w-full relative rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center p-8 sm:p-12 hover:border-white/20 transition-all shadow-2xl h-[260px] sm:h-[300px]">
+                <div className="w-full relative rounded-3xl border border-white/10 bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center p-5 sm:p-12 hover:border-white/20 transition-all shadow-2xl h-[260px] sm:h-[300px]">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
                   <span className="text-[9px] font-mono text-white/40 tracking-widest block text-center mb-8 pointer-events-none z-10">03 // DYNAMICS</span>
                   <div className="w-full max-w-[380px] text-center z-10 pointer-events-auto px-4">
@@ -205,7 +205,7 @@ export default function Home() {
                 </div>
 
                 {/* Bottom Row - Split */}
-                <div className="w-full flex flex-col sm:flex-row gap-4 h-[180px] sm:h-[180px]">
+                <div className="w-full flex flex-col sm:flex-row gap-4 h-auto sm:h-[180px]">
                   {/* Text Type */}
                   <div className="flex-1 relative rounded-3xl border border-white/10 bg-[#050505] overflow-hidden flex flex-col justify-center p-6 hover:border-white/20 transition-all min-h-[160px] text-left">
                     <TextCursor className="w-4 h-4 text-white/30 pointer-events-none mb-4" />
