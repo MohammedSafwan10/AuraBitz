@@ -97,7 +97,7 @@ export function SplitText({
     words.forEach((word, wordIndex) => {
         if (splitBy === "words") {
             elements.push(
-                <span key={wordIndex} className="inline-block whitespace-nowrap overflow-hidden py-2" style={{ marginTop: "-0.5rem", marginBottom: "-0.5rem" }}>
+                <span key={wordIndex} className="inline-block  overflow-hidden py-2" style={{ marginTop: "-0.5rem", marginBottom: "-0.5rem" }}>
                     <motion.span variants={getVariants(animation, duration)} className="inline-block">
                         {word}
                     </motion.span>
@@ -116,7 +116,7 @@ export function SplitText({
             ));
 
             elements.push(
-                <span key={wordIndex} className="inline-block whitespace-nowrap">
+                <span key={wordIndex} className="inline-block ">
                     {charElements}
                     {wordIndex < words.length - 1 && <span className="inline-block">&nbsp;</span>}
                 </span>

@@ -46,7 +46,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════ */}
       {/* SECTION 1: HERO — Split layout (text left, bento right)   */}
       {/* ═══════════════════════════════════════════════════════════ */}
-      <section className="relative z-10 flex flex-col lg:flex-row items-center justify-between max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-12 gap-8 sm:gap-10 pt-20 sm:pt-24 pb-12 min-h-[80vh]">
+      <section className="relative z-10 flex flex-col lg:flex-row items-center justify-between max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-12 gap-8 sm:gap-10 pt-20 sm:pt-24 pb-12 min-h-screen">
         {/* LEFT: Hero Text */}
         <div className="flex-1 flex flex-col items-start text-left max-w-xl w-full">
           <motion.div
@@ -95,7 +95,7 @@ export default function Home() {
           whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)", y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 w-full max-w-xl relative flex items-center justify-center h-[700px] sm:h-[520px]"
+          className="flex-1 w-full max-w-xl relative flex items-center justify-center min-h-[850px] sm:min-h-[520px]"
         >
           {/* Progress Indicators */}
           <div className="absolute -left-10 top-1/2 -translate-y-1/2 flex-col gap-3 z-20 pointer-events-none hidden lg:flex">
@@ -198,7 +198,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
                   <span className="text-[9px] font-mono text-white/40 tracking-widest block text-center mb-8 pointer-events-none z-10">03 // DYNAMICS</span>
                   <div className="w-full max-w-[380px] text-center z-10 pointer-events-auto px-4">
-                    <SplitText className="text-3xl sm:text-4xl lg:text-[40px] font-semibold tracking-tight text-white/90 text-center leading-[1.05]" delay={0.2}>
+                    <SplitText className="text-2xl sm:text-4xl lg:text-[40px] font-semibold tracking-tight text-white/90 text-center leading-[1.05]" delay={0.2}>
                       Granular sequential physics rendering.
                     </SplitText>
                   </div>
