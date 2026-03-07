@@ -5,6 +5,8 @@ import "./globals.css";
 import { LenisProvider } from "@/components/site/lenis-provider";
 import { JsonLd } from "@/components/site/json-ld";
 
+const cloudflareBeaconToken = process.env.NEXT_PUBLIC_CLOUDFLARE_BEACON_TOKEN;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -97,12 +99,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white selection:bg-white/30`}
       >
         <LenisProvider>{children}</LenisProvider>
-        <Script
-          defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token":"36565d872cdc4121aa3d62aea4625c12"}'
-          strategy="afterInteractive"
-        />
+        {process.env.NODE_ENV === "production" && cloudflareBeaconToken ? (
+          <Script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={JSON.stringify({ token: cloudflareBeaconToken })}
+            strategy="afterInteractive"
+          />
+        ) : null}
       </body>
     </html>
   );

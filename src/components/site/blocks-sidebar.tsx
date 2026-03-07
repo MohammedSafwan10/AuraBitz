@@ -45,6 +45,8 @@ export const blocksSidebarData = [
         title: "Pricing Tables",
         links: [
             { name: "Pricing 01", href: "/blocks/pricing-tables/01" },
+            { name: "Pricing 02", href: "/blocks/pricing-tables/02" },
+            { name: "Pricing 03", href: "/blocks/pricing-tables/03" },
         ]
     },
     {

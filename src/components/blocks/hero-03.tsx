@@ -1,6 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { WebGLLoader } from "@/components/ui/webgl-loader";
+import { MotionSafe } from "@/components/ui/motion-safe";
 
 import { motion } from "framer-motion";
 import { BlurText } from "@/components/ui/blur-text";
@@ -13,8 +14,9 @@ export function Hero03() {
             {/* 
         The WebGLParticleField runs 50,000 vertices on custom shaders directly in the GPU.
       */}
-            <WebGLParticleField className="absolute inset-0 z-0">
-                <div className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
+            <MotionSafe fallback={<div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1),transparent_60%)]" />}>
+                <WebGLParticleField className="absolute inset-0 z-0">
+                    <div className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9, y: 10 }}
@@ -69,8 +71,9 @@ export function Hero03() {
                             View Source Code
                         </button>
                     </motion.div>
-                </div>
-            </WebGLParticleField>
+                    </div>
+                </WebGLParticleField>
+            </MotionSafe>
         </section>
     );
 }

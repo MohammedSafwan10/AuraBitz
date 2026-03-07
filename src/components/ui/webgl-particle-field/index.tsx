@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/purity */
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
+import { usePerformanceMode } from "@/components/ui/use-performance-mode";
 
 interface WebGLParticleFieldProps {
     className?: string;
@@ -55,9 +56,12 @@ void main() {
 }
 `;
 
-function ParticleGalaxy() {
-    // 50,000 particles computed natively on the GPU at 60 FPS
-    const count = 50000;
+interface ParticleGalaxyProps {
+    count: number;
+    interactive: boolean;
+}
+
+function ParticleGalaxy({ count, interactive }: ParticleGalaxyProps) {
     const pointsRef = useRef<THREE.Points>(null);
     const materialRef = useRef<THREE.ShaderMaterial>(null);
 
@@ -116,8 +120,8 @@ function ParticleGalaxy() {
             materialRef.current.uniforms.uTime.value = state.clock.getElapsedTime();
         }
         if (pointsRef.current) {
-            const targetX = (state.mouse.x * Math.PI) / 8;
-            const targetY = (state.mouse.y * Math.PI) / 10;
+            const targetX = interactive ? (state.mouse.x * Math.PI) / 8 : 0;
+            const targetY = interactive ? (state.mouse.y * Math.PI) / 10 : 0;
             // Smoothly lerp towards mouse position using basic math
             pointsRef.current.rotation.y += 0.05 * (targetX - pointsRef.current.rotation.y);
             pointsRef.current.rotation.x += 0.05 * (-targetY - pointsRef.current.rotation.x);
@@ -149,13 +153,35 @@ function ParticleGalaxy() {
 }
 
 export function WebGLParticleField({ className, children }: WebGLParticleFieldProps) {
+    const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            setIsVisible(document.visibilityState === "visible");
+        };
+
+        handleVisibilityChange();
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+
+        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    }, []);
+
+    const count = isLowPerformance ? 12000 : 28000;
+    const interactive = !isLowPerformance && !prefersReducedMotion;
+
     return (
         <div className={cn("relative w-full h-full bg-[#000003] overflow-hidden", className)}>
             {/* 3D WebGL Layer tracking user pointer smoothly */}
             <div className="absolute inset-0 z-0">
-                <Canvas camera={{ position: [0, 6, 15], fov: 50 }} dpr={[1, 1.5]}>
+                <Canvas
+                    camera={{ position: [0, 6, 15], fov: 50 }}
+                    dpr={isLowPerformance ? [1, 1] : [1, 1.25]}
+                    frameloop={isVisible ? "always" : "never"}
+                    gl={{ antialias: !isLowPerformance, powerPreference: "high-performance" }}
+                >
                     <color attach="background" args={['#000003']} />
-                    <ParticleGalaxy />
+                    <ParticleGalaxy count={count} interactive={interactive} />
                 </Canvas>
 
                 {/* Heavy DOM Vignette to focus attention on typography */}

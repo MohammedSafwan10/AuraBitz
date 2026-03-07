@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/purity */
 "use client";
 
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
+import { usePerformanceMode } from "@/components/ui/use-performance-mode";
 
 interface WebGLParticleVortexProps {
     className?: string;
@@ -181,14 +182,15 @@ void main() {
 // ----------------------------------------------------------------------------
 // 2. THE PARTICLE ENGINE (250,000 Particles)
 // ----------------------------------------------------------------------------
-function QuantumVortex() {
+interface QuantumVortexProps {
+    particleCount: number;
+    interactive: boolean;
+}
+
+function QuantumVortex({ particleCount, interactive }: QuantumVortexProps) {
     const pointsRef = useRef<THREE.Points>(null);
     const materialRef = useRef<THREE.ShaderMaterial>(null);
     const mousePos = useRef(new THREE.Vector3(0, 0, 0));
-
-    // Generate 250,000 particles ONCE computationally
-    // This is 250k particles running flawlessly at 60 FPS
-    const particleCount = 250000;
 
     const particles = useMemo(() => {
         const positions = new Float32Array(particleCount * 3);
@@ -220,7 +222,7 @@ function QuantumVortex() {
         }
 
         return { positions, randomIntensities, sizes };
-    }, []);
+    }, [particleCount]);
 
     // Uniforms persistence to prevent GPU crashing
     const uniforms = useRef({
@@ -240,9 +242,11 @@ function QuantumVortex() {
             mousePos.current.x = x * 10;
             mousePos.current.y = y * 10;
         };
-        window.addEventListener('mousemove', handleMouseMove);
+        if (!interactive) return;
+
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
         return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
+    }, [interactive]);
 
     useFrame((state) => {
         if (materialRef.current) {
@@ -250,8 +254,11 @@ function QuantumVortex() {
             materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
 
             // Smoothly track mouse in 3D space
-            materialRef.current.uniforms.uMouse.value.x += (mousePos.current.x - materialRef.current.uniforms.uMouse.value.x) * 0.1;
-            materialRef.current.uniforms.uMouse.value.y += (mousePos.current.y - materialRef.current.uniforms.uMouse.value.y) * 0.1;
+            const mouseX = interactive ? mousePos.current.x : 0;
+            const mouseY = interactive ? mousePos.current.y : 0;
+
+            materialRef.current.uniforms.uMouse.value.x += (mouseX - materialRef.current.uniforms.uMouse.value.x) * 0.1;
+            materialRef.current.uniforms.uMouse.value.y += (mouseY - materialRef.current.uniforms.uMouse.value.y) * 0.1;
         }
 
         if (pointsRef.current) {
@@ -285,12 +292,34 @@ function QuantumVortex() {
 // 3. UI EXPORT COMPONENT
 // ----------------------------------------------------------------------------
 export function WebGLParticleVortex({ className, children }: WebGLParticleVortexProps) {
+    const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            setIsVisible(document.visibilityState === "visible");
+        };
+
+        handleVisibilityChange();
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+
+        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    }, []);
+
+    const particleCount = isLowPerformance ? 32000 : 120000;
+    const interactive = !isLowPerformance && !prefersReducedMotion;
+
     return (
         <div className={cn("relative w-full h-full bg-[#010103] overflow-hidden", className)}>
             {/* The RAW Engine Layer */}
             <div className="absolute inset-0 z-0">
-                <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 1.5]}>
-                    <QuantumVortex />
+                <Canvas
+                    camera={{ position: [0, 0, 12], fov: 45 }}
+                    dpr={isLowPerformance ? [1, 1] : [1, 1.25]}
+                    frameloop={isVisible ? "always" : "never"}
+                    gl={{ antialias: !isLowPerformance, powerPreference: "high-performance" }}
+                >
+                    <QuantumVortex particleCount={particleCount} interactive={interactive} />
                 </Canvas>
             </div>
 

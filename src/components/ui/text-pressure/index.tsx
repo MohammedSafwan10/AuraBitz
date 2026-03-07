@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { usePerformanceMode } from "@/components/ui/use-performance-mode";
 
 interface TextPressureProps {
     children: string;
@@ -24,30 +25,41 @@ export function TextPressure({
 }: TextPressureProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const charsRef = useRef<(HTMLSpanElement | null)[]>([]);
+    const charMetricsRef = useRef<{ x: number; y: number }[]>([]);
     const mouseRef = useRef({ x: -1000, y: -1000 });
     const rafRef = useRef<number>(0);
     const isHoveringRef = useRef(false);
+    const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
 
-    // Flatten characters with word boundaries
-    const chars: { char: string; isSpace: boolean }[] = [];
-    children.split("").forEach((c) => {
-        chars.push({ char: c, isSpace: c === " " });
-    });
+    const chars = useMemo(
+        () => children.split("").map((char) => ({ char, isSpace: char === " " })),
+        [children]
+    );
 
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
+        const updateMetrics = () => {
+            charMetricsRef.current = charsRef.current.map((el) => {
+                if (!el) return { x: -1000, y: -1000 };
+
+                const rect = el.getBoundingClientRect();
+                return {
+                    x: rect.left + rect.width / 2,
+                    y: rect.top + rect.height / 2,
+                };
+            });
+        };
+
         const animate = () => {
             const mx = mouseRef.current.x;
             const my = mouseRef.current.y;
 
-            charsRef.current.forEach((el) => {
+            charsRef.current.forEach((el, index) => {
                 if (!el) return;
-                const rect = el.getBoundingClientRect();
-                const cx = rect.left + rect.width / 2;
-                const cy = rect.top + rect.height / 2;
-                const dist = Math.sqrt((mx - cx) ** 2 + (my - cy) ** 2);
+                const metric = charMetricsRef.current[index] ?? { x: -1000, y: -1000 };
+                const dist = Math.hypot(mx - metric.x, my - metric.y);
 
                 let weight = baseWeight;
                 let scale = baseScale;
@@ -73,7 +85,11 @@ export function TextPressure({
         };
 
         const onMouseEnter = () => {
+            if (isLowPerformance || prefersReducedMotion) return;
+
+            updateMetrics();
             isHoveringRef.current = true;
+            cancelAnimationFrame(rafRef.current);
             rafRef.current = requestAnimationFrame(animate);
         };
 
@@ -81,20 +97,27 @@ export function TextPressure({
             mouseRef.current.x = -1000;
             mouseRef.current.y = -1000;
             isHoveringRef.current = false;
+            cancelAnimationFrame(rafRef.current);
             rafRef.current = requestAnimationFrame(animate);
         };
 
-        container.addEventListener("mousemove", onMouseMove);
+        updateMetrics();
+
+        container.addEventListener("mousemove", onMouseMove, { passive: true });
         container.addEventListener("mouseenter", onMouseEnter);
         container.addEventListener("mouseleave", onMouseLeave);
+        window.addEventListener("resize", updateMetrics, { passive: true });
+        window.addEventListener("scroll", updateMetrics, { passive: true });
 
         return () => {
             container.removeEventListener("mousemove", onMouseMove);
             container.removeEventListener("mouseenter", onMouseEnter);
             container.removeEventListener("mouseleave", onMouseLeave);
+            window.removeEventListener("resize", updateMetrics);
+            window.removeEventListener("scroll", updateMetrics);
             cancelAnimationFrame(rafRef.current);
         };
-    }, [baseWeight, maxWeight, baseScale, maxScale, radius]);
+    }, [baseWeight, maxWeight, baseScale, maxScale, radius, isLowPerformance, prefersReducedMotion]);
 
     return (
         <div

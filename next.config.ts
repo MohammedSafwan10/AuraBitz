@@ -2,11 +2,16 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
 
+const scriptSrc = [
+  "'self'",
+  "https://static.cloudflareinsights.com",
+  ...(isDev ? ["'unsafe-inline'"] : []),
+  ...(isDev ? ["'unsafe-eval'"] : []),
+].join(" ");
+
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline'${
-    isDev ? " 'unsafe-eval'" : ""
-  }`,
+  `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https:",
   "font-src 'self' data: https://fonts.gstatic.com",

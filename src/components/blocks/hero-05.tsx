@@ -1,6 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { WebGLLoader } from "@/components/ui/webgl-loader";
+import { MotionSafe } from "@/components/ui/motion-safe";
 
 import { motion } from "framer-motion";
 import { BlurText } from "@/components/ui/blur-text";
@@ -14,8 +15,9 @@ export function Hero05() {
         The WebGLParticleVortex computes 250,000 independent particles flying through 
         Curl Noise on the GPU, completely detached from the DOM layer above it. 
       */}
-            <WebGLParticleVortex className="absolute inset-0 z-0">
-                <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center justify-center h-full text-center">
+            <MotionSafe fallback={<div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(0,255,157,0.12),transparent_55%)]" />}>
+                <WebGLParticleVortex className="absolute inset-0 z-0">
+                    <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center justify-center h-full text-center">
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
@@ -64,8 +66,9 @@ export function Hero05() {
                             Access Code //
                         </button>
                     </motion.div>
-                </div>
-            </WebGLParticleVortex>
+                    </div>
+                </WebGLParticleVortex>
+            </MotionSafe>
         </section>
     );
 }

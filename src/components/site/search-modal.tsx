@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sidebarData } from "./sidebar";
+import { blocksSidebarData } from "./blocks-sidebar";
 
 interface SearchItem {
     name: string;
@@ -13,12 +14,13 @@ interface SearchItem {
     category: string;
 }
 
-const searchItems: SearchItem[] = sidebarData.flatMap((category) =>
-    category.links.map((link) => ({
-        name: link.name,
-        href: link.href,
-        category: category.title,
-    }))
+const searchItems: SearchItem[] = [...sidebarData, ...blocksSidebarData].flatMap(
+    (category) =>
+        category.links.map((link) => ({
+            name: link.name,
+            href: link.href,
+            category: category.title,
+        }))
 );
 
 export function SearchModal() {
