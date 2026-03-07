@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV !== "production";
 const scriptSrc = [
   "'self'",
   "https://static.cloudflareinsights.com",
-  ...(isDev ? ["'unsafe-inline'"] : []),
+  "'unsafe-inline'",
   ...(isDev ? ["'unsafe-eval'"] : []),
 ].join(" ");
 
