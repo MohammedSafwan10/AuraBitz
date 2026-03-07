@@ -64,12 +64,20 @@ export function SearchModal() {
     }, []);
 
     useEffect(() => {
+        let focusTimeout: ReturnType<typeof setTimeout> | null = null;
+
         if (isOpen) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setQuery("");
             setSelectedIndex(0);
-            setTimeout(() => inputRef.current?.focus(), 0);
+            focusTimeout = setTimeout(() => inputRef.current?.focus(), 0);
         }
+
+        return () => {
+            if (focusTimeout) {
+                clearTimeout(focusTimeout);
+            }
+        };
     }, [isOpen]);
 
     useEffect(() => {
@@ -109,7 +117,12 @@ export function SearchModal() {
                 className="absolute inset-0 bg-black/80 backdrop-blur-sm"
                 onClick={() => setIsOpen(false)}
             />
-            <div className="relative w-full max-w-lg mx-4 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+            <div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Search components"
+                className="relative w-full max-w-lg mx-4 bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            >
                 {/* Search Input */}
                 <div className="flex items-center gap-3 px-4 border-b border-white/[0.06]">
                     <Search size={16} className="text-white/30 flex-shrink-0" />

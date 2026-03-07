@@ -36,6 +36,9 @@ export const blocksSidebarData = [
         title: "Feature Showcases",
         links: [
             { name: "Feature 01", href: "/blocks/feature-showcases/01" },
+            { name: "Feature 02", href: "/blocks/feature-showcases/02" },
+            { name: "Feature 03", href: "/blocks/feature-showcases/03" },
+            { name: "Feature 04", href: "/blocks/feature-showcases/04" },
         ]
     },
     {

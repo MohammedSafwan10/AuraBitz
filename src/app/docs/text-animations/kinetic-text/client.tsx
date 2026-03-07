@@ -36,7 +36,7 @@ export default function KineticTextPageClient({ sourceCode }: { sourceCode: stri
                     <div className="text-center relative">
                         {/* Interactive Re-Trigger Area */}
                         <div
-                            className="group cursor-pointer inline-block"
+                            className="group cursor-pointer inline-flex flex-col items-center relative pb-8"
                             onClick={() => setReplayKey1(prev => prev + 1)}
                         >
                             <KineticText
@@ -48,7 +48,7 @@ export default function KineticTextPageClient({ sourceCode }: { sourceCode: stri
                             >
                                 Next Level Animations.
                             </KineticText>
-                            <p className="text-white/30 text-sm mt-0 font-mono uppercase tracking-widest group-hover:text-emerald-400/80 transition-colors">(Click to Re-Animate)</p>
+                            <p className="absolute left-1/2 top-full -translate-x-1/2 pt-2 text-white/30 text-sm font-mono uppercase tracking-widest whitespace-nowrap group-hover:text-emerald-400/80 transition-colors">(Click to Re-Animate)</p>
                         </div>
                     </div>
 
@@ -56,7 +56,7 @@ export default function KineticTextPageClient({ sourceCode }: { sourceCode: stri
                         <div className="flex flex-col gap-2">
                             <span className="text-white/40 text-[10px] font-mono uppercase tracking-wider">Word By Word Split</span>
                             <div
-                                className="group cursor-pointer"
+                                className="group cursor-pointer inline-flex flex-col relative pb-7"
                                 onClick={() => setReplayKey2(prev => prev + 1)}
                             >
                                 <KineticText
@@ -68,7 +68,7 @@ export default function KineticTextPageClient({ sourceCode }: { sourceCode: stri
                                 >
                                     Architecture requires precision. Design requires restraint. Engineering requires both.
                                 </KineticText>
-                                <p className="text-white/30 text-[10px] mt-2 font-mono uppercase tracking-widest group-hover:text-emerald-400/80 transition-colors">(Click to Re-Animate)</p>
+                                <p className="absolute left-0 top-full pt-2 text-white/30 text-[10px] font-mono uppercase tracking-widest whitespace-nowrap group-hover:text-emerald-400/80 transition-colors">(Click to Re-Animate)</p>
                             </div>
                         </div>
                     </div>

@@ -34,6 +34,7 @@ export default function PricingPage() {
                         <Link
                             href="https://github.com/MohammedSafwan10/AuraBitz"
                             target="_blank"
+                            rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 px-6 py-3 bg-transparent text-white border border-white/10 rounded-full text-sm font-medium hover:bg-white/5 transition-colors"
                         >
                             View on GitHub

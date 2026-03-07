@@ -27,6 +27,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
         // Other blocks
         { path: "/blocks/feature-showcases/01", priority: 0.7, changeFrequency: "monthly" as const },
+        { path: "/blocks/feature-showcases/02", priority: 0.7, changeFrequency: "monthly" as const },
+        { path: "/blocks/feature-showcases/03", priority: 0.7, changeFrequency: "monthly" as const },
         { path: "/blocks/footers/01", priority: 0.6, changeFrequency: "monthly" as const },
         { path: "/blocks/pricing-tables/01", priority: 0.7, changeFrequency: "monthly" as const },
         { path: "/blocks/testimonials/01", priority: 0.7, changeFrequency: "monthly" as const },

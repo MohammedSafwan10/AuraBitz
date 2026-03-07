@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { LucideCheck, LucideCopy, TerminalSquare, Eye } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -26,6 +26,15 @@ interface CodePreviewProps {
 export function CodePreview({ children, code }: CodePreviewProps) {
     const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
     const [copied, setCopied] = useState(false);
+    const resetCopyStateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (resetCopyStateTimeoutRef.current) {
+                clearTimeout(resetCopyStateTimeoutRef.current);
+            }
+        };
+    }, []);
 
     const handleCopy = async () => {
         try {
@@ -34,7 +43,12 @@ export function CodePreview({ children, code }: CodePreviewProps) {
         } catch {
             // Clipboard API unavailable (e.g. HTTP context)
         }
-        setTimeout(() => setCopied(false), 2000);
+
+        if (resetCopyStateTimeoutRef.current) {
+            clearTimeout(resetCopyStateTimeoutRef.current);
+        }
+
+        resetCopyStateTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
     };
 
     return (

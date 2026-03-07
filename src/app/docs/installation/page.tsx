@@ -1,19 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Copy, Terminal } from "lucide-react";
 
 function CodeBlock({ code, language = "bash", title }: { code: string; language?: string; title?: string }) {
     const [copied, setCopied] = useState(false);
+    const resetCopyStateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (resetCopyStateTimeoutRef.current) {
+                clearTimeout(resetCopyStateTimeoutRef.current);
+            }
+        };
+    }, []);
 
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(code);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
         } catch (e) {
-            console.error("Failed to copy", e);
+            console.error("Failed to copy installation snippet", e);
         }
+
+        if (resetCopyStateTimeoutRef.current) {
+            clearTimeout(resetCopyStateTimeoutRef.current);
+        }
+
+        resetCopyStateTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
     };
 
     return (

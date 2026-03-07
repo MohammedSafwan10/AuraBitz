@@ -1,5 +1,25 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV !== "production";
+
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline'${
+    isDev ? " 'unsafe-eval'" : ""
+  }`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' blob: data: https:",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "connect-src 'self' blob: data: https:",
+  "worker-src 'self' blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "script-src-attr 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -20,8 +40,8 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' blob: data: https:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';",
-          }
+            value: contentSecurityPolicy,
+          },
         ],
       },
     ];

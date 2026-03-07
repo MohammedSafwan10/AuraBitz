@@ -24,6 +24,7 @@ export function ScrambleReveal({
     once = true,
 }: ScrambleRevealProps) {
     const text = children;
+    const safeCharacters = characters.length > 0 ? characters : DEFAULT_CHARS;
     // Initial state: normal text so SSR doesn't mismatch, scrambled client-side when animating
     const [displayText, setDisplayText] = useState<string>(text);
     const ref = useRef<HTMLSpanElement>(null);
@@ -36,7 +37,7 @@ export function ScrambleReveal({
         if (inView) {
             startTimeRef.current = null;
             if (delay > 0) {
-                const scrambledInit = text.split("").map(c => c === " " ? " " : characters[Math.floor(Math.random() * characters.length)]).join("");
+                const scrambledInit = text.split("").map(c => c === " " ? " " : safeCharacters[Math.floor(Math.random() * safeCharacters.length)]).join("");
                 // eslint-disable-next-line react-hooks/set-state-in-effect
                 setDisplayText(scrambledInit);
             }
@@ -48,7 +49,7 @@ export function ScrambleReveal({
             setIsAnimating(false);
             setDisplayText(text);
         }
-    }, [inView, delay, once, text, characters]);
+    }, [inView, delay, once, text, safeCharacters]);
 
     useAnimationFrame((time) => {
         if (!isAnimating) return;
@@ -74,7 +75,7 @@ export function ScrambleReveal({
             if (index < revealCount) {
                 return char;
             }
-            return characters[Math.floor(Math.random() * characters.length)];
+            return safeCharacters[Math.floor(Math.random() * safeCharacters.length)];
         });
 
         setDisplayText(scrambled.join(""));

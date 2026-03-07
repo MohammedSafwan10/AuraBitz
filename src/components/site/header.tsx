@@ -74,6 +74,7 @@ export function Header() {
                     <Link
                         href="https://github.com/MohammedSafwan10/AuraBitz"
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.08] text-white/40 hover:text-white hover:bg-white/[0.08] hover:border-white/15 transition-all"
                     >
                         <LucideGithub size={15} />

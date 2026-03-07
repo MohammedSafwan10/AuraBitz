@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAnimationFrame } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -21,22 +21,32 @@ export function ShuffleText({
     interval = 3000,
     shuffleDuration = 0.8,
 }: ShuffleTextProps) {
+    const safeTexts = useMemo(() => (texts.length > 0 ? texts : [""]), [texts]);
+    const safeCharacterSet = useMemo(
+        () => (characterSet.length > 0 ? characterSet : DEFAULT_CHARS),
+        [characterSet]
+    );
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [displayText, setDisplayText] = useState(texts[0]);
+    const [displayText, setDisplayText] = useState(() => safeTexts[0]);
 
     const isShuffling = useRef(false);
     const startTimeRef = useRef<number | null>(null);
 
+    useEffect(() => {
+        isShuffling.current = false;
+        startTimeRef.current = null;
+    }, [safeTexts]);
+
     // Initial delay for the first switch
     useEffect(() => {
         const switchInterval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % texts.length);
+            setCurrentIndex((prev) => (prev + 1) % safeTexts.length);
             isShuffling.current = true;
             startTimeRef.current = null; // Reset animation time for new word
         }, interval);
 
         return () => clearInterval(switchInterval);
-    }, [interval, texts.length]);
+    }, [interval, safeTexts.length]);
 
     useAnimationFrame((time) => {
         if (!isShuffling.current) return;
@@ -48,7 +58,7 @@ export function ShuffleText({
         const elapsed = time - startTimeRef.current;
         const progress = Math.min(elapsed / (shuffleDuration * 1000), 1);
 
-        const targetText = texts[currentIndex];
+        const targetText = safeTexts[currentIndex] ?? "";
 
         if (progress === 1) {
             setDisplayText(targetText);
@@ -66,7 +76,7 @@ export function ShuffleText({
             } else if (i < revealCount) {
                 scrambledStr += targetText[i];
             } else {
-                scrambledStr += characterSet[Math.floor(Math.random() * characterSet.length)];
+                scrambledStr += safeCharacterSet[Math.floor(Math.random() * safeCharacterSet.length)];
             }
         }
 

@@ -81,7 +81,11 @@ export default function Home() {
                 Explore Components
               </KineticButton>
             </Link>
-            <Link href="https://github.com/MohammedSafwan10/AuraBitz" target="_blank">
+            <Link
+              href="https://github.com/MohammedSafwan10/AuraBitz"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <KineticButton className="bg-transparent text-white hover:bg-white/5 border border-white/10 h-10 px-5 rounded-full text-sm font-medium" magneticPull={0.1}>
                 GitHub
               </KineticButton>

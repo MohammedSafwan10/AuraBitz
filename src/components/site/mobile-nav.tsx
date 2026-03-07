@@ -56,6 +56,18 @@ export function MobileNav() {
                     >
                         <div className="flex flex-col gap-2 mb-8">
                             <Link
+                                href="/blocks"
+                                onClick={() => setIsOpen(false)}
+                                className={cn(
+                                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                                    pathname?.startsWith("/blocks")
+                                        ? "text-white bg-white/[0.05]"
+                                        : "text-white/60 hover:text-white hover:bg-white/[0.03]"
+                                )}
+                            >
+                                Blocks
+                            </Link>
+                            <Link
                                 href="/docs"
                                 onClick={() => setIsOpen(false)}
                                 className={cn(

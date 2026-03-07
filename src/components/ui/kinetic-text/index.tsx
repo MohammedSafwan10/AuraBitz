@@ -75,14 +75,14 @@ export function KineticText({
             variants={containerVariants}
             initial="hidden"
             animate={controls}
-            className={cn("inline-flex flex-wrap items-center overflow-hidden", className)}
+            className={cn("inline-flex flex-wrap items-center overflow-visible leading-[1.1] [perspective:1000px]", className)}
         >
             {elements.map((element, index) => (
                 <motion.span
                     key={index}
                     variants={itemVariants}
                     style={{ whiteSpace: "pre" }} // preserve spaces if splitting by words
-                    className="inline-block relative origin-bottom cursor-crosshair"
+                    className="inline-block relative origin-bottom cursor-crosshair will-change-transform"
                     whileHover={{
                         scale: 1.4,
                         rotateZ: index % 2 === 0 ? 4 : -4,
