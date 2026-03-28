@@ -1,7 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Blocks - AuraBitz",
     description: "Pre-built, high-converting premium section layouts.",
 };

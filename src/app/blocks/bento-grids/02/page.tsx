@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Bento02 } from "@/components/blocks/bento-02";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("bento-02.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Bento 02 - AuraBitz Blocks",
     description: "Fintech Holographic Liquid layout.",
 };

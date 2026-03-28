@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Bento05 } from "@/components/blocks/bento-05";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("bento-05.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Bento 05 - AuraBitz Blocks",
     description: "The Infinite Canvas Spatial layout.",
 };

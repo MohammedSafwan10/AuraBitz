@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Feature04 } from "@/components/blocks/feature-04";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("feature-04.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Feature Showcase 04 - AuraBitz Blocks",
     description: "A proof-vault feature block with sealed receipts, attestation rails, and a ledger-driven trust narrative.",
 };

@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Bento01 } from "@/components/blocks/bento-01";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("bento-01.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Bento 01 - AuraBitz Blocks",
     description: "Holographic Glass connected grid.",
 };

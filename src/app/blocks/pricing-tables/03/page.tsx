@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Pricing03 } from "@/components/blocks/pricing-03";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("pricing-03.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Pricing Table 03 - AuraBitz Blocks",
     description: "A warm amber hardware pricing system with a calibrated control-deck layout, darker mechanical surfaces, and a stronger instrument feel.",
 };

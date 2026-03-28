@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Feature02 } from "@/components/blocks/feature-02";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("feature-02.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Feature Showcase 02 - AuraBitz Blocks",
     description: "An instrument-grade architecture block with a live system rail, diagnostic readouts, and sharper technical composition.",
 };

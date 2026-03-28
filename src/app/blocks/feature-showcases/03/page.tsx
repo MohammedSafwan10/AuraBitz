@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Feature03 } from "@/components/blocks/feature-03";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("feature-03.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Feature Showcase 03 - AuraBitz Blocks",
     description: "A charged spatial feature block with layered depth planes, field-biased motion, and a tactile control rail.",
 };

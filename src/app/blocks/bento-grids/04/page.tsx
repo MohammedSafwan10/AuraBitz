@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Bento04 } from "@/components/blocks/bento-04";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("bento-04.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Bento 04 - AuraBitz Blocks",
     description: "Cybersecurity Data Vault layout.",
 };

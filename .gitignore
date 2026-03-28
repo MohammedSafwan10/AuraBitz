@@ -43,3 +43,16 @@ next-env.d.ts
 # temp files
 eslint-output.txt
 lint.txt
+
+# AI/tooling folders
+.agent/
+.agents/
+.augment/
+.factory/
+.kiro/
+.qoder/
+.trae/
+.windsurf/
+
+# tool lock files
+skills-lock.json

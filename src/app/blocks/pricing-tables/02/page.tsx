@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Pricing02 } from "@/components/blocks/pricing-02";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("pricing-02.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Pricing Table 02 - AuraBitz Blocks",
     description: "A colder cyan conversion pricing system with glassier surfaces, sharper hierarchy, and a stronger product-led commercial feel.",
 };

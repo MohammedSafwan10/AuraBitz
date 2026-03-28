@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { Bento03 } from "@/components/blocks/bento-03";
 import { CodePreview } from "@/components/site/code-preview";
 import { getBlockSource } from "@/lib/source";
 
 const sourceCode = getBlockSource("bento-03.tsx");
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Bento 03 - AuraBitz Blocks",
     description: "Typographic Brutalism Grid layout.",
 };
@@ -29,7 +30,7 @@ export default function Bento03Page() {
 
             {/* Preview + Code Integration */}
             <CodePreview code={sourceCode}>
-                <div className="w-full bg-black overflow-hidden relative border-y border-white/[0.05]">
+                <div className="relative w-full overflow-hidden border-y border-white/5 bg-black">
                     <Bento03 />
                 </div>
             </CodePreview>
@@ -38,18 +39,18 @@ export default function Bento03Page() {
             <div className="mt-16 space-y-6">
                 <h2 className="grad-text text-2xl font-extrabold tracking-tighter">Requirements</h2>
                 <div className="space-y-4">
-                    <div className="group relative p-5 rounded-2xl border border-white/[0.05] bg-[#0a0a0a] overflow-hidden">
-                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <p className="text-xs text-white/40 mb-3 font-mono uppercase tracking-[0.1em]">1. Required UI Components</p>
+                    <div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#0a0a0a] p-5">
+                        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                        <p className="mb-3 text-xs font-mono uppercase tracking-widest text-white/40">1. Required UI Components</p>
                         <p className="text-sm text-white/50 font-light max-w-2xl leading-relaxed mb-4">
                             You must copy these base primitives into your `ui` directory before importing the full Bento Grid block.
                         </p>
                         <div className="flex flex-wrap gap-2">
-                            <span className="text-xs font-mono text-white/70 bg-white/[0.05] border border-white/10 px-2 py-1 rounded">GridSystem</span>
-                            <span className="text-xs font-mono text-white/70 bg-white/[0.05] border border-white/10 px-2 py-1 rounded">SplitText</span>
-                            <span className="text-xs font-mono text-white/70 bg-white/[0.05] border border-white/10 px-2 py-1 rounded">KineticText</span>
-                            <span className="text-xs font-mono text-white/70 bg-white/[0.05] border border-white/10 px-2 py-1 rounded">TextPressure</span>
-                            <span className="text-xs font-mono text-white/70 bg-white/[0.05] border border-white/10 px-2 py-1 rounded">Shuffle</span>
+                            <span className="rounded border border-white/10 bg-white/5 px-2 py-1 text-xs font-mono text-white/70">GridSystem</span>
+                            <span className="rounded border border-white/10 bg-white/5 px-2 py-1 text-xs font-mono text-white/70">SplitText</span>
+                            <span className="rounded border border-white/10 bg-white/5 px-2 py-1 text-xs font-mono text-white/70">KineticText</span>
+                            <span className="rounded border border-white/10 bg-white/5 px-2 py-1 text-xs font-mono text-white/70">TextPressure</span>
+                            <span className="rounded border border-white/10 bg-white/5 px-2 py-1 text-xs font-mono text-white/70">Shuffle</span>
                         </div>
                     </div>
                 </div>
