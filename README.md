@@ -10,16 +10,32 @@
 <h1 align="center">AuraBitz</h1>
 
 <p align="center">
-  Premium motion + WebGL components and production landing blocks built with Next.js App Router.
+  Premium motion components, WebGL interfaces, and production landing blocks built with Next.js App Router.
 </p>
 
 ---
 
-## Current Status (Updated: February 21, 2026)
+## Overview
 
-- Atomic component docs live under `/docs`
-- Full landing blocks live under `/blocks`
-- Hero section archive now includes `Hero 01` through `Hero 05`
+AuraBitz is a curated component and block library focused on premium motion, high-contrast visual systems, and interactive product surfaces.
+
+The project currently includes:
+
+- atomic UI component docs under `/docs`
+- full landing-page blocks under `/blocks`
+- a redesigned homepage with an animated hero headline and rotating curated preview
+- copy-pasteable component source backed by live previews and code panes
+
+---
+
+## Tech Stack
+
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Framer Motion
+- React Three Fiber / Drei / Three.js
 
 ---
 
@@ -30,34 +46,51 @@ npm install
 npm run dev
 ```
 
-Open:
+Open these routes in the browser:
 
+- `http://localhost:3000/`
 - `http://localhost:3000/docs`
 - `http://localhost:3000/blocks`
 
-Build and lint:
+Verification commands:
 
 ```bash
-npm run build
 npm run lint
+npm run build
 ```
 
 ---
 
-## Architecture
+## Project Structure
 
-- `src/app/docs/*`: Atomic component documentation and previews
-- `src/app/blocks/*`: Full landing-page blocks (hero, pricing, testimonials, etc.)
-- `src/components/ui/*`: Raw source for copy-pasteable components
-- `src/components/blocks/*`: Composed block implementations
-- `src/components/site/*`: Site shell (header, sidebars, search modal, mobile nav, preview UI)
-- `src/lib/source.ts`: Block source-code loader used by the preview/code tabs
+- `src/app/page.tsx` — homepage route entry
+- `src/app/docs/*` — atomic component docs and previews
+- `src/app/blocks/*` — full landing-page block previews
+- `src/components/ui/*` — copy-pasteable component primitives
+- `src/components/blocks/*` — composed landing-page blocks
+- `src/components/site/*` — header, nav, search, preview shell, and homepage sections
+- `src/components/site/home/*` — homepage layout, hero, proof strip, showcase, workflow, CTA, and footer
+- `src/lib/source.ts` — source-code loader used by docs and block preview pages
+- `docs/HERO_ARCHITECTURE_CONTEXT.md` — hero engineering and design context
 
 ---
 
-## Component Inventory
+## Current Highlights
 
-### Text & Interaction
+### Homepage
+
+The homepage now centers on:
+
+- a cleaner premium layout
+- a morphing hero headline
+- a rotating featured preview carousel with manual controls
+- tighter hierarchy and reduced above-the-fold clutter
+
+### Component Docs
+
+Current documented component categories include:
+
+#### Text & Interaction
 
 - `blur-text`
 - `circular-text`
@@ -69,13 +102,13 @@ npm run lint
 - `text-pressure`
 - `text-type`
 
-### Physical & Illumination
+#### Physical & Illumination
 
 - `holographic-card`
 - `kinetic-button`
 - `spotlight-card`
 
-### Background Engines
+#### Background Engines
 
 - `grid-system`
 - `radial-noise`
@@ -85,33 +118,25 @@ npm run lint
 - `webgl-particle-field`
 - `webgl-particle-vortex`
 
----
+### Block Library
 
-## Block Inventory
+Current block categories include:
 
-### Hero Sections
-
-- `Hero 01`
-- `Hero 02`
-- `Hero 03`
-- `Hero 04`
-- `Hero 05`
-
-### Additional Block Categories (Scaffolded)
-
-- `bento-grids`
-- `feature-showcases`
-- `footers`
-- `pricing-tables`
-- `testimonials`
+- hero sections
+- bento grids
+- feature showcases
+- footers
+- pricing tables
+- testimonials
 
 ---
 
-## Notes
+## Design Notes
 
-- Styling uses Tailwind CSS v4 with strict black-stage visual language.
-- Motion is Framer Motion first; WebGL layers use React Three Fiber + GLSL.
-- For hero architecture decisions, see `docs/HERO_ARCHITECTURE_CONTEXT.md`.
+- styling uses Tailwind CSS v4 with a dark, high-contrast visual language
+- motion is Framer Motion first; WebGL layers use React Three Fiber + GLSL
+- homepage hero motion is intentionally constrained to stay premium and readable
+- for hero architecture decisions, see `docs/HERO_ARCHITECTURE_CONTEXT.md`
 
 ---
 
