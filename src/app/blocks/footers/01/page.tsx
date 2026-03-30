@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Footers01 } from "@/components/blocks/footers-01";
 import { CodePreview } from "@/components/site/code-preview";
+import { getBlockSource } from "@/lib/source";
 
-const codeEndpoint = "/api/code?type=block&name=footers-01.tsx";
+const sourceCode = getBlockSource("footers-01.tsx");
 
 export const metadata: Metadata = {
     title: "Footers 01 - AuraBitz Blocks",
@@ -29,7 +30,7 @@ export default function FootersPage() {
                 </div>
             </div>
 
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="w-full bg-black overflow-hidden relative border-y border-white/[0.05]">
                     <Footers01 />
                 </div>

@@ -1,6 +1,7 @@
 import CurvedLoopPageClient from "./client";
+import { getComponentSource } from "@/lib/source";
 
 export default function CurvedLoopPage() {
-    const codeEndpoint = "/api/code?type=component&name=curved-loop";
-    return <CurvedLoopPageClient codeEndpoint={codeEndpoint} />;
+    const sourceCode = getComponentSource("curved-loop");
+    return <CurvedLoopPageClient sourceCode={sourceCode} />;
 }

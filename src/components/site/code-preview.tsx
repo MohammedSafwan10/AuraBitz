@@ -20,18 +20,13 @@ const SyntaxHighlighter = dynamic(
 
 interface CodePreviewProps {
     children: React.ReactNode;
-    code?: string;
-    loadCode?: () => Promise<string> | string;
-    codeEndpoint?: string;
+    code: string;
 }
 
-export function CodePreview({ children, code, loadCode, codeEndpoint }: CodePreviewProps) {
+export function CodePreview({ children, code }: CodePreviewProps) {
     const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
     const [copied, setCopied] = useState(false);
-    const [resolvedCode, setResolvedCode] = useState(code ?? "");
-    const [isCodeLoading, setIsCodeLoading] = useState(false);
     const resetCopyStateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const hasLoadedCodeRef = useRef(Boolean(code));
 
     useEffect(() => {
         return () => {
@@ -41,59 +36,13 @@ export function CodePreview({ children, code, loadCode, codeEndpoint }: CodePrev
         };
     }, []);
 
-    useEffect(() => {
-        if (typeof code === "string") {
-            setResolvedCode(code);
-            hasLoadedCodeRef.current = true;
-        }
-    }, [code]);
-
-    useEffect(() => {
-        if (activeTab !== "code" || hasLoadedCodeRef.current || (!loadCode && !codeEndpoint)) {
-            return;
-        }
-
-        let cancelled = false;
-
-        const resolveCode = async () => {
-            setIsCodeLoading(true);
-
-            try {
-                const loadedCode = loadCode
-                    ? await loadCode()
-                    : await fetch(codeEndpoint as string).then(async (response) => {
-                        if (!response.ok) {
-                            throw new Error("Failed to fetch source code.");
-                        }
-
-                        const payload = await response.json() as { code?: string };
-                        return payload.code ?? "";
-                    });
-                if (!cancelled) {
-                    setResolvedCode(loadedCode);
-                    hasLoadedCodeRef.current = true;
-                }
-            } finally {
-                if (!cancelled) {
-                    setIsCodeLoading(false);
-                }
-            }
-        };
-
-        void resolveCode();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [activeTab, codeEndpoint, loadCode]);
-
     const handleCopy = async () => {
-        if (!resolvedCode) {
+        if (!code) {
             return;
         }
 
         try {
-            await navigator.clipboard.writeText(resolvedCode);
+            await navigator.clipboard.writeText(code);
             setCopied(true);
         } catch {
             // Clipboard API unavailable (e.g. HTTP context)
@@ -140,7 +89,7 @@ export function CodePreview({ children, code, loadCode, codeEndpoint }: CodePrev
                 <div className="flex items-center gap-2 pr-2">
                     <button
                         onClick={handleCopy}
-                        disabled={!resolvedCode || isCodeLoading}
+                        disabled={!code}
                         className={cn(
                             "flex items-center gap-2 px-3 py-1.5 text-[12px] font-medium transition-all rounded-md border disabled:cursor-not-allowed disabled:opacity-50",
                             copied
@@ -176,28 +125,22 @@ export function CodePreview({ children, code, loadCode, codeEndpoint }: CodePrev
                     </div>
                 ) : (
                     <div data-lenis-prevent className="w-full max-h-[600px] overflow-auto bg-[#0a0a0a]">
-                        {isCodeLoading && !resolvedCode ? (
-                            <div className="flex min-h-[240px] items-center justify-center p-8">
-                                <span className="text-xs font-mono text-white/30 animate-pulse">Loading code...</span>
-                            </div>
-                        ) : (
-                            <SyntaxHighlighter
-                                language="tsx"
-                                style={vscDarkPlus}
-                                customStyle={{
-                                    margin: 0,
-                                    padding: "2rem",
-                                    background: "transparent",
-                                    fontSize: "0.875rem",
-                                    lineHeight: "1.6",
-                                }}
-                                codeTagProps={{
-                                    style: { fontFamily: "var(--font-mono)" }
-                                }}
-                            >
-                                {resolvedCode}
-                            </SyntaxHighlighter>
-                        )}
+                        <SyntaxHighlighter
+                            language="tsx"
+                            style={vscDarkPlus}
+                            customStyle={{
+                                margin: 0,
+                                padding: "2rem",
+                                background: "transparent",
+                                fontSize: "0.875rem",
+                                lineHeight: "1.6",
+                            }}
+                            codeTagProps={{
+                                style: { fontFamily: "var(--font-mono)" }
+                            }}
+                        >
+                            {code}
+                        </SyntaxHighlighter>
                     </div>
                 )}
             </div>

@@ -3,7 +3,7 @@
 import { TextPressure } from "@/components/ui/text-pressure";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function TextPressurePageClient({ codeEndpoint }: { codeEndpoint: string }) {
+export default function TextPressurePageClient({ sourceCode }: { sourceCode: string }) {
     return (
         <div className="max-w-4xl space-y-16 pb-20">
             {/* Header */}
@@ -26,7 +26,7 @@ export default function TextPressurePageClient({ codeEndpoint }: { codeEndpoint:
             </div>
 
             {/* Preview + Code */}
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="w-full flex flex-col items-center justify-center gap-12 py-10">
                     {/* Primary Hero Demo */}
                     <div className="text-center relative">

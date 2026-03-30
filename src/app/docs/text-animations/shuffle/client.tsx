@@ -3,7 +3,7 @@
 import { ShuffleText } from "@/components/ui/shuffle";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function ShufflePageClient({ codeEndpoint }: { codeEndpoint: string }) {
+export default function ShufflePageClient({ sourceCode }: { sourceCode: string }) {
 
     return (
         <div className="max-w-4xl space-y-16 pb-20">
@@ -27,7 +27,7 @@ export default function ShufflePageClient({ codeEndpoint }: { codeEndpoint: stri
             </div>
 
             {/* Preview + Code */}
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="relative w-full flex flex-col items-center justify-center p-8 gap-8">
 
                     <div className="flex flex-col gap-2 items-center text-center">

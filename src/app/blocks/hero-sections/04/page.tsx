@@ -1,7 +1,8 @@
 import { Hero04 } from "@/components/blocks/hero-04";
 import { CodePreview } from "@/components/site/code-preview";
+import { getBlockSource } from "@/lib/source";
 
-const codeEndpoint = "/api/code?type=block&name=hero-04.tsx";
+const sourceCode = getBlockSource("hero-04.tsx");
 
 export default function Hero04Page() {
     return (
@@ -22,7 +23,7 @@ export default function Hero04Page() {
             </div>
 
             {/* Preview + Code Integration */}
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="w-full bg-black overflow-hidden relative border-y border-white/[0.05]">
                     {/* Render raw block directly representing the 100vw implementation */}
                     <Hero04 />

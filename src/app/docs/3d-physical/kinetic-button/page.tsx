@@ -1,6 +1,7 @@
 import KineticButtonPageClient from "./client";
+import { getComponentSource } from "@/lib/source";
 
 export default function KineticButtonPage() {
-    const codeEndpoint = "/api/code?type=component&name=kinetic-button";
-    return <KineticButtonPageClient codeEndpoint={codeEndpoint} />;
+    const sourceCode = getComponentSource("kinetic-button");
+    return <KineticButtonPageClient sourceCode={sourceCode} />;
 }

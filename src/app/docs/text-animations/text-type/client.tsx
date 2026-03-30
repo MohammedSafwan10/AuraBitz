@@ -5,7 +5,7 @@ import { TextType } from "@/components/ui/text-type";
 import { CodePreview } from "@/components/site/code-preview";
 import { RefreshCw } from "lucide-react";
 
-export default function TextTypePageClient({ codeEndpoint }: { codeEndpoint: string }) {
+export default function TextTypePageClient({ sourceCode }: { sourceCode: string }) {
     const [replayKey, setReplayKey] = useState(0);
 
     return (
@@ -30,7 +30,7 @@ export default function TextTypePageClient({ codeEndpoint }: { codeEndpoint: str
             </div>
 
             {/* Preview + Code */}
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="relative w-full flex flex-col items-center justify-center p-8 gap-8">
                     <button
                         onClick={() => setReplayKey(curr => curr + 1)}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SplitText } from "@/components/ui/split-text";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function SplitTextPageClient({ codeEndpoint }: { codeEndpoint: string }) {
+export default function SplitTextPageClient({ sourceCode }: { sourceCode: string }) {
     const [replayKey1, setReplayKey1] = useState(0);
     const [replayKey2, setReplayKey2] = useState(0);
     const [replayKey3, setReplayKey3] = useState(0);
@@ -31,7 +31,7 @@ export default function SplitTextPageClient({ codeEndpoint }: { codeEndpoint: st
             </div>
 
             {/* Preview + Code */}
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="w-full flex flex-col items-center justify-center gap-12 py-10">
                     {/* Primary Hero Demo */}
                     <div className="text-center relative">

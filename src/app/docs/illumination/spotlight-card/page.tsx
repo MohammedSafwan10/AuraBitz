@@ -1,6 +1,7 @@
 import SpotlightCardPageClient from "./client";
+import { getComponentSource } from "@/lib/source";
 
 export default function SpotlightCardPage() {
-    const codeEndpoint = "/api/code?type=component&name=spotlight-card";
-    return <SpotlightCardPageClient codeEndpoint={codeEndpoint} />;
+    const sourceCode = getComponentSource("spotlight-card");
+    return <SpotlightCardPageClient sourceCode={sourceCode} />;
 }

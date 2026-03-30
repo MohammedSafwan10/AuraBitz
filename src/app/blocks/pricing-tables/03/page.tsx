@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Pricing03 } from "@/components/blocks/pricing-03";
 import { CodePreview } from "@/components/site/code-preview";
+import { getBlockSource } from "@/lib/source";
 
-const codeEndpoint = "/api/code?type=block&name=pricing-03.tsx";
+const sourceCode = getBlockSource("pricing-03.tsx");
 
 export const metadata: Metadata = {
     title: "Pricing Table 03 - AuraBitz Blocks",
@@ -29,7 +30,7 @@ export default function PricingTable03Page() {
                 </div>
             </div>
 
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="w-full bg-black overflow-hidden relative border-y border-white/[0.05]">
                     <Pricing03 />
                 </div>

@@ -1,6 +1,7 @@
 import SplitTextPageClient from "./client";
+import { getComponentSource } from "@/lib/source";
 
 export default function SplitTextPage() {
-    const codeEndpoint = "/api/code?type=component&name=split-text";
-    return <SplitTextPageClient codeEndpoint={codeEndpoint} />;
+    const sourceCode = getComponentSource("split-text");
+    return <SplitTextPageClient sourceCode={sourceCode} />;
 }

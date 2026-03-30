@@ -3,7 +3,7 @@
 import { KineticButton } from "@/components/ui/kinetic-button";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function KineticButtonPageClient({ codeEndpoint }: { codeEndpoint: string }) {
+export default function KineticButtonPageClient({ sourceCode }: { sourceCode: string }) {
     return (
         <div className="max-w-4xl space-y-16">
             {/* Header */}
@@ -26,7 +26,7 @@ export default function KineticButtonPageClient({ codeEndpoint }: { codeEndpoint
             </div>
 
             {/* Preview + Code */}
-            <CodePreview codeEndpoint={codeEndpoint}>
+            <CodePreview code={sourceCode}>
                 <div className="flex flex-wrap items-center justify-center gap-6">
                     <KineticButton variant="primary" magneticPull={0.15}>
                         Let&apos;s Go

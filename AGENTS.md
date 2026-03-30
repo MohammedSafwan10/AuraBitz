@@ -11,6 +11,24 @@
 - **`/blocks`** — Full Landing Page Blocks (Hero Sections, Pricing Tables). These compose atomic components together into high-converting layouts.
 - **`src/components/ui/`** — Where the raw source code of elements live. 
 - **`src/components/site/`** — Site shell: header, sidebar, mobile-nav, CodePreview.
+- **Code preview source system** — Docs and block pages must use static source strings from `src/generated/source-registry.ts` through `getComponentSource()` / `getBlockSource()` in `src/lib/source.ts`. Do not reintroduce runtime file reads or `/api/code` fetching for previews.
+
+## Source Registry Maintenance
+- When adding a new UI component doc page:
+  1. Add the component path/key to `scripts/generate-source-registry.mjs`
+  2. Run `node scripts/generate-source-registry.mjs`
+  3. In the route, load source with `getComponentSource("component-name")`
+  4. Pass it to `<CodePreview code={sourceCode}>`
+- When adding a new block page:
+  1. Add the block file/key to `scripts/generate-source-registry.mjs`
+  2. Run `node scripts/generate-source-registry.mjs`
+  3. In the route, load source with `getBlockSource("block-file.tsx")`
+  4. Pass it to `<CodePreview code={sourceCode}>`
+- If a page uses a client wrapper, compute `sourceCode` in the server `page.tsx` file and pass it down as a string prop.
+- Why this exists:
+  - production-safe: no dependency on runtime filesystem access
+  - faster: no extra client fetch or API hop
+  - safer: exact generated source is controlled at build time
 
 ## Strict Design & Aesthetic Rules (ANTI-LAZY AI)
 - **Extreme Minimalism:** We do NOT build generic SaaS templates, boring rounded white cards, or generic 2018 blue-gradients. Every design must feel like a premium, unreleased Apple or Framer presentation.

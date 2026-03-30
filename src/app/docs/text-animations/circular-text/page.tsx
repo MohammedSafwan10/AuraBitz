@@ -1,6 +1,7 @@
 import CircularTextPageClient from "./client";
+import { getComponentSource } from "@/lib/source";
 
 export default function CircularTextPage() {
-    const codeEndpoint = "/api/code?type=component&name=circular-text";
-    return <CircularTextPageClient codeEndpoint={codeEndpoint} />;
+    const sourceCode = getComponentSource("circular-text");
+    return <CircularTextPageClient sourceCode={sourceCode} />;
 }
