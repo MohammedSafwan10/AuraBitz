@@ -1,8 +1,7 @@
 import { HolographicCard } from "@/components/ui/holographic-card";
 import { CodePreview } from "@/components/site/code-preview";
-import { getComponentSource } from "@/lib/source";
 
-const sourceCode = getComponentSource("holographic-card");
+const codeEndpoint = "/api/code?type=component&name=holographic-card";
 
 export default function HolographicCardPage() {
   return (
@@ -28,7 +27,7 @@ export default function HolographicCardPage() {
       </div>
 
       {/* Preview + Code */}
-      <CodePreview code={sourceCode}>
+      <CodePreview codeEndpoint={codeEndpoint}>
         <div className="flex items-center justify-center gap-8 flex-wrap">
           <HolographicCard className="w-64 h-80 p-6 flex flex-col justify-between">
             <span className="text-[9px] font-mono text-white/30 tracking-widest uppercase">Component</span>

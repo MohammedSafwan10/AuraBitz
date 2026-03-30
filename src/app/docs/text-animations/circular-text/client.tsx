@@ -3,7 +3,7 @@
 import { CircularText } from "@/components/ui/circular-text";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function CircularTextPageClient({ sourceCode }: { sourceCode: string }) {
+export default function CircularTextPageClient({ codeEndpoint }: { codeEndpoint: string }) {
     return (
         <div className="max-w-4xl space-y-16 pb-20">
             {/* Header */}
@@ -26,7 +26,7 @@ export default function CircularTextPageClient({ sourceCode }: { sourceCode: str
             </div>
 
             {/* Preview + Code */}
-            <CodePreview code={sourceCode}>
+            <CodePreview codeEndpoint={codeEndpoint}>
                 <div className="w-full flex flex-wrap items-center justify-center gap-[10vw] py-20 px-4">
 
                     {/* Slow Down on Hover (Default) */}

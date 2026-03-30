@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Feature03 } from "@/components/blocks/feature-03";
 import { CodePreview } from "@/components/site/code-preview";
-import { getBlockSource } from "@/lib/source";
 
-const sourceCode = getBlockSource("feature-03.tsx");
+const codeEndpoint = "/api/code?type=block&name=feature-03.tsx";
 
 export const metadata: Metadata = {
     title: "Feature Showcase 03 - AuraBitz Blocks",
@@ -33,7 +32,7 @@ export default function FeatureShowcase03Page() {
                 </div>
             </div>
 
-            <CodePreview code={sourceCode}>
+            <CodePreview codeEndpoint={codeEndpoint}>
                 <div className="relative w-full overflow-hidden border-y border-white/[0.05] bg-black">
                     <Feature03 />
                 </div>

@@ -1,7 +1,6 @@
-import { getComponentSource } from "@/lib/source";
 import KineticTextPageClient from "./client";
 
 export default function KineticTextPage() {
-    const sourceCode = getComponentSource("kinetic-text");
-    return <KineticTextPageClient sourceCode={sourceCode} />;
+    const codeEndpoint = "/api/code?type=component&name=kinetic-text";
+    return <KineticTextPageClient codeEndpoint={codeEndpoint} />;
 }

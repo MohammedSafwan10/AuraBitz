@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Bento01 } from "@/components/blocks/bento-01";
 import { CodePreview } from "@/components/site/code-preview";
-import { getBlockSource } from "@/lib/source";
 
-const sourceCode = getBlockSource("bento-01.tsx");
+const codeEndpoint = "/api/code?type=block&name=bento-01.tsx";
 
 export const metadata: Metadata = {
     title: "Bento 01 - AuraBitz Blocks",
@@ -29,7 +28,7 @@ export default function Bento01Page() {
             </div>
 
             {/* Preview + Code Integration */}
-            <CodePreview code={sourceCode}>
+            <CodePreview codeEndpoint={codeEndpoint}>
                 <div className="w-full bg-black overflow-hidden relative border-y border-white/[0.05]">
                     <Bento01 />
                 </div>

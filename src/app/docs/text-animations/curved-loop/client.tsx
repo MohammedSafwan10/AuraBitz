@@ -3,7 +3,7 @@
 import { CurvedLoop } from "@/components/ui/curved-loop";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function CurvedLoopPageClient({ sourceCode }: { sourceCode: string }) {
+export default function CurvedLoopPageClient({ codeEndpoint }: { codeEndpoint: string }) {
     return (
         <div className="max-w-4xl space-y-16 pb-20 overflow-x-hidden">
             {/* Header */}
@@ -26,7 +26,7 @@ export default function CurvedLoopPageClient({ sourceCode }: { sourceCode: strin
             </div>
 
             {/* Preview + Code */}
-            <CodePreview code={sourceCode}>
+            <CodePreview codeEndpoint={codeEndpoint}>
                 <div className="w-full flex flex-col items-center justify-center gap-12 py-16 overflow-hidden">
                     {/* Primary Hero Demo */}
                     <div className="w-full relative py-12 bg-black/50 border-y border-white/[0.02]">

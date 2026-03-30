@@ -4,7 +4,7 @@ import { useState } from "react";
 import { KineticText } from "@/components/ui/kinetic-text";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function KineticTextPageClient({ sourceCode }: { sourceCode: string }) {
+export default function KineticTextPageClient({ codeEndpoint }: { codeEndpoint: string }) {
     const [replayKey1, setReplayKey1] = useState(0);
     const [replayKey2, setReplayKey2] = useState(0);
 
@@ -30,7 +30,7 @@ export default function KineticTextPageClient({ sourceCode }: { sourceCode: stri
             </div>
 
             {/* Preview + Code */}
-            <CodePreview code={sourceCode}>
+            <CodePreview codeEndpoint={codeEndpoint}>
                 <div className="w-full flex flex-col items-center justify-center gap-12 py-10">
                     {/* Primary Hero Demo */}
                     <div className="text-center relative">

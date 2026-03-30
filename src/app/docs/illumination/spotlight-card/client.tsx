@@ -3,7 +3,7 @@
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { CodePreview } from "@/components/site/code-preview";
 
-export default function SpotlightCardPageClient({ sourceCode }: { sourceCode: string }) {
+export default function SpotlightCardPageClient({ codeEndpoint }: { codeEndpoint: string }) {
   return (
     <div className="max-w-4xl space-y-16 pb-20">
       {/* Header */}
@@ -26,7 +26,7 @@ export default function SpotlightCardPageClient({ sourceCode }: { sourceCode: st
       </div>
 
       {/* Preview + Code */}
-      <CodePreview code={sourceCode}>
+      <CodePreview codeEndpoint={codeEndpoint}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl z-10">
           <SpotlightCard className="h-64 p-8 flex flex-col justify-end group">
             <h3 className="text-lg font-bold text-white mb-2 transition-transform duration-300 group-hover:translate-x-1">Physical Grain</h3>

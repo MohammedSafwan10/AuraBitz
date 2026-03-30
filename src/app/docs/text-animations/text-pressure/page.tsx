@@ -1,7 +1,6 @@
-import { getComponentSource } from "@/lib/source";
 import TextPressurePageClient from "./client";
 
 export default function TextPressurePage() {
-    const sourceCode = getComponentSource("text-pressure");
-    return <TextPressurePageClient sourceCode={sourceCode} />;
+    const codeEndpoint = "/api/code?type=component&name=text-pressure";
+    return <TextPressurePageClient codeEndpoint={codeEndpoint} />;
 }

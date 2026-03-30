@@ -1,7 +1,6 @@
-import { getComponentSource } from "@/lib/source";
 import ShufflePageClient from "./client";
 
 export default function ShuffleTextPage() {
-    const sourceCode = getComponentSource("shuffle");
-    return <ShufflePageClient sourceCode={sourceCode} />;
+    const codeEndpoint = "/api/code?type=component&name=shuffle";
+    return <ShufflePageClient codeEndpoint={codeEndpoint} />;
 }

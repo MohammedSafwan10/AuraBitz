@@ -1,8 +1,7 @@
 import { GridSystem } from "@/components/ui/grid-system";
 import { CodePreview } from "@/components/site/code-preview";
-import { getComponentSource } from "@/lib/source";
 
-const sourceCode = getComponentSource("grid-system");
+const codeEndpoint = "/api/code?type=component&name=grid-system";
 
 export default function GridSystemPage() {
     return (
@@ -27,7 +26,7 @@ export default function GridSystemPage() {
             </div>
 
             {/* Preview + Code */}
-            <CodePreview code={sourceCode}>
+            <CodePreview codeEndpoint={codeEndpoint}>
                 <div className="w-full flex flex-col gap-6 -mt-2">
                     {/* Primary Hero Demo */}
                     <div className="relative h-80 w-full rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">

@@ -1,7 +1,6 @@
-import { getComponentSource } from "@/lib/source";
 import TextTypePageClient from "./client";
 
 export default function TextTypePage() {
-    const sourceCode = getComponentSource("text-type");
-    return <TextTypePageClient sourceCode={sourceCode} />;
+    const codeEndpoint = "/api/code?type=component&name=text-type";
+    return <TextTypePageClient codeEndpoint={codeEndpoint} />;
 }
