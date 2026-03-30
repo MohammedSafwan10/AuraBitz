@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBlockSource, getComponentSource } from "@/lib/source";
+import { blockSourceLoaders, componentSourceLoaders } from "@/lib/source";
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
@@ -11,12 +11,18 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        const code = type === "block" ? getBlockSource(name) : type === "component" ? getComponentSource(name) : null;
+        const loader =
+            type === "block"
+                ? blockSourceLoaders[name as keyof typeof blockSourceLoaders]
+                : type === "component"
+                    ? componentSourceLoaders[name as keyof typeof componentSourceLoaders]
+                    : null;
 
-        if (!code) {
+        if (!loader) {
             return NextResponse.json({ error: "Invalid code lookup type." }, { status: 400 });
         }
 
+        const code = await loader();
         return NextResponse.json({ code });
     } catch {
         return NextResponse.json({ error: "Unable to load source code." }, { status: 404 });
