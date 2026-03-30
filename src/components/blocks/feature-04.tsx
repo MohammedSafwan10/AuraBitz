@@ -100,8 +100,13 @@ export function Feature04() {
     const [activeId, setActiveId] = useState(records[1].id);
     const activeIndex = records.findIndex((record) => record.id === activeId);
     const activeRecord = records[activeIndex] ?? records[1];
+    const hasMultipleRecords = records.length > 1;
 
     useEffect(() => {
+        if (!hasMultipleRecords) {
+            return;
+        }
+
         const interval = window.setInterval(() => {
             setActiveId((prev) => {
                 const index = records.findIndex((record) => record.id === prev);
@@ -110,7 +115,7 @@ export function Feature04() {
         }, 5200);
 
         return () => window.clearInterval(interval);
-    }, []);
+    }, [hasMultipleRecords]);
 
     return (
         <section className="relative overflow-hidden rounded-[2.75rem] border border-emerald-200/10 bg-[#020403]">

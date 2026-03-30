@@ -69,7 +69,7 @@ export function BlocksSidebar() {
 
     useEffect(() => {
         const el = scrollRef.current;
-        if (!el) return;
+        if (!el || typeof window === "undefined") return;
 
         const saved = sessionStorage.getItem("blocks-sidebar-scroll-pos");
         if (saved) {

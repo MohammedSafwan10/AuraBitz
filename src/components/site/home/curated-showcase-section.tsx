@@ -10,7 +10,7 @@ export function CuratedShowcaseSection() {
   const [featured, secondaryA, secondaryB] = showcaseItems;
 
   return (
-    <section className="border-b border-white/6 px-6 py-24 sm:px-8 lg:px-10">
+    <section className="border-b border-white/6 px-6 py-16 sm:px-8 sm:py-18 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial="hidden"
@@ -18,14 +18,14 @@ export function CuratedShowcaseSection() {
           viewport={defaultViewport}
           custom={0}
           variants={fadeUp}
-          className="mb-14 max-w-2xl"
+          className="mb-10 max-w-xl"
         >
-          <p className="text-[10px] font-mono uppercase tracking-[0.32em] text-white/60">Curated showcase</p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tight text-white sm:text-5xl">
-            Fewer examples. More signal.
+          <p className="text-[10px] font-mono uppercase tracking-[0.38em] text-white/46">Selected surfaces</p>
+          <h2 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-white sm:text-4xl">
+            Three directions. One visual standard.
           </h2>
-          <p className="mt-5 text-base leading-7 text-white/48 sm:text-lg">
-            The homepage should prove range without turning into a wall of equally loud previews.
+          <p className="mt-4 max-w-lg text-sm leading-6 text-white/40 sm:text-[15px] sm:leading-7">
+            Enough range to prove the library, compact enough to scan in seconds.
           </p>
         </motion.div>
 
@@ -39,16 +39,16 @@ export function CuratedShowcaseSection() {
           >
             <Link
               href={featured.href}
-              className="group block rounded-[2rem] border border-white/10 bg-[#050505] p-8 transition-colors hover:border-white/20"
+              className="group block rounded-[1.8rem] border border-white/10 bg-[#050505] p-6 transition-colors hover:border-white/20"
             >
-              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.32em] text-white/60">
+              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.36em] text-white/50">
                 <span>{featured.eyebrow}</span>
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
-              <div className="mt-14 rounded-[1.6rem] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_55%)] p-8">
+              <div className="mt-8 rounded-[1.45rem] border border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_55%)] p-6">
                 <featured.icon className="h-5 w-5 text-white/65" />
-                <h3 className="mt-8 text-3xl font-medium tracking-tight text-white">{featured.title}</h3>
-                <p className="mt-4 max-w-lg text-base leading-7 text-white/45">{featured.description}</p>
+                <h3 className="mt-6 text-2xl font-medium tracking-[-0.035em] text-white">{featured.title}</h3>
+                <p className="mt-3 max-w-lg text-sm leading-6 text-white/40 sm:text-[15px] sm:leading-7">{featured.description}</p>
               </div>
             </Link>
           </motion.div>
@@ -65,15 +65,15 @@ export function CuratedShowcaseSection() {
               >
                 <Link
                   href={item.href}
-                  className="group block rounded-[1.75rem] border border-white/10 bg-[#050505] p-7 transition-colors hover:border-white/20"
+                  className="group block rounded-[1.55rem] border border-white/10 bg-[#050505] p-5 transition-colors hover:border-white/20"
                 >
-                  <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.32em] text-white/60">
+                  <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.36em] text-white/50">
                     <span>{item.eyebrow}</span>
                     <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
-                  <item.icon className="mt-10 h-5 w-5 text-white/65" />
-                  <h3 className="mt-6 text-2xl font-medium tracking-tight text-white">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-white/45">{item.description}</p>
+                  <item.icon className="mt-8 h-5 w-5 text-white/65" />
+                  <h3 className="mt-5 text-xl font-medium tracking-[-0.03em] text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/40">{item.description}</p>
                 </Link>
               </motion.div>
             ))}

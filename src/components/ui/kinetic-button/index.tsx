@@ -103,7 +103,7 @@ export function KineticButton({
                 }}
             />
 
-            <span className="relative z-10 transition-transform duration-200 group-active:scale-[0.98]">
+            <span className="relative z-10 inline-flex items-center gap-2 whitespace-nowrap transition-transform duration-200 group-active:scale-[0.98]">
                 {children}
             </span>
         </motion.button>

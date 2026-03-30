@@ -96,8 +96,13 @@ export function Feature02() {
     const [activeId, setActiveId] = useState(steps[1].id);
     const activeIndex = steps.findIndex((step) => step.id === activeId);
     const activeStep = steps[activeIndex] ?? steps[1];
+    const hasMultipleSteps = steps.length > 1;
 
     useEffect(() => {
+        if (!hasMultipleSteps) {
+            return;
+        }
+
         const interval = window.setInterval(() => {
             setActiveId((prev) => {
                 const index = steps.findIndex((step) => step.id === prev);
@@ -106,7 +111,7 @@ export function Feature02() {
         }, 4800);
 
         return () => window.clearInterval(interval);
-    }, []);
+    }, [hasMultipleSteps]);
 
     return (
         <section className="relative overflow-hidden rounded-[2.75rem] border border-cyan-300/12 bg-[#02030a]">

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sidebarData } from "./sidebar";
+import { blocksSidebarData } from "./blocks-sidebar";
 
 type MobileNavProps = {
   surface?: "default" | "home";
@@ -32,6 +33,10 @@ export function MobileNav({ surface = "default" }: MobileNavProps) {
   }, [pathname]);
 
   useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
     const previousOverflow = document.body.style.overflow;
 
     if (isOpen) {
@@ -177,7 +182,7 @@ export function MobileNav({ surface = "default" }: MobileNavProps) {
               </div>
 
               <div className="flex flex-col gap-6">
-                {sidebarData.map((category) => (
+                {(pathname?.startsWith("/blocks") ? blocksSidebarData : sidebarData).map((category) => (
                   <div key={category.title}>
                     <h3 className="mb-3 text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/30">
                       {category.title}

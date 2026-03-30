@@ -38,46 +38,46 @@ export interface ValuePropItem {
 
 export const proofItems: ProofItem[] = [
   {
-    label: "Ownership",
-    value: "Copy the code",
-    detail: "No package lock-in. Drop the source directly into your app.",
+    label: "Direct source",
+    value: "Own every file",
+    detail: "Copy the implementation and shape it to your product.",
   },
   {
-    label: "Performance",
-    value: "Motion with discipline",
-    detail: "Effects are designed to feel premium without turning the page noisy.",
+    label: "Signal first",
+    value: "Sharp by default",
+    detail: "Motion and materials stay expressive without getting messy.",
   },
   {
-    label: "Adoption",
-    value: "Ship in one pass",
-    detail: "Browse, copy, and move straight into production work.",
+    label: "Fast adoption",
+    value: "Ship faster",
+    detail: "Browse, copy, and move straight into product work.",
   },
   {
-    label: "Craft",
-    value: "Made to look rare",
-    detail: "AuraBitz components are tuned for presence, not generic template polish.",
+    label: "Visual weight",
+    value: "Made to stand out",
+    detail: "Built for premium interfaces, not generic component galleries.",
   },
 ];
 
 export const showcaseItems: ShowcaseItem[] = [
   {
     eyebrow: "Materials",
-    title: "Holographic surfaces",
-    description: "Glassy depth, lighting detail, and interaction that still feels product-ready.",
+    title: "Surfaces with depth",
+    description: "Glass, light, and material response that still feels deployable.",
     href: "/docs/3d-physical/holographic-card",
     icon: Layers3,
   },
   {
     eyebrow: "Motion",
-    title: "Kinetic feedback",
-    description: "Buttons and interactions that respond with intent instead of default easing.",
+    title: "Interaction with force",
+    description: "Buttons and motion that feel tuned instead of templated.",
     href: "/docs/3d-physical/kinetic-button",
     icon: Sparkles,
   },
   {
     eyebrow: "Typography",
-    title: "Text with presence",
-    description: "Display treatments that feel engineered, not pasted on after layout is done.",
+    title: "Type that carries weight",
+    description: "Display treatments that feel designed into the interface from day one.",
     href: "/docs/text-animations/text-pressure",
     icon: ArrowUpRight,
   },
@@ -87,20 +87,20 @@ export const workflowSteps: WorkflowStepItem[] = [
   {
     step: "01",
     icon: Sparkles,
-    title: "Browse with context",
-    desc: "Evaluate live examples quickly instead of guessing from static screenshots.",
+    title: "Scan the library",
+    desc: "See the idea quickly without digging through noise.",
   },
   {
     step: "02",
     icon: Copy,
     title: "Copy the source",
-    desc: "Take the implementation directly so your team owns the code from day one.",
+    desc: "Take the code directly so your team owns the final implementation.",
   },
   {
     step: "03",
     icon: Zap,
-    title: "Ship without cleanup",
-    desc: "Drop polished UI into production without fighting wrapper abstractions.",
+    title: "Ship with intent",
+    desc: "Move from reference to production without fighting wrapper abstractions.",
   },
 ];
 
@@ -139,16 +139,16 @@ export interface HeroPreviewSlide {
 }
 
 export const heroHeadlinePhrases = [
-  "Production UI",
-  "Motion systems",
-  "Interface presence",
+  "Interfaces that move like cinema",
+  "Dark systems with physical weight",
+  "Production surfaces with real presence",
 ] as const;
 
 export const heroPreviewSlides: HeroPreviewSlide[] = [
   {
     eyebrow: "Material / surface",
     title: "Holographic Card",
-    description: "Glassy depth, lighting detail, and interaction that still feels product-ready.",
+    description: "A premium surface study with real depth, light, and polish.",
     href: "/docs/3d-physical/holographic-card",
     ctaLabel: "Open holographic card",
     theme: "materials",
@@ -156,7 +156,7 @@ export const heroPreviewSlides: HeroPreviewSlide[] = [
   {
     eyebrow: "Motion / interaction",
     title: "Kinetic Button",
-    description: "Buttons and interactions that respond with intent instead of default easing.",
+    description: "Interaction that feels loaded, directional, and deliberate.",
     href: "/docs/3d-physical/kinetic-button",
     ctaLabel: "Open kinetic button",
     theme: "motion",
@@ -164,7 +164,7 @@ export const heroPreviewSlides: HeroPreviewSlide[] = [
   {
     eyebrow: "Typography / dynamics",
     title: "Text Pressure",
-    description: "Display treatments that feel engineered, not pasted on after layout is done.",
+    description: "Display typography that feels embedded into the layout system.",
     href: "/docs/text-animations/text-pressure",
     ctaLabel: "Open text pressure",
     theme: "typography",
@@ -174,14 +174,14 @@ export const heroPreviewSlides: HeroPreviewSlide[] = [
 export const heroPrimaryPoints = [
   {
     icon: Copy,
-    label: "Copy-paste ownership",
+    label: "Source-first ownership",
   },
   {
     icon: Gauge,
-    label: "Performance-minded motion",
+    label: "Tuned motion systems",
   },
   {
     icon: Palette,
-    label: "Distinctive visual craft",
+    label: "Premium dark craft",
   },
 ];

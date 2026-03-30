@@ -56,7 +56,7 @@ export function Sidebar() {
 
     useEffect(() => {
         const el = scrollRef.current;
-        if (!el) return;
+        if (!el || typeof window === "undefined") return;
 
         const saved = sessionStorage.getItem("sidebar-scroll-pos");
         if (saved) {

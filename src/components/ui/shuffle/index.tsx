@@ -27,18 +27,19 @@ export function ShuffleText({
         [characterSet]
     );
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [displayText, setDisplayText] = useState(() => safeTexts[0]);
+    const [displayText, setDisplayText] = useState(safeTexts[0]);
+    const shouldRotate = safeTexts.length > 1;
+    const normalizedCurrentIndex = currentIndex >= safeTexts.length ? 0 : currentIndex;
 
     const isShuffling = useRef(false);
     const startTimeRef = useRef<number | null>(null);
 
-    useEffect(() => {
-        isShuffling.current = false;
-        startTimeRef.current = null;
-    }, [safeTexts]);
-
     // Initial delay for the first switch
     useEffect(() => {
+        if (!shouldRotate) {
+            return;
+        }
+
         const switchInterval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % safeTexts.length);
             isShuffling.current = true;
@@ -46,9 +47,16 @@ export function ShuffleText({
         }, interval);
 
         return () => clearInterval(switchInterval);
-    }, [interval, safeTexts.length]);
+    }, [interval, safeTexts.length, shouldRotate]);
 
     useAnimationFrame((time) => {
+        if (!shouldRotate) {
+            if (displayText !== safeTexts[0]) {
+                setDisplayText(safeTexts[0]);
+            }
+            return;
+        }
+
         if (!isShuffling.current) return;
 
         if (startTimeRef.current === null) {
@@ -58,7 +66,7 @@ export function ShuffleText({
         const elapsed = time - startTimeRef.current;
         const progress = Math.min(elapsed / (shuffleDuration * 1000), 1);
 
-        const targetText = safeTexts[currentIndex] ?? "";
+        const targetText = safeTexts[normalizedCurrentIndex] ?? "";
 
         if (progress === 1) {
             setDisplayText(targetText);

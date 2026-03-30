@@ -9,8 +9,8 @@ import { defaultViewport, fadeUp } from "./animations";
 export function CtaSection() {
   const router = useRouter();
   return (
-    <section className="px-6 py-24 sm:px-8 lg:px-10">
-      <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(255,255,255,0.02)_40%,rgba(255,255,255,0.01))] px-6 py-14 sm:px-10 sm:py-16">
+    <section className="px-6 py-16 sm:px-8 sm:py-18 lg:px-10">
+      <div className="mx-auto max-w-5xl rounded-[1.8rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(255,255,255,0.02)_40%,rgba(255,255,255,0.01))] px-6 py-10 sm:px-10 sm:py-12">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -19,12 +19,12 @@ export function CtaSection() {
           variants={fadeUp}
           className="mx-auto max-w-3xl text-center"
         >
-          <p className="text-[10px] font-mono uppercase tracking-[0.32em] text-white/60">Start here</p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tight text-white sm:text-5xl">
-            Build something people remember.
+          <p className="text-[10px] font-mono uppercase tracking-[0.38em] text-white/46">Start here</p>
+          <h2 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-white sm:text-4xl">
+            Open the library and move fast.
           </h2>
-          <p className="mt-5 text-base leading-7 text-white/48 sm:text-lg">
-            Explore the catalog, copy the source, and ship UI that feels intentional from the first frame.
+          <p className="mt-4 max-w-2xl text-sm leading-6 text-white/40 sm:text-[15px] sm:leading-7">
+            Browse the catalog, copy the source, and shape it into your own product surface.
           </p>
         </motion.div>
 
@@ -34,7 +34,7 @@ export function CtaSection() {
           viewport={defaultViewport}
           custom={1}
           variants={fadeUp}
-          className="mt-10 flex justify-center"
+          className="mt-8 flex justify-center"
         >
           <KineticButton
             type="button"
