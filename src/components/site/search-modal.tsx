@@ -14,6 +14,11 @@ interface SearchItem {
     category: string;
 }
 
+interface SearchModalProps {
+    isOpen: boolean;
+    onOpenChange: (isOpen: boolean) => void;
+}
+
 const searchItems: SearchItem[] = [...sidebarData, ...blocksSidebarData].flatMap(
     (category) =>
         category.links.map((link) => ({
@@ -23,8 +28,7 @@ const searchItems: SearchItem[] = [...sidebarData, ...blocksSidebarData].flatMap
         }))
 );
 
-export function SearchModal() {
-    const [isOpen, setIsOpen] = useState(false);
+export function SearchModal({ isOpen, onOpenChange }: SearchModalProps) {
     const [mounted, setMounted] = useState(false);
     const [query, setQuery] = useState("");
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -46,24 +50,14 @@ export function SearchModal() {
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-                e.preventDefault();
-                setIsOpen((prev) => !prev);
-            }
             if (e.key === "Escape") {
-                setIsOpen(false);
+                onOpenChange(false);
             }
         };
-
-        const handleOpen = () => setIsOpen(true);
 
         document.addEventListener("keydown", handleKeyDown);
-        document.addEventListener("open-search", handleOpen);
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-            document.removeEventListener("open-search", handleOpen);
-        };
-    }, []);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [onOpenChange]);
 
     useEffect(() => {
         let focusTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -90,9 +84,9 @@ export function SearchModal() {
     const navigate = useCallback(
         (href: string) => {
             router.push(href);
-            setIsOpen(false);
+            onOpenChange(false);
         },
-        [router]
+        [onOpenChange, router]
     );
 
     const handleInputKeyDown = (e: React.KeyboardEvent) => {
@@ -117,7 +111,7 @@ export function SearchModal() {
         >
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-                onClick={() => setIsOpen(false)}
+                onClick={() => onOpenChange(false)}
             />
             <div
                 role="dialog"

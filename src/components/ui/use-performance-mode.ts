@@ -11,8 +11,8 @@ const LOW_PERFORMANCE_QUERY = "(max-width: 768px), (prefers-reduced-motion: redu
 
 export function usePerformanceMode(): PerformanceModeState {
     const [state, setState] = useState<PerformanceModeState>({
-        isLowPerformance: false,
-        prefersReducedMotion: false,
+        isLowPerformance: true,
+        prefersReducedMotion: true,
     });
 
     useEffect(() => {

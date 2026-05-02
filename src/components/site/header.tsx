@@ -1,12 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { LucideGithub, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
-import { SearchModal } from "./search-modal";
+
+const SearchModal = dynamic(() => import("./search-modal").then((mod) => mod.SearchModal));
 
 const navLinks = [
   { name: "Components", href: "/docs" },
@@ -20,7 +23,21 @@ type HeaderProps = {
 
 export function Header({ surface = "default" }: HeaderProps) {
   const pathname = usePathname();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isHomeSurface = surface === "home";
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setIsSearchOpen((current) => !current);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <header
@@ -70,7 +87,7 @@ export function Header({ surface = "default" }: HeaderProps) {
         <div className="flex items-center gap-3">
           <MobileNav surface={surface} />
           <button
-            onClick={() => document.dispatchEvent(new CustomEvent("open-search"))}
+            onClick={() => setIsSearchOpen(true)}
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.03] text-white/50 transition-all hover:border-white/15 hover:bg-white/[0.07] hover:text-white sm:h-auto sm:w-auto sm:gap-2 sm:px-3.5 sm:py-2"
             aria-label="Search components"
           >
@@ -89,7 +106,7 @@ export function Header({ surface = "default" }: HeaderProps) {
           </Link>
         </div>
       </div>
-      <SearchModal />
+      {isSearchOpen && <SearchModal isOpen={isSearchOpen} onOpenChange={setIsSearchOpen} />}
     </header>
   );
 }

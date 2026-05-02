@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
+import { usePerformanceMode } from "@/components/ui/use-performance-mode";
 
 interface WebGLLiquidAuroraProps {
     className?: string;
@@ -205,6 +206,20 @@ function FluidCanvas() {
 }
 
 export function WebGLLiquidAurora({ className, children }: WebGLLiquidAuroraProps) {
+    const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            setIsVisible(document.visibilityState === "visible");
+        };
+
+        handleVisibilityChange();
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+
+        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    }, []);
+
     return (
         <div className={cn("relative w-full h-full bg-[#05000a] overflow-hidden", className)}>
             {/* Native WebGL rendering the fluid layer */}
@@ -213,7 +228,8 @@ export function WebGLLiquidAurora({ className, children }: WebGLLiquidAuroraProp
                     // Use a completely flat orthographic camera because we are rendering a 2D Shader Screen
                     orthographic
                     camera={{ position: [0, 0, 1], left: -1, right: 1, top: 1, bottom: -1 }}
-                    dpr={[1, 1.5]}
+                    dpr={isLowPerformance ? [1, 1] : [1, 1.5]}
+                    frameloop={isVisible && !prefersReducedMotion ? "always" : "demand"}
                 >
                     <FluidCanvas />
                 </Canvas>
