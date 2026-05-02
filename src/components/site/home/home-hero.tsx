@@ -3,248 +3,199 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import { fadeUp, heroHeadlineTransition, heroPreviewTransition, heroViewport } from "./animations";
-import { heroHeadlinePhrases, heroPrimaryPoints, heroPreviewSlides } from "./data";
+import { ArrowUpRight } from "lucide-react";
+import { KineticButton } from "@/components/ui/kinetic-button";
+import { TextPressure } from "@/components/ui/text-pressure";
+import { heroHeadlinePhrases, heroPreviewSlides, proofItems } from "./data";
 
 export function HomeHero() {
-  const [activePhraseIndex, setActivePhraseIndex] = useState(0);
-  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
-
-  const activePhrase = heroHeadlinePhrases[activePhraseIndex] ?? heroHeadlinePhrases[0];
-  const activeSlide = heroPreviewSlides[activeSlideIndex] ?? heroPreviewSlides[0];
-  const hasMultipleSlides = heroPreviewSlides.length > 1;
+  const activePhrase = heroHeadlinePhrases[activeIndex % heroHeadlinePhrases.length] ?? heroHeadlinePhrases[0];
+  const activeSlide = heroPreviewSlides[activeIndex % heroPreviewSlides.length] ?? heroPreviewSlides[0];
 
   useEffect(() => {
-    if (shouldReduceMotion || !hasMultipleSlides) {
-      return;
-    }
+    if (shouldReduceMotion) return;
 
     const timer = window.setInterval(() => {
-      setActiveSlideIndex((current) => (current + 1) % heroPreviewSlides.length);
-      setActivePhraseIndex((current) => (current + 1) % heroHeadlinePhrases.length);
-    }, 4800);
+      setActiveIndex((current) => (current + 1) % heroPreviewSlides.length);
+    }, 3600);
 
     return () => window.clearInterval(timer);
-  }, [hasMultipleSlides, shouldReduceMotion]);
-
-  const selectSlide = (index: number) => {
-    setActiveSlideIndex(index);
-    setActivePhraseIndex(index % heroHeadlinePhrases.length);
-  };
+  }, [shouldReduceMotion]);
 
   return (
     <section className="relative overflow-hidden border-b border-white/6">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_32%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_16%,rgba(0,194,255,0.14),transparent_24%),radial-gradient(circle_at_16%_22%,rgba(135,88,255,0.16),transparent_26%),radial-gradient(circle_at_50%_78%,rgba(255,255,255,0.06),transparent_30%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:5rem_5rem] opacity-30 [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
-      <div className="absolute inset-x-0 top-0 h-[20rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-10%,rgba(255,255,255,0.12),transparent_34%)]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" />
 
-      <div className="relative z-10 mx-auto grid min-h-[calc(100dvh-56px)] max-w-7xl items-center gap-7 px-6 pb-8 pt-12 sm:px-8 md:gap-9 md:pb-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(360px,0.84fr)] lg:px-10 lg:pt-14">
-        <div className="flex max-w-[34rem] flex-col justify-center">
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={heroViewport}
-            custom={0}
-            variants={fadeUp}
-            className="mb-3 text-[10px] font-mono uppercase tracking-[0.36em] text-white/38"
-          >
-            AuraBitz / premium motion library
-          </motion.p>
+      <div className="relative z-10 mx-auto grid min-h-[calc(100dvh-56px)] max-w-7xl items-center gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.58fr)] lg:px-10">
+        <div className="flex max-w-[40rem] flex-col justify-center">
+          <p className="mb-4 text-[10px] font-mono uppercase tracking-[0.34em] text-white/42">
+            AuraBitz / source-first UI
+          </p>
 
-          <motion.h1
-            initial="hidden"
-            whileInView="visible"
-            viewport={heroViewport}
-            custom={1}
-            variants={fadeUp}
-            className="max-w-[12ch] text-[clamp(2.55rem,5.4vw,4.45rem)] font-semibold leading-[0.9] tracking-[-0.07em] text-white"
-          >
-            <span className="block min-h-[2.15em] sm:min-h-[1.92em]">
+          <h1 className="max-w-[13ch] text-[clamp(3.2rem,8.4vw,7rem)] font-semibold leading-[0.84] tracking-[-0.09em] text-white">
+            <span className="block min-h-[1.7em] sm:min-h-[1.68em]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                   key={activePhrase}
-                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 18, filter: "blur(8px)" }}
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16, filter: "blur(8px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -18, filter: "blur(8px)" }}
-                  transition={shouldReduceMotion ? { duration: 0 } : heroHeadlineTransition}
+                  exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -16, filter: "blur(8px)" }}
+                  transition={{ duration: shouldReduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
                   className="block"
                 >
                   {activePhrase}
                 </motion.span>
               </AnimatePresence>
             </span>
-            <span className="block text-white/60">that feels premium.</span>
-          </motion.h1>
+            <span className="block text-white/42">without the clutter.</span>
+          </h1>
 
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={heroViewport}
-            custom={2}
-            variants={fadeUp}
-            className="mt-4 max-w-[31rem] text-sm leading-6 text-white/44 sm:text-[15px] sm:leading-[1.7]"
-          >
-            Components and blocks with stronger motion, darker materials, and cleaner visual weight.
-          </motion.p>
+          <p className="mt-6 max-w-[33rem] text-base leading-7 text-white/48 sm:text-lg sm:leading-8">
+            Copy dark components, WebGL backgrounds, and landing blocks that are organized, responsive, and ready to edit.
+          </p>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={heroViewport}
-            custom={3}
-            variants={fadeUp}
-            className="mt-6 flex flex-col gap-3 sm:flex-row"
-          >
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/docs"
               className="inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-black transition-colors duration-300 hover:bg-neutral-200"
             >
-              Explore components
+              Browse components
             </Link>
             <Link
               href="/blocks"
-              className="inline-flex h-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.03] px-6 text-sm font-semibold text-white transition-colors duration-300 hover:bg-white/[0.08]"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.03] px-6 text-sm font-semibold text-white transition-colors duration-300 hover:bg-white/[0.08]"
             >
-              Browse blocks
+              View blocks
+              <ArrowUpRight className="h-4 w-4" />
             </Link>
-          </motion.div>
+          </div>
 
-          <motion.ul
-            initial="hidden"
-            whileInView="visible"
-            viewport={heroViewport}
-            custom={4}
-            variants={fadeUp}
-            className="mt-6 grid gap-2 text-sm text-white/55 sm:grid-cols-3"
-          >
-            {heroPrimaryPoints.map((item) => (
-              <li key={item.label} className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 backdrop-blur-sm">
-                <item.icon className="h-4 w-4 text-white/78" />
-                <span className="text-[13px] tracking-[-0.01em] text-white/62">{item.label}</span>
+          <ul className="mt-10 grid max-w-2xl gap-5 border-t border-white/8 pt-6 sm:grid-cols-3">
+            {proofItems.map((item) => (
+              <li key={item.label}>
+                <p className="text-[10px] font-mono uppercase tracking-[0.28em] text-white/35">{item.label}</p>
+                <p className="mt-2 text-sm font-medium text-white/82">{item.value}</p>
+                <p className="mt-1 text-sm leading-5 text-white/38">{item.detail}</p>
               </li>
             ))}
-          </motion.ul>
+          </ul>
         </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={heroViewport}
-          custom={2}
-          variants={fadeUp}
-          className="flex items-center justify-center lg:justify-end"
-        >
-          <div className="relative w-full max-w-[470px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#040404] p-3 shadow-[0_40px_120px_rgba(0,0,0,0.48)]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_46%)]" />
-            <div className="absolute -right-8 top-10 h-32 w-32 rounded-full bg-cyan-400/12 blur-3xl" />
-            <div className="absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-violet-500/12 blur-3xl" />
-            <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" />
-            <div className="relative rounded-[1.55rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-4">
-              <div className="mb-4 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-white/50">
-                <span>Featured preview</span>
-                <span>{String(activeSlideIndex + 1).padStart(2, "0")} / {String(heroPreviewSlides.length).padStart(2, "0")}</span>
-              </div>
+        <div className="flex items-center justify-center lg:justify-end">
+          <div className="w-full max-w-[390px] rounded-[1.45rem] border border-white/10 bg-[#050505] p-5 shadow-[0_32px_80px_rgba(0,0,0,0.34)]">
+            <div className="flex items-center justify-between gap-4 border-b border-white/8 pb-4">
+              <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/40">Now showing</p>
+              <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/25">
+                {String(activeIndex + 1).padStart(2, "0")} / {String(heroPreviewSlides.length).padStart(2, "0")}
+              </p>
+            </div>
 
-              <div className="grid gap-3.5">
-                <div className="relative overflow-hidden rounded-[1.4rem] border border-white/8 bg-black/45 p-3.5">
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                      key={activeSlide.title}
-                      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 18, filter: "blur(8px)" }}
-                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -18, filter: "blur(8px)" }}
-                      transition={shouldReduceMotion ? { duration: 0 } : heroPreviewTransition}
-                      className="relative"
-                    >
-                      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04),transparent_38%,transparent_62%,rgba(255,255,255,0.04))]" />
-                      <div className="absolute right-6 top-6 h-24 w-24 rounded-full bg-white/6 blur-2xl" />
-                      <div className="relative flex min-h-[228px] flex-col justify-between rounded-[1.2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.09),rgba(255,255,255,0.02)_42%,rgba(0,0,0,0.3))] p-4.5 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
-                        <div className="flex items-start justify-between gap-4">
-                          <span className="text-[10px] uppercase tracking-[0.34em] text-white/52">{activeSlide.eyebrow}</span>
-                          <div className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white/46">
-                            {activeSlide.theme}
-                          </div>
-                        </div>
-                        <div className="space-y-2.5">
-                          <p className="max-w-sm text-[1.7rem] font-medium leading-[0.96] tracking-[-0.04em] text-white">
-                            {activeSlide.title}
-                          </p>
-                          <p className="max-w-sm text-sm leading-5.5 text-white/42">{activeSlide.description}</p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3 backdrop-blur-sm">
-                            <p className="text-[10px] uppercase tracking-[0.24em] text-white/35">Surface</p>
-                            <p className="mt-1.5 text-sm text-white/78">Premium dark</p>
-                          </div>
-                          <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-3 backdrop-blur-sm">
-                            <p className="text-[10px] uppercase tracking-[0.24em] text-white/35">Use case</p>
-                            <p className="mt-1.5 text-sm text-white/78">Hero-grade UI</p>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeSlide.title}
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -14, filter: "blur(8px)" }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="py-6"
+              >
+                <p className="text-[10px] uppercase tracking-[0.32em] text-white/38">{activeSlide.eyebrow}</p>
+                <HeroLivePreview activeIndex={activeIndex} title={activeSlide.title} />
+                <p className="mt-5 max-w-xs text-sm leading-6 text-white/42">{activeSlide.description}</p>
+              </motion.div>
+            </AnimatePresence>
 
-                <div className="rounded-[1.3rem] border border-white/8 bg-white/[0.02] p-4">
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/52">Why it lands</p>
-                    <p className="mt-2.5 text-[15px] font-medium tracking-[-0.02em] text-white/90">Cinematic energy. Cleaner organization.</p>
-                    <p className="mt-1.5 text-sm leading-5.5 text-white/41">
-                      One hero, one message, one focused preview. Easier to scan, easier to trust.
-                    </p>
-                </div>
-
-                <div className="flex items-center justify-between gap-4 rounded-[1.3rem] border border-white/8 bg-white/[0.02] p-3.5">
-                  <div className="flex items-center gap-2">
-                    {heroPreviewSlides.map((slide, index) => (
-                      <button
-                        key={slide.title}
-                        type="button"
-                        onClick={() => selectSlide(index)}
-                        aria-label={`Show ${slide.title}`}
-                        aria-pressed={index === activeSlideIndex}
-                        className="group flex items-center"
-                      >
-                        <span
-                          className={index === activeSlideIndex ? "h-2.5 w-8 rounded-full bg-white transition-all" : "h-2.5 w-2.5 rounded-full bg-white/25 transition-all group-hover:bg-white/45"}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => selectSlide((activeSlideIndex - 1 + heroPreviewSlides.length) % heroPreviewSlides.length)}
-                      aria-label="Show previous feature preview"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/80 transition-colors hover:bg-white/[0.08]"
-                    >
-                      <ArrowLeft className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => selectSlide((activeSlideIndex + 1) % heroPreviewSlides.length)}
-                      aria-label="Show next feature preview"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/80 transition-colors hover:bg-white/[0.08]"
-                    >
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
-                    <Link
-                      href={activeSlide.href}
-                      className="group inline-flex items-center gap-2 text-sm font-medium text-white/88 transition-colors hover:text-white"
-                    >
-                      <span>{activeSlide.ctaLabel}</span>
-                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+            <div className="flex gap-2 border-t border-white/8 pt-4">
+              {heroPreviewSlides.map((slide, index) => (
+                <button
+                  key={slide.title}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-label={`Show ${slide.title}`}
+                  aria-pressed={index === activeIndex}
+                  className="h-2 flex-1 rounded-full bg-white/12"
+                >
+                  <span className={index === activeIndex ? "block h-full rounded-full bg-white" : "block h-full rounded-full bg-transparent"} />
+                </button>
+              ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
+  );
+}
+
+function HeroLivePreview({ activeIndex, title }: { activeIndex: number; title: string }) {
+  if (title === "Kinetic Button") {
+    return (
+      <div className="mt-6 flex min-h-44 items-center justify-center rounded-[1.25rem] border border-white/8 bg-black/35">
+        <KineticButton
+          type="button"
+          variant="secondary"
+          magneticPull={0.26}
+          className="h-14 px-8 text-sm"
+        >
+          Drag the light
+          <ArrowUpRight className="h-4 w-4" />
+        </KineticButton>
+      </div>
+    );
+  }
+
+  if (title === "Text Pressure") {
+    return (
+      <div className="mt-6 flex min-h-44 items-center justify-center rounded-[1.25rem] border border-white/8 bg-black/35 px-5">
+        <TextPressure
+          baseWeight={420}
+          maxWeight={900}
+          baseScale={1}
+          maxScale={1.18}
+          radius={110}
+          className="text-center text-[clamp(2.3rem,7vw,4.2rem)] font-semibold leading-none tracking-[-0.08em] text-white"
+        >
+          PRESSURE
+        </TextPressure>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6 min-h-44 rounded-[1.25rem] border border-white/8 bg-black/35 p-4">
+      <div className="flex items-center justify-between border-b border-white/8 pb-3">
+        <div className="h-2 w-16 rounded-full bg-white/24" />
+        <div className="flex gap-1.5">
+          <div className="h-2 w-2 rounded-full bg-white/18" />
+          <div className="h-2 w-2 rounded-full bg-white/18" />
+          <div className="h-2 w-2 rounded-full bg-white/18" />
+        </div>
+      </div>
+      <div className="grid gap-4 pt-6 sm:grid-cols-[1.15fr_0.85fr]">
+        <motion.div
+          key={`copy-${activeIndex}`}
+          initial={{ opacity: 0.45, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="space-y-3"
+        >
+          <div className="h-9 rounded-lg bg-white/84" />
+          <div className="h-3 w-4/5 rounded-full bg-white/18" />
+          <div className="h-3 w-2/3 rounded-full bg-white/12" />
+        </motion.div>
+        <motion.div
+          key={`panel-${activeIndex}`}
+          initial={{ opacity: 0.45, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-2xl border border-white/10 bg-white/[0.04] p-3"
+        >
+          <div className="h-16 rounded-xl bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.38),rgba(255,255,255,0.05)_45%,transparent_72%)]" />
+          <div className="mt-3 h-2 w-2/3 rounded-full bg-white/16" />
+        </motion.div>
+      </div>
+    </div>
   );
 }

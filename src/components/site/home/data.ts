@@ -1,12 +1,8 @@
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowUpRight,
-  Copy,
-  Gauge,
   Layers3,
-  Palette,
   Sparkles,
-  Zap,
 } from "lucide-react";
 
 export interface ProofItem {
@@ -38,46 +34,41 @@ export interface ValuePropItem {
 
 export const proofItems: ProofItem[] = [
   {
-    label: "Direct source",
-    value: "Own every file",
-    detail: "Copy the implementation and shape it to your product.",
+    label: "Source",
+    value: "Copy the code",
+    detail: "No package lock-in.",
   },
   {
-    label: "Signal first",
-    value: "Sharp by default",
-    detail: "Motion and materials stay expressive without getting messy.",
+    label: "Motion",
+    value: "Framer-tuned",
+    detail: "Springs over flat transitions.",
   },
   {
-    label: "Fast adoption",
-    value: "Ship faster",
-    detail: "Browse, copy, and move straight into product work.",
-  },
-  {
-    label: "Visual weight",
-    value: "Made to stand out",
-    detail: "Built for premium interfaces, not generic component galleries.",
+    label: "Surface",
+    value: "Dark by default",
+    detail: "Built for black product pages.",
   },
 ];
 
 export const showcaseItems: ShowcaseItem[] = [
   {
     eyebrow: "Materials",
-    title: "Surfaces with depth",
-    description: "Glass, light, and material response that still feels deployable.",
+    title: "Glass cards",
+    description: "Depth, glare, and edge light without another marketing card grid.",
     href: "/docs/3d-physical/holographic-card",
     icon: Layers3,
   },
   {
     eyebrow: "Motion",
-    title: "Interaction with force",
-    description: "Buttons and motion that feel tuned instead of templated.",
+    title: "Kinetic buttons",
+    description: "Controls with weight, pull, and release built into the source.",
     href: "/docs/3d-physical/kinetic-button",
     icon: Sparkles,
   },
   {
     eyebrow: "Typography",
-    title: "Type that carries weight",
-    description: "Display treatments that feel designed into the interface from day one.",
+    title: "Text effects",
+    description: "Animated headings that stay readable on desktop and mobile.",
     href: "/docs/text-animations/text-pressure",
     icon: ArrowUpRight,
   },
@@ -87,36 +78,36 @@ export const workflowSteps: WorkflowStepItem[] = [
   {
     step: "01",
     icon: Sparkles,
-    title: "Scan the library",
-    desc: "See the idea quickly without digging through noise.",
+    title: "Preview",
+    desc: "Open a component and judge it in context.",
   },
   {
     step: "02",
-    icon: Copy,
-    title: "Copy the source",
-    desc: "Take the code directly so your team owns the final implementation.",
+    icon: ArrowUpRight,
+    title: "Copy",
+    desc: "Take the source and make it yours.",
   },
   {
     step: "03",
-    icon: Zap,
-    title: "Ship with intent",
-    desc: "Move from reference to production without fighting wrapper abstractions.",
+    icon: Layers3,
+    title: "Compose",
+    desc: "Use atoms alone or drop in complete blocks.",
   },
 ];
 
 export const valueProps: ValuePropItem[] = [
   {
-    icon: Copy,
+    icon: ArrowUpRight,
     title: "Copy & Paste",
     desc: "No npm installs, no version conflicts. Copy the source directly into your project and own it completely.",
   },
   {
-    icon: Gauge,
+    icon: Layers3,
     title: "Zero Bloat",
     desc: "Every component is self-contained. No hidden runtime dependencies, no context providers, and no CSS-in-JS overhead.",
   },
   {
-    icon: Palette,
+    icon: Sparkles,
     title: "Design-First",
     desc: "Built with hand-tuned spacing, motion, and surface detail so the result feels deliberate instead of generic.",
   },
@@ -139,49 +130,34 @@ export interface HeroPreviewSlide {
 }
 
 export const heroHeadlinePhrases = [
-  "Interfaces that move like cinema",
-  "Dark systems with physical weight",
-  "Production surfaces with real presence",
+  "Dark motion components",
+  "Source you can copy",
+  "Landing blocks with restraint",
 ] as const;
 
 export const heroPreviewSlides: HeroPreviewSlide[] = [
   {
-    eyebrow: "Material / surface",
-    title: "Holographic Card",
-    description: "A premium surface study with real depth, light, and polish.",
-    href: "/docs/3d-physical/holographic-card",
-    ctaLabel: "Open holographic card",
-    theme: "materials",
-  },
-  {
-    eyebrow: "Motion / interaction",
+    eyebrow: "Motion",
     title: "Kinetic Button",
-    description: "Interaction that feels loaded, directional, and deliberate.",
+    description: "A button interaction with drag, pull, and release.",
     href: "/docs/3d-physical/kinetic-button",
-    ctaLabel: "Open kinetic button",
+    ctaLabel: "View component",
     theme: "motion",
   },
   {
-    eyebrow: "Typography / dynamics",
+    eyebrow: "Typography",
     title: "Text Pressure",
-    description: "Display typography that feels embedded into the layout system.",
+    description: "Responsive type motion for hero headlines.",
     href: "/docs/text-animations/text-pressure",
-    ctaLabel: "Open text pressure",
+    ctaLabel: "View component",
     theme: "typography",
   },
-];
-
-export const heroPrimaryPoints = [
   {
-    icon: Copy,
-    label: "Source-first ownership",
-  },
-  {
-    icon: Gauge,
-    label: "Tuned motion systems",
-  },
-  {
-    icon: Palette,
-    label: "Premium dark craft",
+    eyebrow: "Blocks",
+    title: "Hero Sections",
+    description: "Complete landing sections with dark layout systems.",
+    href: "/blocks/hero-sections/01",
+    ctaLabel: "View block",
+    theme: "materials",
   },
 ];

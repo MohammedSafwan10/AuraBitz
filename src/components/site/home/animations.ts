@@ -11,9 +11,9 @@ export const fadeUp: Variants = {
   }),
 };
 
-export const defaultViewport = { once: false, amount: 0.3 };
+export const defaultViewport = { once: true, amount: 0.24 };
 
-export const heroViewport = { once: false, amount: 0.1 };
+export const heroViewport = { once: true, amount: 0.1 };
 
 export const carouselTransition = { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const };
 
