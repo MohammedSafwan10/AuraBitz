@@ -87,7 +87,6 @@ export function KineticText({
                         scale: 1.4,
                         rotateZ: index % 2 === 0 ? 4 : -4,
                         y: -8,
-                        color: "#fff",
                         textShadow: "0px 10px 20px rgba(255,255,255,0.4)",
                         transition: { type: "spring", damping: 12, stiffness: 300 }
                     }}
