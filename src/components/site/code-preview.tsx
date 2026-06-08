@@ -125,22 +125,31 @@ export function CodePreview({ children, code }: CodePreviewProps) {
                     </div>
                 ) : (
                     <div data-lenis-prevent className="w-full max-h-[600px] overflow-auto bg-[#0a0a0a]">
-                        <SyntaxHighlighter
-                            language="tsx"
-                            style={vscDarkPlus}
-                            customStyle={{
-                                margin: 0,
-                                padding: "2rem",
-                                background: "transparent",
-                                fontSize: "0.875rem",
-                                lineHeight: "1.6",
-                            }}
-                            codeTagProps={{
-                                style: { fontFamily: "var(--font-mono)" }
-                            }}
-                        >
-                            {code}
-                        </SyntaxHighlighter>
+                        {code ? (
+                            <SyntaxHighlighter
+                                language="tsx"
+                                style={vscDarkPlus}
+                                customStyle={{
+                                    margin: 0,
+                                    padding: "2rem",
+                                    background: "transparent",
+                                    fontSize: "0.875rem",
+                                    lineHeight: "1.6",
+                                }}
+                                codeTagProps={{
+                                    style: { fontFamily: "var(--font-mono)" }
+                                }}
+                            >
+                                {code}
+                            </SyntaxHighlighter>
+                        ) : (
+                            <div className="flex min-h-[220px] items-center justify-center p-8 text-center">
+                                <div>
+                                    <p className="text-sm font-medium text-white/60">Source unavailable for this preview.</p>
+                                    <p className="mt-2 text-xs text-white/30">Check the source registry mapping before copying.</p>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
