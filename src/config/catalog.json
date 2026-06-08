@@ -1,0 +1,288 @@
+{
+  "docs": [
+    {
+      "title": "Get Started",
+      "description": "Start here before installing or copying AuraBitz components.",
+      "items": [
+        {
+          "name": "Index",
+          "href": "/docs"
+        },
+        {
+          "name": "Installation",
+          "href": "/docs/installation"
+        }
+      ]
+    },
+    {
+      "title": "3D & Physical",
+      "description": "Physical interactions mimicking real-world constraints.",
+      "items": [
+        {
+          "name": "Holographic Card",
+          "href": "/docs/3d-physical/holographic-card",
+          "sourceKey": "holographic-card",
+          "sourcePath": "src/components/ui/holographic-card/index.tsx"
+        },
+        {
+          "name": "Kinetic Button",
+          "href": "/docs/3d-physical/kinetic-button",
+          "sourceKey": "kinetic-button",
+          "sourcePath": "src/components/ui/kinetic-button/index.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Illumination",
+      "description": "Hardware-accelerated ambient glows and laser traces.",
+      "items": [
+        {
+          "name": "Spotlight Card",
+          "href": "/docs/illumination/spotlight-card",
+          "sourceKey": "spotlight-card",
+          "sourcePath": "src/components/ui/spotlight-card/index.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Backgrounds",
+      "description": "Architectural grid systems and precision noise.",
+      "items": [
+        {
+          "name": "Grid System",
+          "href": "/docs/backgrounds/grid-system",
+          "sourceKey": "grid-system",
+          "sourcePath": "src/components/ui/grid-system/index.tsx"
+        },
+        {
+          "name": "Radial Noise",
+          "href": "/docs/backgrounds/radial-noise",
+          "sourceKey": "radial-noise",
+          "sourcePath": "src/components/ui/radial-noise/index.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Text Animations",
+      "description": "Kinetic letters and cryptographic string reveals.",
+      "items": [
+        {
+          "name": "Kinetic Text",
+          "href": "/docs/text-animations/kinetic-text",
+          "sourceKey": "kinetic-text",
+          "sourcePath": "src/components/ui/kinetic-text/index.tsx"
+        },
+        {
+          "name": "Scramble Reveal",
+          "href": "/docs/text-animations/scramble-reveal",
+          "sourceKey": "scramble-reveal",
+          "sourcePath": "src/components/ui/scramble-reveal/index.tsx"
+        },
+        {
+          "name": "Split Text",
+          "href": "/docs/text-animations/split-text",
+          "sourceKey": "split-text",
+          "sourcePath": "src/components/ui/split-text/index.tsx"
+        },
+        {
+          "name": "Blur Text",
+          "href": "/docs/text-animations/blur-text",
+          "sourceKey": "blur-text",
+          "sourcePath": "src/components/ui/blur-text/index.tsx"
+        },
+        {
+          "name": "Circular Text",
+          "href": "/docs/text-animations/circular-text",
+          "sourceKey": "circular-text",
+          "sourcePath": "src/components/ui/circular-text/index.tsx"
+        },
+        {
+          "name": "Text Type",
+          "href": "/docs/text-animations/text-type",
+          "sourceKey": "text-type",
+          "sourcePath": "src/components/ui/text-type/index.tsx"
+        },
+        {
+          "name": "Shuffle",
+          "href": "/docs/text-animations/shuffle",
+          "sourceKey": "shuffle",
+          "sourcePath": "src/components/ui/shuffle/index.tsx"
+        },
+        {
+          "name": "Text Pressure",
+          "href": "/docs/text-animations/text-pressure",
+          "sourceKey": "text-pressure",
+          "sourcePath": "src/components/ui/text-pressure/index.tsx"
+        },
+        {
+          "name": "Curved Loop",
+          "href": "/docs/text-animations/curved-loop",
+          "sourceKey": "curved-loop",
+          "sourcePath": "src/components/ui/curved-loop/index.tsx"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "title": "Overview",
+      "description": "Browse all landing page block categories.",
+      "items": [
+        {
+          "name": "Blocks Index",
+          "href": "/blocks"
+        }
+      ]
+    },
+    {
+      "title": "Hero Sections",
+      "description": "Premium first-fold sections with WebGL, glass, matrix, liquid, and vortex treatments.",
+      "items": [
+        {
+          "name": "01 WebGL Aura",
+          "href": "/blocks/hero-sections/01",
+          "sourceKey": "hero-01.tsx",
+          "sourcePath": "src/components/blocks/hero-01.tsx"
+        },
+        {
+          "name": "02 Glass Singularity",
+          "href": "/blocks/hero-sections/02",
+          "sourceKey": "hero-02.tsx",
+          "sourcePath": "src/components/blocks/hero-02.tsx"
+        },
+        {
+          "name": "03 Quantum Matrix",
+          "href": "/blocks/hero-sections/03",
+          "sourceKey": "hero-03.tsx",
+          "sourcePath": "src/components/blocks/hero-03.tsx"
+        },
+        {
+          "name": "04 Liquid Flow",
+          "href": "/blocks/hero-sections/04",
+          "sourceKey": "hero-04.tsx",
+          "sourcePath": "src/components/blocks/hero-04.tsx"
+        },
+        {
+          "name": "05 Quantum Vortex",
+          "href": "/blocks/hero-sections/05",
+          "sourceKey": "hero-05.tsx",
+          "sourcePath": "src/components/blocks/hero-05.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Bento Grids",
+      "description": "Dense product storytelling grids for glass, fintech, type, security, and spatial layouts.",
+      "items": [
+        {
+          "name": "01 Holographic Glass",
+          "href": "/blocks/bento-grids/01",
+          "sourceKey": "bento-01.tsx",
+          "sourcePath": "src/components/blocks/bento-01.tsx"
+        },
+        {
+          "name": "02 Fintech Holograph",
+          "href": "/blocks/bento-grids/02",
+          "sourceKey": "bento-02.tsx",
+          "sourcePath": "src/components/blocks/bento-02.tsx"
+        },
+        {
+          "name": "03 Typographic Brutalism",
+          "href": "/blocks/bento-grids/03",
+          "sourceKey": "bento-03.tsx",
+          "sourcePath": "src/components/blocks/bento-03.tsx"
+        },
+        {
+          "name": "04 Cyber Security",
+          "href": "/blocks/bento-grids/04",
+          "sourceKey": "bento-04.tsx",
+          "sourcePath": "src/components/blocks/bento-04.tsx"
+        },
+        {
+          "name": "05 Spatial Canvas",
+          "href": "/blocks/bento-grids/05",
+          "sourceKey": "bento-05.tsx",
+          "sourcePath": "src/components/blocks/bento-05.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Feature Showcases",
+      "description": "Conversion-ready feature sections for product narratives.",
+      "items": [
+        {
+          "name": "Feature 01",
+          "href": "/blocks/feature-showcases/01",
+          "sourceKey": "feature-01.tsx",
+          "sourcePath": "src/components/blocks/feature-01.tsx"
+        },
+        {
+          "name": "Feature 02",
+          "href": "/blocks/feature-showcases/02",
+          "sourceKey": "feature-02.tsx",
+          "sourcePath": "src/components/blocks/feature-02.tsx"
+        },
+        {
+          "name": "Feature 03",
+          "href": "/blocks/feature-showcases/03",
+          "sourceKey": "feature-03.tsx",
+          "sourcePath": "src/components/blocks/feature-03.tsx"
+        },
+        {
+          "name": "Feature 04",
+          "href": "/blocks/feature-showcases/04",
+          "sourceKey": "feature-04.tsx",
+          "sourcePath": "src/components/blocks/feature-04.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Pricing Tables",
+      "description": "Premium pricing layouts for high-intent purchase flows.",
+      "items": [
+        {
+          "name": "Pricing 01",
+          "href": "/blocks/pricing-tables/01",
+          "sourceKey": "pricing-01.tsx",
+          "sourcePath": "src/components/blocks/pricing-01.tsx"
+        },
+        {
+          "name": "Pricing 02",
+          "href": "/blocks/pricing-tables/02",
+          "sourceKey": "pricing-02.tsx",
+          "sourcePath": "src/components/blocks/pricing-02.tsx"
+        },
+        {
+          "name": "Pricing 03",
+          "href": "/blocks/pricing-tables/03",
+          "sourceKey": "pricing-03.tsx",
+          "sourcePath": "src/components/blocks/pricing-03.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Testimonials",
+      "description": "Trust-building proof sections with premium editorial rhythm.",
+      "items": [
+        {
+          "name": "Testimonial 01",
+          "href": "/blocks/testimonials/01",
+          "sourceKey": "testimonials-01.tsx",
+          "sourcePath": "src/components/blocks/testimonials-01.tsx"
+        }
+      ]
+    },
+    {
+      "title": "Footers",
+      "description": "Minimal footer compositions for polished landing pages.",
+      "items": [
+        {
+          "name": "Footer 01",
+          "href": "/blocks/footers/01",
+          "sourceKey": "footers-01.tsx",
+          "sourcePath": "src/components/blocks/footers-01.tsx"
+        }
+      ]
+    }
+  ]
+}

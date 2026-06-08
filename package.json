@@ -8,6 +8,7 @@
     "prebuild": "node scripts/generate-source-registry.mjs",
     "build": "next build",
     "start": "next start",
+    "check:registry": "node scripts/check-source-registry.mjs",
     "lint": "eslint"
   },
   "dependencies": {
