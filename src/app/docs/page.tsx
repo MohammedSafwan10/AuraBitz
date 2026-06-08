@@ -1,47 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { docsIndexCatalog } from "@/config/catalog";
 
-const categories = [
-    {
-        title: "3D & Physical",
-        description: "Physical interactions mimicking real-world constraints.",
-        items: [
-            { name: "Holographic Card", href: "/docs/3d-physical/holographic-card" },
-            { name: "Kinetic Button", href: "/docs/3d-physical/kinetic-button" }
-        ]
-    },
-    {
-        title: "Illumination",
-        description: "Hardware-accelerated ambient glows and laser traces.",
-        items: [
-            { name: "Spotlight Card", href: "/docs/illumination/spotlight-card" }
-        ]
-    },
-    {
-        title: "Backgrounds",
-        description: "Architectural grid systems and precision noise.",
-        items: [
-            { name: "Grid System", href: "/docs/backgrounds/grid-system" },
-            { name: "Radial Noise", href: "/docs/backgrounds/radial-noise" }
-        ]
-    },
-    {
-        title: "Text Animations",
-        description: "Kinetic letters and cryptographic string reveals.",
-        items: [
-            { name: "Kinetic Text", href: "/docs/text-animations/kinetic-text" },
-            { name: "Scramble Reveal", href: "/docs/text-animations/scramble-reveal" },
-            { name: "Split Text", href: "/docs/text-animations/split-text" },
-            { name: "Blur Text", href: "/docs/text-animations/blur-text" },
-            { name: "Circular Text", href: "/docs/text-animations/circular-text" },
-            { name: "Text Type", href: "/docs/text-animations/text-type" },
-            { name: "Shuffle", href: "/docs/text-animations/shuffle" },
-
-            { name: "Text Pressure", href: "/docs/text-animations/text-pressure" },
-            { name: "Curved Loop", href: "/docs/text-animations/curved-loop" }
-        ]
-    }
-];
+const categories = docsIndexCatalog;
 
 export default function DocsIndex() {
     return (

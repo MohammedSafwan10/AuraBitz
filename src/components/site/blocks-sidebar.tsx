@@ -4,64 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
+import { blocksNavigation } from "@/config/catalog";
 
-export const blocksSidebarData = [
-    {
-        title: "Overview",
-        links: [
-            { name: "Blocks Index", href: "/blocks" },
-        ]
-    },
-    {
-        title: "Hero Sections",
-        links: [
-            { name: "01 WebGL Aura", href: "/blocks/hero-sections/01" },
-            { name: "02 Glass Singularity", href: "/blocks/hero-sections/02" },
-            { name: "03 Quantum Matrix", href: "/blocks/hero-sections/03" },
-            { name: "04 Liquid Flow", href: "/blocks/hero-sections/04" },
-            { name: "05 Quantum Vortex", href: "/blocks/hero-sections/05" },
-        ]
-    },
-    {
-        title: "Bento Grids",
-        links: [
-            { name: "01 Holographic Glass", href: "/blocks/bento-grids/01" },
-            { name: "02 Fintech Holograph", href: "/blocks/bento-grids/02" },
-            { name: "03 Typographic Brutalism", href: "/blocks/bento-grids/03" },
-            { name: "04 Cyber Security", href: "/blocks/bento-grids/04" },
-            { name: "05 Spatial Canvas", href: "/blocks/bento-grids/05" },
-        ]
-    },
-    {
-        title: "Feature Showcases",
-        links: [
-            { name: "Feature 01", href: "/blocks/feature-showcases/01" },
-            { name: "Feature 02", href: "/blocks/feature-showcases/02" },
-            { name: "Feature 03", href: "/blocks/feature-showcases/03" },
-            { name: "Feature 04", href: "/blocks/feature-showcases/04" },
-        ]
-    },
-    {
-        title: "Pricing Tables",
-        links: [
-            { name: "Pricing 01", href: "/blocks/pricing-tables/01" },
-            { name: "Pricing 02", href: "/blocks/pricing-tables/02" },
-            { name: "Pricing 03", href: "/blocks/pricing-tables/03" },
-        ]
-    },
-    {
-        title: "Testimonials",
-        links: [
-            { name: "Testimonial 01", href: "/blocks/testimonials/01" },
-        ]
-    },
-    {
-        title: "Footers",
-        links: [
-            { name: "Footer 01", href: "/blocks/footers/01" },
-        ]
-    }
-];
+export const blocksSidebarData = blocksNavigation;
 
 export function BlocksSidebar() {
     const pathname = usePathname();

@@ -5,8 +5,7 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { sidebarData } from "./sidebar";
-import { blocksSidebarData } from "./blocks-sidebar";
+import { blocksNavigation, docsNavigation } from "@/config/catalog";
 
 interface SearchItem {
     name: string;
@@ -19,7 +18,7 @@ interface SearchModalProps {
     onOpenChange: (isOpen: boolean) => void;
 }
 
-const searchItems: SearchItem[] = [...sidebarData, ...blocksSidebarData].flatMap(
+const searchItems: SearchItem[] = [...docsNavigation, ...blocksNavigation].flatMap(
     (category) =>
         category.links.map((link) => ({
             name: link.name,

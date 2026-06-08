@@ -1,31 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { blocksIndexCatalog } from "@/config/catalog";
 
 export const metadata: Metadata = {
     title: "Blocks - AuraBitz",
     description: "Pre-built, high-converting premium section layouts.",
 };
 
-const categories = [
-    {
-        title: "Landing Page Blocks",
-        description: "Pre-built, high-converting premium section layouts.",
-        items: [
-            { name: "Hero 01", href: "/blocks/hero-sections/01" },
-            { name: "Bento 01", href: "/blocks/bento-grids/01" },
-            { name: "Feature 01", href: "/blocks/feature-showcases/01" },
-            { name: "Feature 02", href: "/blocks/feature-showcases/02" },
-            { name: "Feature 03", href: "/blocks/feature-showcases/03" },
-            { name: "Feature 04", href: "/blocks/feature-showcases/04" },
-            { name: "Pricing 01", href: "/blocks/pricing-tables/01" },
-            { name: "Pricing 02", href: "/blocks/pricing-tables/02" },
-            { name: "Pricing 03", href: "/blocks/pricing-tables/03" },
-            { name: "Testimonial 01", href: "/blocks/testimonials/01" },
-            { name: "Footer 01", href: "/blocks/footers/01" }
-        ]
-    }
-];
+const categories = blocksIndexCatalog;
 
 export default function BlocksIndex() {
     return (

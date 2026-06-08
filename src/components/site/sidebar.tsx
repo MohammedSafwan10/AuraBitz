@@ -4,51 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
+import { docsNavigation } from "@/config/catalog";
 
-export const sidebarData = [
-    {
-        title: "Get Started",
-        links: [
-            { name: "Index", href: "/docs" },
-            { name: "Installation", href: "/docs/installation" },
-        ]
-    },
-    {
-        title: "3D & Physical",
-        links: [
-            { name: "Holographic Card", href: "/docs/3d-physical/holographic-card" },
-            { name: "Kinetic Button", href: "/docs/3d-physical/kinetic-button" },
-        ]
-    },
-    {
-        title: "Illumination",
-        links: [
-            { name: "Spotlight Card", href: "/docs/illumination/spotlight-card" },
-        ]
-    },
-    {
-        title: "Backgrounds",
-        links: [
-            { name: "Grid System", href: "/docs/backgrounds/grid-system" },
-            { name: "Radial Noise", href: "/docs/backgrounds/radial-noise" },
-        ]
-    },
-    {
-        title: "Text Animations",
-        links: [
-            { name: "Kinetic Text", href: "/docs/text-animations/kinetic-text" },
-            { name: "Scramble Reveal", href: "/docs/text-animations/scramble-reveal" },
-            { name: "Split Text", href: "/docs/text-animations/split-text" },
-            { name: "Blur Text", href: "/docs/text-animations/blur-text" },
-            { name: "Circular Text", href: "/docs/text-animations/circular-text" },
-            { name: "Text Type", href: "/docs/text-animations/text-type" },
-            { name: "Shuffle", href: "/docs/text-animations/shuffle" },
-
-            { name: "Text Pressure", href: "/docs/text-animations/text-pressure" },
-            { name: "Curved Loop", href: "/docs/text-animations/curved-loop" },
-        ]
-    }
-];
+export const sidebarData = docsNavigation;
 
 export function Sidebar() {
     const pathname = usePathname();
