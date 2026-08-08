@@ -4,121 +4,74 @@ import { getComponentSource } from "@/lib/source";
 
 const sourceCode = getComponentSource("holographic-card");
 
+const props = [
+  ["children", "ReactNode", "—", "Card content"],
+  ["intensity", "number", "1", "Tilt strength"],
+  ["glowColor", "string", '"37, 245, 208"', "RGB light color"],
+  ["className", "string", "—", "Surface and layout classes"],
+];
+
 export default function HolographicCardPage() {
   return (
-    <div className="max-w-4xl space-y-16 pb-20">
-      {/* Header */}
-      <div className="relative">
-        {/* Subtle background glow for the header area */}
-        <div className="absolute -top-20 -left-20 w-[400px] h-[400px] bg-white/[0.03] blur-[100px] rounded-full pointer-events-none" />
+    <div className="max-w-5xl pb-24">
+      <header className="border-b border-white/[0.08] pb-9">
+        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/35">3D / Physical</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-[-0.055em] text-white/95 md:text-6xl">Holographic Card</h1>
+        <p className="mt-4 max-w-xl text-base leading-7 text-white/45 md:text-lg">
+          A cursor-lit surface with spring depth and spectral reflection.
+        </p>
+      </header>
 
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-white/60 border border-white/10 rounded-full bg-white/[0.02] backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-              3D & Physical
+      <CodePreview code={sourceCode}>
+        <HolographicCard intensity={1.15} className="h-[430px] w-full max-w-[340px] p-7">
+          <div className="flex h-full flex-col justify-between">
+            <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.2em] text-white/38">
+              <span>Material / 01</span>
+              <span className="flex items-center gap-2"><span className="h-1 w-1 rounded-full bg-[#25f5d0] shadow-[0_0_10px_#25f5d0]" />Live</span>
+            </div>
+
+            <div className="relative mx-auto flex h-44 w-44 items-center justify-center">
+              <div className="absolute inset-0 rounded-full border border-white/20" />
+              <div className="absolute inset-7 rounded-full border border-white/30" />
+              <div className="absolute inset-[3.4rem] rounded-full border border-white/10" />
+              <span className="relative text-4xl font-light tracking-[-0.16em] text-white/65">A<span className="ml-[-0.04em]">B</span></span>
+            </div>
+
+            <div className="flex items-end justify-between gap-6 font-mono text-[10px] uppercase tracking-[0.08em] text-white/72">
+              <span>Optical matter</span>
+              <span>X 0.42&nbsp; Y −0.18</span>
             </div>
           </div>
-          <h1 className="grad-text text-4xl md:text-5xl font-extrabold tracking-tighter mb-5">
-            Holographic Card
-          </h1>
-          <p className="text-white/50 text-lg md:text-xl leading-relaxed max-w-2xl font-light">
-            A physically accurate 3D tiltable container with specular light tracking. The card tilts toward the cursor while a tight elliptical highlight follows the pointer position in real-time.
-          </p>
-        </div>
-      </div>
-
-      {/* Preview + Code */}
-      <CodePreview code={sourceCode}>
-        <div className="flex items-center justify-center gap-8 flex-wrap">
-          <HolographicCard className="w-64 h-80 p-6 flex flex-col justify-between">
-            <span className="text-[9px] font-mono text-white/30 tracking-widest uppercase">Component</span>
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-1">Hover me</h3>
-              <p className="text-white/40 text-xs leading-relaxed">Move your cursor across the surface to see the specular highlight track your position.</p>
-            </div>
-          </HolographicCard>
-          <HolographicCard className="w-48 h-48 flex items-center justify-center">
-            <span className="text-white/50 text-sm font-medium">Compact</span>
-          </HolographicCard>
-        </div>
+        </HolographicCard>
       </CodePreview>
 
-      {/* How It Works */}
-      <div className="space-y-6">
-        <h2 className="grad-text text-2xl font-extrabold tracking-tighter">How it works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { step: "01", title: "Cursor Mapping", desc: "Mouse position is normalized to -0.5→0.5 range relative to card bounds." },
-            { step: "02", title: "Spring Physics", desc: "Values pass through useSpring for organic, damped motion with zero jitter." },
-            { step: "03", title: "Specular Light", desc: "A radial-gradient ellipse repositions in real-time to simulate a physical light source." },
-          ].map((item) => (
-            <div key={item.step} className="group relative p-6 rounded-2xl border border-white/[0.05] bg-gradient-to-b from-white/[0.03] to-transparent overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.3] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-x-0 -top-10 h-20 bg-white/[0.05] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-              <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono text-white/40 bg-white/[0.05] border border-white/[0.05] mb-4">
-                STEP {item.step}
-              </span>
-              <h3 className="text-sm font-semibold text-white mb-2">{item.title}</h3>
-              <p className="text-xs text-white/50 leading-relaxed font-light">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Props */}
-      <div className="space-y-6">
-        <h2 className="grad-text text-2xl font-extrabold tracking-tighter">Props</h2>
-        <div className="border border-white/[0.05] rounded-2xl overflow-hidden bg-black/40 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-white/[0.05] bg-white/[0.02]">
-                <th className="text-left px-6 py-4 text-white/40 font-medium text-xs uppercase tracking-widest">Prop</th>
-                <th className="text-left px-6 py-4 text-white/40 font-medium text-xs uppercase tracking-widest">Type</th>
-                <th className="text-left px-6 py-4 text-white/40 font-medium text-xs uppercase tracking-widest">Default</th>
-                <th className="text-left px-6 py-4 text-white/40 font-medium text-xs uppercase tracking-widest">Description</th>
+      <section className="mt-16">
+        <h2 className="text-xl font-medium tracking-[-0.025em] text-white/90">API</h2>
+        <div className="mt-5 overflow-x-auto border-y border-white/[0.08]">
+          <table className="w-full min-w-[620px] text-left text-sm">
+            <thead className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/28">
+              <tr className="border-b border-white/[0.08]">
+                <th className="px-4 py-3 font-normal">Prop</th><th className="px-4 py-3 font-normal">Type</th><th className="px-4 py-3 font-normal">Default</th><th className="px-4 py-3 font-normal">Purpose</th>
               </tr>
             </thead>
-            <tbody className="text-white/60 font-light divide-y divide-white/[0.02]">
-              <tr className="hover:bg-white/[0.01] transition-colors">
-                <td className="px-6 py-4">
-                  <span className="font-mono text-[11px] px-1.5 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.05] text-white/80">children</span>
-                </td>
-                <td className="px-6 py-4 font-mono text-xs text-emerald-400/80">ReactNode</td>
-                <td className="px-6 py-4 text-white/30">—</td>
-                <td className="px-6 py-4 text-sm">Content rendered inside the card</td>
-              </tr>
-              <tr className="hover:bg-white/[0.01] transition-colors">
-                <td className="px-6 py-4">
-                  <span className="font-mono text-[11px] px-1.5 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.05] text-white/80">className</span>
-                </td>
-                <td className="px-6 py-4 font-mono text-xs text-emerald-400/80">string</td>
-                <td className="px-6 py-4 text-white/30">—</td>
-                <td className="px-6 py-4 text-sm">Additional Tailwind classes for sizing, padding, etc.</td>
-              </tr>
+            <tbody>
+              {props.map(([name, type, defaultValue, purpose]) => (
+                <tr key={name} className="border-b border-white/[0.05] last:border-0">
+                  <td className="px-4 py-4 font-mono text-xs text-white/85">{name}</td>
+                  <td className="px-4 py-4 font-mono text-xs text-[#25f5d0]/70">{type}</td>
+                  <td className="px-4 py-4 font-mono text-xs text-white/35">{defaultValue}</td>
+                  <td className="px-4 py-4 text-white/45">{purpose}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
 
-      {/* Installation */}
-      <div className="space-y-6">
-        <h2 className="grad-text text-2xl font-extrabold tracking-tighter">Installation</h2>
-        <div className="space-y-4">
-          <div className="group relative p-5 rounded-2xl border border-white/[0.05] bg-[#0a0a0a] overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <p className="text-xs text-white/40 mb-3 font-mono uppercase tracking-[0.1em]">1. Install Dependencies</p>
-            <pre className="flex items-center justify-between font-mono text-[13px] text-emerald-400/90 bg-black/50 p-3 rounded-xl border border-white/[0.05]">
-              <code>npm install framer-motion</code>
-            </pre>
-          </div>
-          <div className="group relative p-5 rounded-2xl border border-white/[0.05] bg-[#0a0a0a] overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <p className="text-xs text-white/40 mb-3 font-mono uppercase tracking-[0.1em]">2. Copy Component</p>
-            <p className="text-sm text-white/60 font-light">Copy the source from the Code tab above into <code className="text-white/80 bg-white/[0.06] border border-white/[0.08] px-2 py-0.5 rounded-md font-mono text-[11px] tracking-tight">components/ui/holographic-card.tsx</code></p>
-          </div>
-        </div>
-      </div>
+      <section className="mt-14 border-t border-white/[0.08] pt-7">
+        <h2 className="text-xl font-medium tracking-[-0.025em] text-white/90">Install</h2>
+        <code className="mt-4 block border-l border-[#25f5d0]/70 py-2 pl-4 font-mono text-sm text-white/55">npm install framer-motion</code>
+      </section>
     </div>
   );
 }
