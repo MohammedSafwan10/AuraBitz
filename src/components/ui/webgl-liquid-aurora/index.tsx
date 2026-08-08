@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
@@ -11,193 +11,148 @@ interface WebGLLiquidAuroraProps {
     children?: React.ReactNode;
 }
 
-// Minimal Vertex Shader: Just passes the UV coordinates down to the fragment
+interface FluidSurfaceProps {
+    pointer: React.RefObject<THREE.Vector2>;
+    motionEnabled: boolean;
+}
+
 const vertexShader = `
 varying vec2 vUv;
+
 void main() {
     vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = vec4(position.xy, 0.0, 1.0);
 }
 `;
 
-// Ultimate Liquid Aurora Fragment Shader 
 const fragmentShader = `
+precision highp float;
+
 uniform float uTime;
-uniform vec2 uMouse;
+uniform vec2 uPointer;
 uniform vec2 uResolution;
+uniform float uMotion;
 varying vec2 vUv;
 
-// Simplex 3D Noise function for organic fluidity
-vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+float hash21(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
 
-float snoise(vec3 v) {
-  const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
-  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+float noise21(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(
+        mix(hash21(i), hash21(i + vec2(1.0, 0.0)), f.x),
+        mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0)), f.x),
+        f.y
+    );
+}
 
-  vec3 i  = floor(v + dot(v, C.yyy) );
-  vec3 x0 = v - i + dot(i, C.xxx) ;
+float fbm(vec2 p) {
+    float value = 0.0;
+    float amplitude = 0.52;
+    mat2 rotation = mat2(0.80, 0.60, -0.60, 0.80);
+    for (int octave = 0; octave < 4; octave++) {
+        value += amplitude * noise21(p);
+        p = rotation * p * 2.03 + 13.7;
+        amplitude *= 0.48;
+    }
+    return value;
+}
 
-  vec3 g = step(x0.yzx, x0.xyz);
-  vec3 l = 1.0 - g;
-  vec3 i1 = min( g.xyz, l.zxy );
-  vec3 i2 = max( g.xyz, l.zxy );
+float liquidField(vec2 p, vec2 pointer, float time) {
+    float slowTime = time * 0.16 * uMotion;
+    vec2 flow = vec2(
+        fbm(p * 0.82 + vec2(slowTime, -slowTime * 0.45)),
+        fbm(p * 0.82 + vec2(8.3, -slowTime * 0.72))
+    ) - 0.5;
+    vec2 warped = p + flow * 0.18;
+    float chamber = length(vec2(warped.x * 0.68, (warped.y - 0.22) * 0.78));
+    float lip = 0.735 + (fbm(warped * 2.1 + slowTime) - 0.5) * 0.18;
 
-  vec3 x1 = x0 - i1 + C.xxx;
-  vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y
-  vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y
-
-  i = mod289(i);
-  vec4 p = permute( permute( permute(
-             i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
-           + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
-           + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
-
-  float n_ = 0.142857142857; // 1.0/7.0
-  vec3  ns = n_ * D.wyz - D.xzx;
-
-  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-
-  vec4 x_ = floor(j * ns.z);
-  vec4 y_ = floor(j - 7.0 * x_ );
-
-  vec4 x = x_ *ns.x + ns.yyyy;
-  vec4 y = y_ *ns.x + ns.yyyy;
-  vec4 h = 1.0 - abs(x) - abs(y);
-
-  vec4 b0 = vec4( x.xy, y.xy );
-  vec4 b1 = vec4( x.zw, y.zw );
-
-  vec4 s0 = floor(b0)*2.0 + 1.0;
-  vec4 s1 = floor(b1)*2.0 + 1.0;
-  vec4 sh = -step(h, vec4(0.0));
-
-  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
-  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
-
-  vec3 p0 = vec3(a0.xy,h.x);
-  vec3 p1 = vec3(a0.zw,h.y);
-  vec3 p2 = vec3(a1.xy,h.z);
-  vec3 p3 = vec3(a1.zw,h.w);
-
-  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
-  p0 *= norm.x;
-  p1 *= norm.y;
-  p2 *= norm.z;
-  p3 *= norm.w;
-
-  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-  m = m * m;
-  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
-                                dot(p2,x2), dot(p3,x3) ) );
+    vec2 delta = p - pointer;
+    float pressure = exp(-dot(delta, delta) * 7.5) * 0.13 * uMotion;
+    float ripple = sin(length(delta) * 25.0 - time * 2.0) * exp(-dot(delta, delta) * 4.2) * 0.018 * uMotion;
+    return chamber - lip + pressure + ripple;
 }
 
 void main() {
-    // Aspect ratio correction
-    vec2 st = gl_FragCoord.xy / uResolution.xy;
-    st.x *= uResolution.x / uResolution.y;
+    vec2 p = vUv * 2.0 - 1.0;
+    float aspect = uResolution.x / max(uResolution.y, 1.0);
+    p.x *= aspect;
+    vec2 pointer = vec2(uPointer.x * aspect, uPointer.y);
 
-    // Mouse tracking mathematically influences the fluid currents
-    vec2 mouse = uMouse.xy;
-    mouse.x *= uResolution.x / uResolution.y;
-    
-    // Add magnetic pull from the mouse cursor
-    float distToMouse = distance(st, mouse);
-    float mouseInfluence = smoothstep(0.8, 0.0, distToMouse);
+    float field = liquidField(p, pointer, uTime);
+    float liquid = smoothstep(-0.025, 0.045, field);
+    float edge = exp(-abs(field) * 34.0);
 
-    // Layered simplex noise to create "fluid" ripples
-    vec2 flow = vec2(
-        snoise(vec3(st * 2.0, uTime * 0.1)),
-        snoise(vec3(st * 2.0 + 100.0, uTime * 0.1))
-    );
-    
-    // The "waves" of the liquid pushing against each other
-    float n1 = snoise(vec3(st * 3.0 + flow + (mouseInfluence * length(flow)), uTime * 0.2));
-    float n2 = snoise(vec3(st * 6.0 - flow, uTime * 0.15 + 10.0));
-    float n3 = snoise(vec3(st * 1.5 + flow * 2.0, uTime * 0.05));
-    
-    // Blend the noise to create smooth, rolling gradients
-    float finalNoise = n1 * 0.5 + n2 * 0.25 + n3 * 0.25;
-    
-    // Remap noise from [-1, 1] to [0, 1]
-    finalNoise = finalNoise * 0.5 + 0.5;
+    vec2 gradient = vec2(dFdx(field), dFdy(field));
+    vec2 normal = normalize(gradient + vec2(0.0001));
+    vec2 flowUv = p * 2.35 + normal * 0.32;
+    float detail = fbm(flowUv + vec2(uTime * 0.10 * uMotion, -uTime * 0.07 * uMotion));
+    float folds = 0.5 + 0.5 * sin(detail * 19.0 + field * 31.0 - uTime * 0.28 * uMotion);
+    folds = pow(folds, 3.2);
+    float grazing = pow(1.0 - abs(dot(normal, normalize(vec2(-0.45, 0.9)))), 3.0);
+    float specular = clamp(folds * 0.76 + grazing * 0.72 + edge * 1.22, 0.0, 1.0);
 
-    // Premium Midnight + Cyan + Violet Palette
-    vec3 color1 = vec3(0.00, 0.00, 0.02);  // Deepest black-blue
-    vec3 color2 = vec3(0.05, 0.05, 0.15);  // Midnight blue
-    vec3 color3 = vec3(0.20, 0.00, 0.40);  // Deep Violet
-    vec3 color4 = vec3(0.00, 0.60, 0.80);  // Cyan/Electric Blue
-    
-    // Smooth blending
-    vec3 color = mix(color1, color2, smoothstep(0.0, 0.3, finalNoise));
-    color = mix(color, color3, smoothstep(0.3, 0.6, finalNoise));
-    color = mix(color, color4, smoothstep(0.6, 1.0, finalNoise));
-    
-    // Add a glowing core where the mouse hovers
-    color += vec3(0.0, 0.8, 1.0) * (mouseInfluence * 0.3);
-    
-    // Subtle vignette to focus the center
-    float vignette = distance(vUv, vec2(0.5));
-    color *= smoothstep(0.8, 0.2, vignette);
-    
+    vec3 graphite = vec3(0.006, 0.009, 0.012);
+    vec3 gunmetal = vec3(0.055, 0.075, 0.085);
+    vec3 chrome = vec3(0.94, 0.97, 0.98);
+    vec3 liquidColor = mix(graphite, gunmetal, smoothstep(0.12, 0.78, detail));
+    liquidColor = mix(liquidColor, chrome, smoothstep(0.62, 0.96, specular));
+    liquidColor += chrome * edge * 0.38;
+
+    float veinSeed = abs(sin(detail * 28.0 - field * 21.0 + uTime * 0.16 * uMotion));
+    float cyanVein = pow(1.0 - veinSeed, 24.0) * smoothstep(0.02, 0.28, field);
+    vec3 cyan = vec3(0.03, 0.68, 0.82);
+    liquidColor += cyan * (cyanVein * 0.72 + edge * 0.10);
+
+    vec3 color = liquidColor * liquid;
+    color += vec3(0.12, 0.15, 0.16) * edge * (1.0 - liquid) * 0.22;
+
+    float vignette = 1.0 - smoothstep(0.55, 1.35, length(vec2(p.x / aspect, p.y)));
+    color *= mix(0.48, 1.0, vignette);
     gl_FragColor = vec4(color, 1.0);
 }
 `;
 
-function FluidCanvas() {
+function FluidSurface({ pointer, motionEnabled }: FluidSurfaceProps) {
     const materialRef = useRef<THREE.ShaderMaterial>(null);
+    const smoothPointer = useRef(new THREE.Vector2(4, 4));
     const { size } = useThree();
-    const mousePos = useRef({ x: 0.5, y: 0.5 });
-
-    // Crucial Performance/Bug Fix: 
-    // Do NOT recreate the uniforms object on resize. Three.js shader materials 
-    // lose their variable bindings if the uniforms object reference changes!
-    const uniforms = useRef({
+    const uniforms = useMemo(() => ({
         uTime: { value: 0 },
-        uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-        uResolution: { value: new THREE.Vector2(1920, 1080) }
-    });
+        uPointer: { value: new THREE.Vector2() },
+        uResolution: { value: new THREE.Vector2(1, 1) },
+        uMotion: { value: motionEnabled ? 1 : 0 },
+    }), [motionEnabled]);
 
-    // Update screen resolution uniforms safely without recreating the object
     useEffect(() => {
-        if (materialRef.current) {
-            materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
-        }
+        const material = materialRef.current;
+        if (!material) return;
+        material.uniforms.uResolution.value.set(size.width, size.height);
     }, [size]);
 
-    // Attach native window mouse tracking to pierce through any absolutely positioned DOM elements
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            mousePos.current.x = e.clientX / window.innerWidth;
-            mousePos.current.y = 1.0 - (e.clientY / window.innerHeight); // Invert Y for WebGL UV space
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
-    useFrame((state) => {
-        if (materialRef.current) {
-            // Unbreakable time propagation
-            materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-
-            // Smoothly lerp towards actual mouse coordinates
-            materialRef.current.uniforms.uMouse.value.x += (mousePos.current.x - materialRef.current.uniforms.uMouse.value.x) * 0.05;
-            materialRef.current.uniforms.uMouse.value.y += (mousePos.current.y - materialRef.current.uniforms.uMouse.value.y) * 0.05;
-        }
+    useFrame((state, delta) => {
+        const material = materialRef.current;
+        if (!material) return;
+        smoothPointer.current.lerp(pointer.current, 1 - Math.exp(-delta * 5.5));
+        material.uniforms.uTime.value = state.clock.getElapsedTime();
+        material.uniforms.uPointer.value.copy(smoothPointer.current);
+        material.uniforms.uMotion.value = motionEnabled ? 1 : 0;
     });
 
     return (
         <mesh>
-            {/* The canvas geometry is just a massive 2D plane taking up the entire camera view */}
             <planeGeometry args={[2, 2]} />
             <shaderMaterial
                 ref={materialRef}
+                uniforms={uniforms}
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
-                // eslint-disable-next-line react-hooks/refs
-                uniforms={uniforms.current}
                 depthWrite={false}
                 depthTest={false}
             />
@@ -208,35 +163,44 @@ function FluidCanvas() {
 export function WebGLLiquidAurora({ className, children }: WebGLLiquidAuroraProps) {
     const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
     const [isVisible, setIsVisible] = useState(true);
+    const pointer = useRef(new THREE.Vector2(4, 4));
+    const motionEnabled = !prefersReducedMotion;
 
     useEffect(() => {
-        const handleVisibilityChange = () => {
-            setIsVisible(document.visibilityState === "visible");
-        };
-
-        handleVisibilityChange();
-        document.addEventListener("visibilitychange", handleVisibilityChange);
-
-        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+        const updateVisibility = () => setIsVisible(document.visibilityState === "visible");
+        updateVisibility();
+        document.addEventListener("visibilitychange", updateVisibility);
+        return () => document.removeEventListener("visibilitychange", updateVisibility);
     }, []);
 
+    const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+        if (!motionEnabled) return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        pointer.current.set(
+            (event.clientX - bounds.left) / bounds.width * 2 - 1,
+            -((event.clientY - bounds.top) / bounds.height * 2 - 1),
+        );
+    };
+
     return (
-        <div className={cn("relative w-full h-full bg-[#05000a] overflow-hidden", className)}>
-            {/* Native WebGL rendering the fluid layer */}
+        <div
+            className={cn("relative size-full overflow-hidden bg-black", className)}
+            onPointerMove={handlePointerMove}
+            onPointerLeave={() => pointer.current.set(4, 4)}
+        >
             <div className="absolute inset-0 z-0">
                 <Canvas
-                    // Use a completely flat orthographic camera because we are rendering a 2D Shader Screen
                     orthographic
                     camera={{ position: [0, 0, 1], left: -1, right: 1, top: 1, bottom: -1 }}
-                    dpr={isLowPerformance ? [1, 1] : [1, 1.5]}
-                    frameloop={isVisible && !prefersReducedMotion ? "always" : "demand"}
+                    dpr={isLowPerformance ? 1 : [1, 1.25]}
+                    frameloop={isVisible && motionEnabled ? "always" : "demand"}
+                    gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
                 >
-                    <FluidCanvas />
+                    <FluidSurface pointer={pointer} motionEnabled={motionEnabled} />
                 </Canvas>
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_34%,rgba(0,0,0,0.12)_64%,rgba(0,0,0,0.55)_100%)]" />
             </div>
-
-            {/* DOM Overlay Layer */}
-            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pointer-events-none">
+            <div className="relative z-10 flex size-full flex-col transform-gpu [backface-visibility:hidden]">
                 {children}
             </div>
         </div>
