@@ -1,176 +1,218 @@
-/* eslint-disable react-hooks/purity */
 "use client";
 
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import {
-    MeshTransmissionMaterial,
-    Environment,
-    Lightformer,
-    Float,
-    Instances,
-    Instance,
-} from "@react-three/drei";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
+import { usePerformanceMode } from "@/components/ui/use-performance-mode";
 
 interface WebGLGlassCoreProps {
-    className?: string;
-    children?: React.ReactNode;
+  className?: string;
+  children?: React.ReactNode;
 }
 
-function Swarm({ count = 150 }) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const instances = useRef<any>(null);
-
-    // Create random positions and colors for the swarm of tiny orbs
-    const particles = useMemo(() => {
-        return new Array(count).fill(0).map(() => {
-            const radius = 5 + Math.random() * 5;
-            const theta = Math.random() * 2 * Math.PI;
-            const phi = Math.acos((Math.random() * 2) - 1);
-
-            const x = radius * Math.sin(phi) * Math.cos(theta);
-            const y = radius * Math.sin(phi) * Math.sin(theta);
-            const z = radius * Math.cos(phi);
-
-            // Subtle premium colors (whites, pale emerald, dim grays)
-            const colorOption = Math.random();
-            let color = "#ffffff";
-            if (colorOption > 0.8) color = "#00ffcc"; // Emerald glow
-            else if (colorOption > 0.5) color = "#444444"; // Dimly lit
-
-            return {
-                position: new THREE.Vector3(x, y, z),
-                color: new THREE.Color(color),
-                scale: 0.2 + Math.random() * 0.8,
-                speed: 0.1 + Math.random() * 0.5,
-                angle: Math.random() * Math.PI * 2,
-            };
-        });
-    }, [count]);
-
-    // Animate the swarm circulating the center over time
-    useFrame((state) => {
-        if (!instances.current) return;
-        const time = state.clock.getElapsedTime();
-
-        let i = 0;
-        for (const p of particles) {
-            // Very slow, majestic rotation around the Y axis
-            const currentObj = instances.current.children[i];
-            if (currentObj) {
-                const radius = Math.sqrt(p.position.x * p.position.x + p.position.z * p.position.z);
-                const currentAngle = p.angle + time * p.speed * 0.1;
-
-                currentObj.position.x = Math.cos(currentAngle) * radius;
-                currentObj.position.z = Math.sin(currentAngle) * radius;
-                currentObj.position.y = p.position.y + Math.sin(time * p.speed) * 0.5;
-            }
-            i++;
-        }
-    });
-
-    return (
-        <Instances ref={instances} limit={count} range={count}>
-            <icosahedronGeometry args={[0.08, 1]} />
-            <meshBasicMaterial toneMapped={false} />
-            {particles.map((p, i) => (
-                <Instance
-                    key={i}
-                    position={p.position}
-                    scale={p.scale}
-                    color={p.color}
-                />
-            ))}
-        </Instances>
-    );
+interface OpticalLensProps {
+  pointer: React.RefObject<THREE.Vector2>;
+  shouldAnimate: boolean;
 }
 
-function GlassNucleus() {
-    const meshRef = useRef<THREE.Mesh>(null);
+const vertexShader = /* glsl */ `
+  varying vec2 vUv;
 
-    useFrame((state) => {
-        if (meshRef.current) {
-            // Base majestic rotation
-            // meshRef.current.rotation.x += delta * 0.1;
-            // meshRef.current.rotation.y += delta * 0.15;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
 
-            // Interactive mouse tracking (The object mathematically tilts to look at the cursor)
-            const targetX = (state.mouse.x * Math.PI) / 4;
-            const targetY = (state.mouse.y * Math.PI) / 4;
+const fragmentShader = /* glsl */ `
+  precision highp float;
 
-            meshRef.current.rotation.y += 0.05 * (targetX - meshRef.current.rotation.y);
-            meshRef.current.rotation.x += 0.05 * (-targetY - meshRef.current.rotation.x);
-        }
-    });
+  uniform float uTime;
+  uniform float uAspect;
+  uniform float uMotion;
+  uniform vec2 uPointer;
+  varying vec2 vUv;
 
-    return (
-        <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-            <mesh ref={meshRef}>
-                {/* A complex, beautiful geometric shape to trap and refract light */}
-                <torusKnotGeometry args={[1.5, 0.4, 256, 32]} />
-                <MeshTransmissionMaterial
-                    transmission={1}
-                    thickness={0.8}
-                    roughness={0.05}
-                    chromaticAberration={0.06}
-                    anisotropicBlur={0.1}
-                    color="#ffffff"
-                    clearcoat={1}
-                    clearcoatRoughness={0.1}
-                    // MASSIVE PERFORMANCE BOOST: 
-                    // Uses internal threejs sampler instead of multi-render resolution passes. 
-                    // This creates 60 FPS glass refraction!
-                    transmissionSampler={true}
-                />
-            </mesh>
-        </Float>
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+  }
+
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(
+      mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+      f.y
     );
+  }
+
+  float starLayer(vec2 p, float scale, float threshold) {
+    vec2 cell = floor(p * scale);
+    vec2 local = fract(p * scale) - 0.5;
+    float seed = hash(cell);
+    float radius = mix(0.025, 0.075, hash(cell + 19.7));
+    return smoothstep(radius, 0.0, length(local)) * step(threshold, seed);
+  }
+
+  float ring(float radius, float target, float sharpness) {
+    return exp(-abs(radius - target) * sharpness);
+  }
+
+  void main() {
+    vec2 p = vUv * 2.0 - 1.0;
+    p.x *= uAspect;
+
+    vec2 pointer = uPointer;
+    pointer.x *= uAspect;
+    float lensScale = min(uAspect * 0.94, 1.08);
+    vec2 centerShift = pointer * vec2(0.035, 0.026) * uMotion;
+    vec2 q = (p - centerShift) / max(lensScale, 0.01);
+    q.x *= 1.0 + pointer.x * 0.018 * uMotion;
+
+    float radius = length(q);
+    float angle = atan(q.y, q.x);
+    float time = uTime * 0.16;
+    float annulus = smoothstep(0.48, 0.57, radius) * (1.0 - smoothstep(1.16, 1.24, radius));
+    float voidMask = 1.0 - smoothstep(0.48, 0.57, radius);
+
+    float bend = 1.0 + 0.13 / (abs(radius - 0.55) + 0.17);
+    vec2 refracted = q * bend;
+    refracted += vec2(sin(angle * 3.0 + time), cos(angle * 2.0 - time)) * annulus * 0.035;
+
+    float distantStars = starLayer(q + vec2(time * 0.018, 0.0), 31.0, 0.976);
+    distantStars += starLayer(q * 1.73 - vec2(0.0, time * 0.012), 22.0, 0.982) * 0.55;
+    float lensedStars = starLayer(refracted + vec2(time * 0.02, 0.0), 35.0, 0.965);
+    lensedStars += starLayer(refracted * 1.54, 24.0, 0.978) * 0.5;
+
+    float innerRim = ring(radius, 0.555, 72.0);
+    float middleRim = ring(radius, 0.735, 54.0);
+    float outerRim = ring(radius, 0.955, 68.0);
+    float casingRim = ring(radius, 1.13, 80.0);
+
+    float ripple = noise(vec2(angle * 2.8 + time, radius * 8.0 - time));
+    float caustic = pow(0.5 + 0.5 * sin(angle * 3.0 + radius * 22.0 + ripple * 4.0 - time * 1.8), 20.0) * annulus;
+    float fineCaustic = pow(0.5 + 0.5 * sin(angle * 7.0 - radius * 39.0 + ripple * 6.0 + time * 1.4), 28.0) * annulus;
+    float opticalGrooves = pow(0.5 + 0.5 * cos(radius * 41.0), 32.0) * annulus;
+    float mechanicalArcs = pow(0.5 + 0.5 * cos(angle * 4.0 + time * 0.5), 22.0) * (middleRim + outerRim);
+
+    float focusDistance = length((q - pointer / max(lensScale, 0.01)) * vec2(0.9, 1.2));
+    float focus = exp(-focusDistance * 3.8) * uMotion;
+
+    vec3 color = vec3(0.0015, 0.002, 0.0028);
+    color += vec3(0.38, 0.44, 0.48) * distantStars * (1.0 - annulus * 0.62);
+    color += vec3(0.58, 0.70, 0.76) * lensedStars * annulus;
+    color += vec3(0.015, 0.024, 0.030) * annulus * (0.7 + ripple * 0.7);
+    color += vec3(0.43, 0.52, 0.56) * (middleRim * 0.36 + outerRim * 0.48 + casingRim * 0.7);
+    color += vec3(0.86, 0.94, 1.0) * innerRim * (0.68 + caustic * 0.7);
+    color += vec3(0.12, 0.42, 0.52) * ring(radius, 0.566, 88.0) * 0.52;
+    color += vec3(0.54, 0.22, 0.06) * ring(radius, 0.544, 96.0) * 0.28;
+    color += vec3(0.16, 0.29, 0.34) * caustic * 0.24;
+    color += vec3(0.78, 0.88, 0.92) * fineCaustic * 0.14;
+    color += vec3(0.52, 0.60, 0.64) * opticalGrooves * 0.28;
+    color += vec3(0.72, 0.82, 0.86) * mechanicalArcs * 0.8;
+    color += vec3(0.08, 0.42, 0.52) * focus * (innerRim + middleRim) * 0.65;
+
+    color *= 1.0 - voidMask * 0.985;
+    float vignette = smoothstep(1.55, 0.24, length(vec2(p.x / max(uAspect, 0.01), p.y)));
+    color *= 0.64 + vignette * 0.36;
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+function OpticalLens({ pointer, shouldAnimate }: OpticalLensProps) {
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const smoothedPointer = useRef(new THREE.Vector2(0, 0));
+  const { size, viewport } = useThree();
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uAspect: { value: 1 },
+      uMotion: { value: 1 },
+      uPointer: { value: new THREE.Vector2(0, 0) },
+    }),
+    [],
+  );
+
+  useFrame((state, delta) => {
+    const material = materialRef.current;
+    if (!material) return;
+
+    smoothedPointer.current.lerp(pointer.current, 1 - Math.exp(-delta * 6.5));
+    material.uniforms.uPointer.value.copy(smoothedPointer.current);
+    material.uniforms.uAspect.value = size.width / Math.max(size.height, 1);
+    material.uniforms.uMotion.value = shouldAnimate ? 1 : 0;
+
+    if (shouldAnimate) {
+      material.uniforms.uTime.value = state.clock.elapsedTime;
+    }
+  });
+
+  return (
+    <mesh scale={[viewport.width, viewport.height, 1]}>
+      <planeGeometry args={[1, 1]} />
+      <shaderMaterial
+        ref={materialRef}
+        uniforms={uniforms}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        depthWrite={false}
+        depthTest={false}
+        toneMapped={false}
+      />
+    </mesh>
+  );
 }
 
 export function WebGLGlassCore({ className, children }: WebGLGlassCoreProps) {
-    return (
-        <div className={cn("relative w-full h-full bg-[#020202] overflow-hidden", className)}>
-            {/* The absolute canvas container now receives pointer events to track the mouse natively */}
-            <div className="absolute inset-0 z-0">
-                <Canvas
-                    camera={{ position: [0, 0, 8], fov: 40 }}
-                    dpr={[1, 1.5]}
-                    gl={{ antialias: false, alpha: true }}
-                >
-                    <color attach="background" args={['#020202']} />
+  const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
+  const pointer = useRef(new THREE.Vector2(0, 0));
+  const [isVisible, setIsVisible] = useState(true);
 
-                    <ambientLight intensity={0.5} />
-                    <spotLight position={[10, 10, 10]} intensity={2} color="#ffffff" />
+  useEffect(() => {
+    const handleVisibilityChange = () => setIsVisible(document.visibilityState === "visible");
+    handleVisibilityChange();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
 
-                    {/* The Swarming Particles */}
-                    <Swarm count={200} />
+  const shouldAnimate = isVisible && !prefersReducedMotion;
 
-                    {/* The Refractive Glass Core */}
-                    <GlassNucleus />
+  return (
+    <div
+      className={cn("relative isolate h-full w-full overflow-hidden bg-black", className)}
+      onPointerMove={(event) => {
+        const bounds = event.currentTarget.getBoundingClientRect();
+        pointer.current.set(
+          ((event.clientX - bounds.left) / Math.max(bounds.width, 1)) * 2 - 1,
+          -(((event.clientY - bounds.top) / Math.max(bounds.height, 1)) * 2 - 1),
+        );
+      }}
+      onPointerLeave={() => pointer.current.set(0, 0)}
+    >
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+        <Canvas
+          orthographic
+          camera={{ position: [0, 0, 1], zoom: 1 }}
+          dpr={isLowPerformance ? 1 : [1, 1.5]}
+          frameloop={shouldAnimate ? "always" : "demand"}
+          gl={{
+            alpha: false,
+            antialias: false,
+            depth: false,
+            powerPreference: "high-performance",
+          }}
+        >
+          <OpticalLens pointer={pointer} shouldAnimate={shouldAnimate} />
+        </Canvas>
+      </div>
 
-                    {/* Fully programmatic environment — no external file fetches needed */}
-                    <Environment resolution={128}>
-                        <Lightformer form="ring" intensity={2} position={[0, 5, -5]} scale={10} color="#ffffff" />
-                        <Lightformer form="rect" intensity={1} position={[-5, 2, 2]} scale={5} color="#aaddff" />
-                        <Lightformer form="rect" intensity={0.5} position={[5, 0, -3]} scale={4} color="#eeffee" />
-                    </Environment>
-                </Canvas>
-
-                {/* Vignette mask to softly blend the WebGL canvas into the DOM edges */}
-                <div
-                    className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply"
-                    style={{ background: 'radial-gradient(ellipse at center, transparent 30%, #020202 90%)' }}
-                />
-            </div>
-
-            {/* REAL DOM CONTENT GOES ON TOP 
-                We use pointer-events-none on this wrapper so mouse events pass through to the Canvas underneath.
-                Interactive children (like Buttons) must have pointer-events-auto applied explicitly. */}
-            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pointer-events-none">
-                {children}
-            </div>
-        </div>
-    );
+      <div className="relative z-10 h-full w-full transform-gpu [backface-visibility:hidden]">
+        {children}
+      </div>
+    </div>
+  );
 }

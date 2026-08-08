@@ -1,72 +1,104 @@
 "use client";
+
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { WebGLLoader } from "@/components/ui/webgl-loader";
 
-import { motion } from "framer-motion";
-import { BlurText } from "@/components/ui/blur-text";
-import { KineticButton } from "@/components/ui/kinetic-button";
-const WebGLGlassCore = dynamic(() => import("@/components/ui/webgl-glass-core").then((mod) => mod.WebGLGlassCore), { ssr: false, loading: () => <WebGLLoader /> });
+const WebGLGlassCore = dynamic(
+  () => import("@/components/ui/webgl-glass-core").then((module) => module.WebGLGlassCore),
+  { ssr: false, loading: () => <WebGLLoader /> },
+);
+
+const reveal = {
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0 },
+};
 
 export function Hero02() {
-    return (
-        <section className="relative w-full min-h-[90vh] flex flex-col overflow-hidden border-y border-white/[0.05]">
-            {/* 
-        This WebGLGlassCore component runs a dense glass geometry refracting thousands of swarming particles.
-      */}
-            <WebGLGlassCore className="absolute inset-0 z-0">
-                <div className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
+  return (
+    <section className="relative min-h-[720px] w-full overflow-hidden border-y border-white/[0.06] bg-black sm:min-h-[780px] lg:min-h-[860px]">
+      <WebGLGlassCore className="absolute inset-0">
+        <div className="relative flex min-h-[720px] w-full flex-col sm:min-h-[780px] lg:min-h-[860px]">
+          <header className="relative z-20 flex h-20 items-center border-b border-white/[0.08] px-5 sm:px-8 lg:px-12">
+            <Link href="/" className="flex items-center gap-3 text-white/90" aria-label="AuraBitz home">
+              <span className="relative grid h-7 w-7 place-items-center border border-white/30">
+                <span className="h-2.5 w-2.5 rounded-full border border-white/70" />
+              </span>
+              <span className="text-sm font-semibold tracking-[-0.03em] sm:text-base">AuraBitz</span>
+            </Link>
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="mb-8 px-4 py-2 border border-emerald-500/20 rounded-full bg-black/40 backdrop-blur-md flex items-center gap-3 shadow-[0_0_30px_rgba(16,185,129,0.05)]"
-                    >
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-                        <span className="text-[10px] font-mono tracking-[0.2em] text-white/70 uppercase">
-                            Optical Refraction
-                        </span>
-                    </motion.div>
+            <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 text-xs text-white/55 md:flex">
+              <Link href="/docs" className="transition-colors hover:text-white">Components</Link>
+              <Link href="/blocks" className="transition-colors hover:text-white">Blocks</Link>
+              <Link href="/docs/installation" className="transition-colors hover:text-white">Docs</Link>
+            </nav>
 
-                    {/* Ice-Cold Premium Typography */}
-                    <h1 className="text-6xl md:text-8xl lg:text-[100px] font-black tracking-tighter text-white mb-6 leading-[0.9] overflow-visible py-2 drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
-                        <span className="text-white/40 font-serif italic tracking-tight pr-4">
-                            <BlurText splitBy="words" stagger={0.04} delay={0.1} duration={0.8}>
-                                Structural
-                            </BlurText>
-                        </span>
-                        <br />
-                        <BlurText splitBy="words" stagger={0.04} duration={0.8} delay={0.3}>
-                            Clarity.
-                        </BlurText>
-                    </h1>
+            <div className="ml-auto flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-white/35">
+              <span className="hidden sm:inline">Optical engine</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.65)]" />
+            </div>
+          </header>
 
-                    {/* Focused Subtext */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 10, filter: "blur(5px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-lg md:text-xl text-white/50 font-light max-w-2xl mb-12 leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                    >
-                        Thousands of particles caught in the orbit of an impossible refractive geometry. Calculated with WebGL. Presented flawlessly at 60 frames per second.
-                    </motion.p>
+          <div className="relative z-10 flex flex-1 items-center justify-center px-5 py-20 sm:px-8">
+            <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+              <motion.p
+                {...reveal}
+                transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
+                className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/55"
+              >
+                Optical engine <span className="px-2 text-cyan-200">/</span> 02
+              </motion.p>
 
-                    {/* Action Group */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex flex-col sm:flex-row items-center gap-4 pointer-events-auto"
-                    >
-                        <div className="h-12 w-48 relative group">
-                            <div className="absolute inset-0 bg-emerald-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg" />
-                            <KineticButton className="w-full h-full bg-white text-black font-semibold rounded-lg text-sm border-0 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                                Examine Artifact
-                            </KineticButton>
-                        </div>
-                    </motion.div>
-                </div>
-            </WebGLGlassCore>
-        </section>
-    );
+              <motion.h1
+                {...reveal}
+                transition={{ duration: 0.9, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-7 max-w-[11ch] text-[clamp(3.65rem,8.2vw,7.8rem)] font-semibold uppercase leading-[0.82] tracking-[-0.072em] text-white"
+              >
+                Bend the void.
+              </motion.h1>
+
+              <motion.p
+                {...reveal}
+                transition={{ duration: 0.78, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-8 max-w-lg font-mono text-xs leading-6 tracking-[0.02em] text-white/55 sm:text-sm"
+              >
+                Light enters. Geometry decides what leaves.
+              </motion.p>
+
+              <motion.div
+                {...reveal}
+                transition={{ duration: 0.78, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-9 flex flex-col items-center gap-4 sm:flex-row"
+              >
+                <motion.div whileHover={{ scale: 1.025 }} whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 420, damping: 28 }}>
+                  <Link
+                    href="/blocks"
+                    className="group flex h-14 min-w-48 items-center justify-between border border-white/45 bg-black/50 px-5 font-mono text-xs text-white/80 backdrop-blur-md transition-colors hover:border-white hover:text-white"
+                  >
+                    <span>Focus lens</span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </motion.div>
+
+                <Link
+                  href="/docs/installation"
+                  className="group flex h-14 min-w-36 items-center justify-between border border-white/15 bg-black/35 px-5 font-mono text-xs text-white/45 backdrop-blur-md transition-colors hover:border-white/40 hover:text-white"
+                >
+                  <span>Source</span>
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-8 z-10 hidden justify-between px-8 font-mono text-[9px] uppercase tracking-[0.18em] text-white/35 sm:flex lg:px-12">
+            <span>IOR 1.52</span>
+            <span>Dispersion 0.028</span>
+          </div>
+        </div>
+      </WebGLGlassCore>
+    </section>
+  );
 }
