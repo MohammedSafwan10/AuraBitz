@@ -1,79 +1,109 @@
 "use client";
-import dynamic from "next/dynamic";
-import { WebGLLoader } from "@/components/ui/webgl-loader";
-import { MotionSafe } from "@/components/ui/motion-safe";
 
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { BlurText } from "@/components/ui/blur-text";
-import { KineticButton } from "@/components/ui/kinetic-button";
-const WebGLParticleField = dynamic(() => import("@/components/ui/webgl-particle-field").then((mod) => mod.WebGLParticleField), { ssr: false, loading: () => <WebGLLoader /> });
+import { WebGLLoader } from "@/components/ui/webgl-loader";
+
+const WebGLParticleField = dynamic(
+    () => import("@/components/ui/webgl-particle-field").then((module) => module.WebGLParticleField),
+    { ssr: false, loading: () => <WebGLLoader /> },
+);
+
+const reveal = {
+    hidden: { opacity: 0, y: 18 },
+    visible: { opacity: 1, y: 0 },
+};
 
 export function Hero03() {
     return (
-        <section className="relative w-full min-h-[90vh] flex flex-col overflow-hidden border-y border-white/[0.05]">
-            {/* 
-        The WebGLParticleField runs 50,000 vertices on custom shaders directly in the GPU.
-      */}
-            <MotionSafe fallback={<div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1),transparent_60%)]" />}>
-                <WebGLParticleField className="absolute inset-0 z-0">
-                    <div className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="mb-8 px-4 py-2 border border-cyan-500/20 rounded-full bg-black/40 backdrop-blur-md flex items-center gap-3 shadow-[0_0_30px_rgba(6,182,212,0.1)]"
-                    >
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
-                        <span className="text-[10px] font-mono tracking-[0.2em] text-cyan-100/70 uppercase">
-                            Data Structure Rendering
+        <section className="relative min-h-[720px] w-full overflow-hidden border-y border-white/[0.05] bg-black md:min-h-[780px] lg:min-h-[860px]">
+            <WebGLParticleField className="absolute inset-0">
+                <header className="pointer-events-auto flex h-16 w-full shrink-0 items-center justify-between border-b border-white/10 px-5 md:px-8">
+                    <Link href="/" className="flex items-center gap-3 text-sm font-semibold tracking-tight text-white/90">
+                        <span className="grid size-7 place-items-center border border-white/25">
+                            <span className="size-1.5 bg-cyan-300" />
                         </span>
-                    </motion.div>
+                        AuraBitz
+                    </Link>
 
-                    {/* Ethereal Quantum Typography */}
-                    <h1 className="text-6xl md:text-8xl lg:text-[110px] font-black tracking-tighter text-white mb-6 leading-[0.9] overflow-visible py-2 drop-shadow-[0_4px_20px_rgba(0,0,0,1)]">
-                        <span className="text-white/30 font-serif italic tracking-tight pr-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                            <BlurText splitBy="words" stagger={0.04} delay={0.1} duration={0.8}>
-                                Quantum
-                            </BlurText>
-                        </span>
-                        <br />
-                        <BlurText splitBy="words" stagger={0.04} duration={0.8} delay={0.3}>
-                            Matrix.
-                        </BlurText>
-                    </h1>
+                    <nav aria-label="Demo navigation" className="hidden items-center gap-10 text-xs text-white/50 md:flex">
+                        <Link href="/docs" className="transition-colors hover:text-white">Components</Link>
+                        <Link href="/blocks" className="transition-colors hover:text-white">Blocks</Link>
+                        <Link href="/docs" className="transition-colors hover:text-white">Docs</Link>
+                    </nav>
 
-                    {/* Focused Subtext */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 10, filter: "blur(5px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-lg md:text-xl text-white/50 font-light max-w-2xl mb-12 leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,1)]"
-                    >
-                        A universe in code. Rendering 50,000 unique vertices through an incredibly complex GLSL shader, creating an organic flowing particle ocean that bends toward you.
-                    </motion.p>
-
-                    {/* Action Group */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex flex-col sm:flex-row items-center gap-4 pointer-events-auto"
-                    >
-                        <div className="h-12 w-56 relative group">
-                            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg" />
-                            <KineticButton className="w-full h-full bg-white text-black font-semibold rounded-lg text-sm border-0 shadow-[0_0_20px_rgba(255,255,255,0.1)] tracking-wide">
-                                Initialize Sequence
-                            </KineticButton>
-                        </div>
-
-                        <button className="h-12 px-8 text-sm font-semibold text-white/50 rounded-lg group transition-colors hover:text-white border border-transparent hover:border-cyan-500/20 hover:bg-cyan-500/5 flex items-center gap-2">
-                            View Source Code
-                        </button>
-                    </motion.div>
+                    <div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-white/55 md:text-[10px]">
+                        <span className="hidden sm:inline">65,536 nodes</span>
+                        <span className="hidden text-white/25 sm:inline">/</span>
+                        <span>Live</span>
+                        <span className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(103,232,249,0.8)]" />
                     </div>
-                </WebGLParticleField>
-            </MotionSafe>
+                </header>
+
+                <div className="relative flex flex-1 items-center justify-center px-6 py-16 text-center md:px-16">
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        transition={{ staggerChildren: 0.1, delayChildren: 0.12 }}
+                        className="pointer-events-auto relative z-10 flex max-w-4xl flex-col items-center"
+                    >
+                        <motion.p
+                            variants={reveal}
+                            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                            className="mb-7 border-b border-white/30 pb-2 font-mono text-[10px] uppercase tracking-[0.23em] text-white/70"
+                        >
+                            Quantum matrix <span className="mx-2 text-cyan-300">/</span> 03
+                        </motion.p>
+
+                        <motion.h1
+                            variants={reveal}
+                            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-[clamp(3.15rem,8.3vw,8.5rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-white"
+                        >
+                            THE GRID IS ALIVE.
+                        </motion.h1>
+
+                        <motion.p
+                            variants={reveal}
+                            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                            className="mt-8 max-w-xl font-mono text-xs leading-6 tracking-[0.02em] text-white/55 md:text-sm"
+                        >
+                            Every point remembers the force that moved it.
+                        </motion.p>
+
+                        <motion.div
+                            variants={reveal}
+                            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                            className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:gap-5"
+                        >
+                            <Link
+                                href="#matrix"
+                                className="group flex h-13 min-w-44 items-center justify-between gap-8 border border-white/65 bg-black/55 px-5 font-mono text-xs text-white/90 backdrop-blur-sm transition-colors hover:border-cyan-300/80 hover:text-cyan-100"
+                            >
+                                Enter matrix
+                                <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                            </Link>
+                            <Link
+                                href="#source"
+                                className="group flex h-13 min-w-40 items-center justify-between gap-8 border-b border-white/25 px-3 font-mono text-xs text-white/60 transition-colors hover:border-white/70 hover:text-white"
+                            >
+                                View source
+                                <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                            </Link>
+                        </motion.div>
+                    </motion.div>
+
+                    <div className="pointer-events-none absolute bottom-7 left-6 hidden font-mono text-[9px] uppercase tracking-[0.16em] text-white/25 lg:block">
+                        X 00.00&nbsp;&nbsp; Y 00.00&nbsp;&nbsp; Z ∞
+                    </div>
+                    <div className="pointer-events-none absolute bottom-7 right-6 hidden items-center gap-3 font-mono text-[9px] uppercase tracking-[0.16em] text-white/25 lg:flex">
+                        <span>Matrix depth</span>
+                        <span className="text-cyan-300/80">L 03</span>
+                    </div>
+                </div>
+            </WebGLParticleField>
         </section>
     );
 }
