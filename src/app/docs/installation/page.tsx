@@ -80,7 +80,7 @@ export default function InstallationPage() {
                             Setup Guide
                         </div>
                     </div>
-                    <h1 className="grad-text text-4xl md:text-5xl font-extrabold tracking-tighter mb-5">Installation</h1>
+                    <h1 className="grad-text text-4xl md:text-5xl font-extrabold tracking-tighter mb-5">Setup</h1>
                     <p className="text-white/50 text-lg leading-relaxed font-light max-w-xl">
                         AuraBitz is not an npm package. It is a curated collection of source code that you copy directly into your project.
                         This gives you complete control over the markup, styles, and logic.

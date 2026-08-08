@@ -12,7 +12,7 @@ export default function DocsIndex() {
                 <div className="absolute -top-20 -left-20 w-[400px] h-[400px] bg-white/[0.03] blur-[100px] rounded-full pointer-events-none" />
                 <div className="relative z-10">
                     <h1 className="grad-text text-4xl md:text-5xl font-extrabold tracking-tighter mb-5">
-                        Index
+                        Library
                     </h1>
                     <p className="text-xl text-white/50 font-light max-w-2xl leading-relaxed">
                         A curated collection of architectural-grade React components. Precision-crafted for extreme performance and absolute minimal aesthetics.

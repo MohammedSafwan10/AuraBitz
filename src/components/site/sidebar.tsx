@@ -38,25 +38,48 @@ export function Sidebar() {
                         <h3 className="grad-text text-[11px] font-extrabold uppercase tracking-[0.2em] mb-3">
                             {category.title}
                         </h3>
-                        <nav className="flex flex-col gap-0.5 -ml-3">
-                            {category.links.map((link) => {
+                        <nav className={cn(
+                            "flex flex-col -ml-3",
+                            category.title === "Get Started" ? "gap-0 border-y border-white/[0.07]" : "gap-0.5"
+                        )}>
+                            {category.links.map((link, linkIndex) => {
                                 const isActive = pathname === link.href;
+                                const isStartLink = category.title === "Get Started";
                                 return (
                                     <Link
                                         key={link.href}
                                         href={link.href}
                                         className={cn(
-                                            "relative px-3 py-2 rounded-md text-[13px] font-medium transition-all duration-200 flex items-center gap-3",
+                                            "relative transition-all duration-200 flex items-center",
+                                            isStartLink
+                                                ? "min-h-11 gap-3 border-b border-white/[0.05] px-3 py-2.5 last:border-b-0"
+                                                : "gap-3 rounded-md px-3 py-2 text-[13px] font-medium",
                                             isActive
-                                                ? "grad-text font-semibold bg-white/[0.05]"
-                                                : "text-white/60 hover:text-white hover:bg-white/[0.03]"
+                                                ? isStartLink
+                                                    ? "bg-white/[0.025] text-white"
+                                                    : "grad-text bg-white/[0.05] font-semibold"
+                                                : "text-white/55 hover:bg-white/[0.025] hover:text-white"
                                         )}
                                     >
                                         {/* Active Indicator Line */}
-                                        {isActive && (
+                                        {isActive && !isStartLink && (
                                             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-r-full bg-gradient-to-b from-white to-white/30" />
                                         )}
-                                        {link.name}
+                                        {isStartLink && (
+                                            <span className={cn(
+                                                "font-mono text-[9px] tracking-[0.18em]",
+                                                isActive ? "text-cyan-300" : "text-white/20"
+                                            )}>
+                                                {String(linkIndex).padStart(2, "0")}
+                                            </span>
+                                        )}
+                                        <span className={cn(isStartLink && "text-[12px] font-medium tracking-[-0.01em]")}>{link.name}</span>
+                                        {isStartLink && (
+                                            <span className={cn(
+                                                "ml-auto h-1 w-1 rounded-full transition-all",
+                                                isActive ? "bg-cyan-300 shadow-[0_0_8px_rgba(103,232,249,.7)]" : "bg-white/10"
+                                            )} />
+                                        )}
                                     </Link>
                                 );
                             })}

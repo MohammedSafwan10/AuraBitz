@@ -5,11 +5,11 @@
       "description": "Start here before installing or copying AuraBitz components.",
       "items": [
         {
-          "name": "Index",
+          "name": "Library",
           "href": "/docs"
         },
         {
-          "name": "Installation",
+          "name": "Setup",
           "href": "/docs/installation"
         }
       ]
