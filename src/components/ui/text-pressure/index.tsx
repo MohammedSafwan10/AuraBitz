@@ -5,145 +5,156 @@ import { cn } from "@/lib/utils";
 import { usePerformanceMode } from "@/components/ui/use-performance-mode";
 
 interface TextPressureProps {
-    children: string;
-    className?: string;
-    baseWeight?: number;
-    maxWeight?: number;
-    baseScale?: number;
-    maxScale?: number;
-    radius?: number;
+  children: string;
+  className?: string;
+  baseWeight?: number;
+  maxWeight?: number;
+  baseScale?: number;
+  maxScale?: number;
+  radius?: number;
+  compression?: number;
+  showForcePoint?: boolean;
+  showStressLines?: boolean;
 }
 
 export function TextPressure({
-    children,
-    className,
-    baseWeight = 400,
-    maxWeight = 900,
-    baseScale = 1,
-    maxScale = 1.3,
-    radius = 150,
+  children,
+  className,
+  baseWeight = 400,
+  maxWeight = 900,
+  baseScale = 1,
+  maxScale = 1.3,
+  radius = 150,
+  compression = 0.56,
+  showForcePoint = false,
+  showStressLines = false,
 }: TextPressureProps) {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const charsRef = useRef<(HTMLSpanElement | null)[]>([]);
-    const charMetricsRef = useRef<{ x: number; y: number }[]>([]);
-    const mouseRef = useRef({ x: -1000, y: -1000 });
-    const rafRef = useRef<number>(0);
-    const isHoveringRef = useRef(false);
-    const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pointRef = useRef<HTMLSpanElement>(null);
+  const charsRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const metricsRef = useRef<{ x: number; y: number }[]>([]);
+  const pointerRef = useRef({ x: -1000, y: -1000 });
+  const frameRef = useRef<number | null>(null);
+  const activeRef = useRef(false);
+  const { isLowPerformance, prefersReducedMotion } = usePerformanceMode();
+  const chars = useMemo(() => children.split(""), [children]);
 
-    const chars = useMemo(
-        () => children.split("").map((char) => ({ char, isSpace: char === " " })),
-        [children]
-    );
+  useEffect(() => {
+    const root = containerRef.current;
+    if (!root) return;
 
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
+    const measure = () => {
+      metricsRef.current = charsRef.current.map((element) => {
+        if (!element) return { x: -1000, y: -1000 };
+        const rect = element.getBoundingClientRect();
+        return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+      });
+    };
 
-        const updateMetrics = () => {
-            charMetricsRef.current = charsRef.current.map((el) => {
-                if (!el) return { x: -1000, y: -1000 };
+    const render = () => {
+      frameRef.current = null;
+      const { x: pointerX, y: pointerY } = pointerRef.current;
+      charsRef.current.forEach((element, index) => {
+        if (!element) return;
+        const metric = metricsRef.current[index] ?? { x: -1000, y: -1000 };
+        const distance = Math.hypot(pointerX - metric.x, pointerY - metric.y);
+        const force = distance < radius ? (1 - distance / radius) ** 1.7 : 0;
+        const scaleX = baseScale * (1 - (1 - compression) * force);
+        const scaleY = baseScale + (maxScale - baseScale) * force * 0.62;
+        const pullX = (pointerX - metric.x) * force * 0.13;
+        const pullY = Math.max(0, pointerY - metric.y) * force * 0.035;
+        element.style.fontWeight = String(Math.round(baseWeight + (maxWeight - baseWeight) * force));
+        element.style.transform = `translate3d(${pullX.toFixed(2)}px, ${pullY.toFixed(2)}px, 0) scaleX(${scaleX.toFixed(3)}) scaleY(${scaleY.toFixed(3)})`;
+      });
+    };
 
-                const rect = el.getBoundingClientRect();
-                return {
-                    x: rect.left + rect.width / 2,
-                    y: rect.top + rect.height / 2,
-                };
-            });
-        };
+    const schedule = () => {
+      if (frameRef.current === null) frameRef.current = requestAnimationFrame(render);
+    };
 
-        const animate = () => {
-            const mx = mouseRef.current.x;
-            const my = mouseRef.current.y;
+    const updatePointer = (event: PointerEvent) => {
+      if (isLowPerformance || prefersReducedMotion) return;
+      pointerRef.current = { x: event.clientX, y: event.clientY };
+      if (pointRef.current) {
+        const rect = root.getBoundingClientRect();
+        pointRef.current.style.transform = `translate3d(${event.clientX - rect.left}px, ${event.clientY - rect.top}px, 0)`;
+        pointRef.current.style.opacity = "1";
+      }
+      schedule();
+    };
 
-            charsRef.current.forEach((el, index) => {
-                if (!el) return;
-                const metric = charMetricsRef.current[index] ?? { x: -1000, y: -1000 };
-                const dist = Math.hypot(mx - metric.x, my - metric.y);
+    const enter = () => {
+      activeRef.current = true;
+      measure();
+    };
+    const focus = () => {
+      const rect = root.getBoundingClientRect();
+      pointerRef.current = { x: rect.left + rect.width * 0.52, y: rect.top + rect.height * 0.92 };
+      if (pointRef.current) {
+        pointRef.current.style.transform = `translate3d(${rect.width * 0.52}px, ${rect.height * 0.92}px, 0)`;
+        pointRef.current.style.opacity = "1";
+      }
+      measure();
+      schedule();
+    };
+    const leave = () => {
+      activeRef.current = false;
+      pointerRef.current = { x: -1000, y: -1000 };
+      if (pointRef.current) pointRef.current.style.opacity = "0";
+      schedule();
+    };
 
-                let weight = baseWeight;
-                let scale = baseScale;
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(root);
+    root.addEventListener("pointermove", updatePointer, { passive: true });
+    root.addEventListener("pointerenter", enter);
+    root.addEventListener("pointerleave", leave);
+    root.addEventListener("focus", focus);
+    root.addEventListener("blur", leave);
+    window.addEventListener("scroll", measure, { passive: true });
+    return () => {
+      observer.disconnect();
+      root.removeEventListener("pointermove", updatePointer);
+      root.removeEventListener("pointerenter", enter);
+      root.removeEventListener("pointerleave", leave);
+      root.removeEventListener("focus", focus);
+      root.removeEventListener("blur", leave);
+      window.removeEventListener("scroll", measure);
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
+  }, [baseScale, baseWeight, compression, isLowPerformance, maxScale, maxWeight, prefersReducedMotion, radius]);
 
-                if (dist < radius) {
-                    const t = 1 - dist / radius;
-                    weight = baseWeight + (maxWeight - baseWeight) * t;
-                    scale = baseScale + (maxScale - baseScale) * t;
-                }
-
-                el.style.fontWeight = String(Math.round(weight));
-                el.style.transform = `scale(${scale.toFixed(3)})`;
-            });
-
-            if (isHoveringRef.current) {
-                rafRef.current = requestAnimationFrame(animate);
-            }
-        };
-
-        const onMouseMove = (e: MouseEvent) => {
-            mouseRef.current.x = e.clientX;
-            mouseRef.current.y = e.clientY;
-        };
-
-        const onMouseEnter = () => {
-            if (isLowPerformance || prefersReducedMotion) return;
-
-            updateMetrics();
-            isHoveringRef.current = true;
-            cancelAnimationFrame(rafRef.current);
-            rafRef.current = requestAnimationFrame(animate);
-        };
-
-        const onMouseLeave = () => {
-            mouseRef.current.x = -1000;
-            mouseRef.current.y = -1000;
-            isHoveringRef.current = false;
-            cancelAnimationFrame(rafRef.current);
-            rafRef.current = requestAnimationFrame(animate);
-        };
-
-        updateMetrics();
-
-        container.addEventListener("mousemove", onMouseMove, { passive: true });
-        container.addEventListener("mouseenter", onMouseEnter);
-        container.addEventListener("mouseleave", onMouseLeave);
-        window.addEventListener("resize", updateMetrics, { passive: true });
-        window.addEventListener("scroll", updateMetrics, { passive: true });
-
-        return () => {
-            container.removeEventListener("mousemove", onMouseMove);
-            container.removeEventListener("mouseenter", onMouseEnter);
-            container.removeEventListener("mouseleave", onMouseLeave);
-            window.removeEventListener("resize", updateMetrics);
-            window.removeEventListener("scroll", updateMetrics);
-            cancelAnimationFrame(rafRef.current);
-        };
-    }, [baseWeight, maxWeight, baseScale, maxScale, radius, isLowPerformance, prefersReducedMotion]);
-
-    return (
-        <div
-            ref={containerRef}
+  return (
+    <div
+      ref={containerRef}
+      tabIndex={0}
+      className={cn("relative inline-flex flex-wrap items-baseline justify-center select-none outline-none", className)}
+    >
+      {chars.map((character, index) =>
+        character === " " ? (
+          <span key={index} className="inline-block w-[0.3em]" />
+        ) : (
+          <span
+            key={index}
+            ref={(element) => { charsRef.current[index] = element; }}
             className={cn(
-                "inline-flex flex-wrap items-baseline justify-center cursor-default select-none",
-                className
+              "inline-block origin-bottom transition-[font-weight,transform] duration-150 ease-out will-change-transform",
+              showStressLines && "bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_0.105em,rgba(255,255,255,.58)_0.105em,rgba(255,255,255,.58)_0.118em)] bg-clip-text text-transparent",
             )}
-        >
-            {chars.map((c, i) =>
-                c.isSpace ? (
-                    <span key={i} className="inline-block w-[0.3em]" />
-                ) : (
-                    <span
-                        key={i}
-                        ref={(el) => { charsRef.current[i] = el; }}
-                        className="inline-block transition-[font-weight,transform] duration-150 ease-out"
-                        style={{
-                            fontWeight: baseWeight,
-                            transformOrigin: "center bottom",
-                        }}
-                    >
-                        {c.char}
-                    </span>
-                )
-            )}
-        </div>
-    );
+            style={{ fontWeight: baseWeight }}
+          >
+            {character}
+          </span>
+        ),
+      )}
+      {showForcePoint && (
+        <span
+          ref={pointRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-0 z-10 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300 opacity-0 shadow-[0_0_18px_rgba(34,211,238,.85)] transition-opacity"
+        />
+      )}
+    </div>
+  );
 }

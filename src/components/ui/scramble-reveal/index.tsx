@@ -1,89 +1,100 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useAnimationFrame, useInView } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, useAnimationFrame, useInView, useMotionValue, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface ScrambleRevealProps {
-    children: string;
-    className?: string;
-    characters?: string;
-    duration?: number;
-    delay?: number;
-    once?: boolean;
+  children: string;
+  className?: string;
+  characters?: string;
+  duration?: number;
+  delay?: number;
+  once?: boolean;
+  showDecodeFront?: boolean;
 }
 
-const DEFAULT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+const DEFAULT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/\\[]{}+=*:#";
 
 export function ScrambleReveal({
-    children,
-    className,
-    characters = DEFAULT_CHARS,
-    duration = 1,
-    delay = 0,
-    once = true,
+  children,
+  className,
+  characters = DEFAULT_CHARS,
+  duration = 1,
+  delay = 0,
+  once = true,
+  showDecodeFront = false,
 }: ScrambleRevealProps) {
-    const text = children;
-    const safeCharacters = characters.length > 0 ? characters : DEFAULT_CHARS;
-    // Initial state: normal text so SSR doesn't mismatch, scrambled client-side when animating
-    const [displayText, setDisplayText] = useState<string>(text);
-    const ref = useRef<HTMLSpanElement>(null);
-    const inView = useInView(ref, { once });
+  const rootRef = useRef<HTMLSpanElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
+  const inView = useInView(rootRef, { once });
+  const [animating, setAnimating] = useState(false);
+  const startRef = useRef<number | null>(null);
+  const lastFrameRef = useRef(0);
+  const progress = useMotionValue(0);
+  const decodeLeft = useTransform(progress, [0, 1], ["0%", "100%"]);
+  const safeCharacters = characters || DEFAULT_CHARS;
 
-    const [isAnimating, setIsAnimating] = useState(false);
-    const startTimeRef = useRef<number | null>(null);
+  const begin = useCallback(() => {
+    startRef.current = null;
+    progress.set(0);
+    if (textRef.current) {
+      textRef.current.textContent = children
+        .split("")
+        .map((character, index) => character === " " ? " " : safeCharacters[(index * 31) % safeCharacters.length])
+        .join("");
+    }
+    setAnimating(true);
+  }, [children, progress, safeCharacters]);
 
-    useEffect(() => {
-        if (inView) {
-            startTimeRef.current = null;
-            if (delay > 0) {
-                const scrambledInit = text.split("").map(c => c === " " ? " " : safeCharacters[Math.floor(Math.random() * safeCharacters.length)]).join("");
-                // eslint-disable-next-line react-hooks/set-state-in-effect
-                setDisplayText(scrambledInit);
-            }
-            const timer = setTimeout(() => {
-                setIsAnimating(true);
-            }, delay * 1000);
-            return () => clearTimeout(timer);
-        } else if (!once) {
-            setIsAnimating(false);
-            setDisplayText(text);
-        }
-    }, [inView, delay, once, text, safeCharacters]);
+  useEffect(() => {
+    if (!inView) {
+      if (!once && textRef.current) textRef.current.textContent = children;
+      return;
+    }
+    const timer = window.setTimeout(begin, delay * 1000);
+    return () => window.clearTimeout(timer);
+  }, [begin, children, delay, inView, once]);
 
-    useAnimationFrame((time) => {
-        if (!isAnimating) return;
+  useAnimationFrame((time) => {
+    if (!animating || time - lastFrameRef.current < 32) return;
+    lastFrameRef.current = time;
+    if (startRef.current === null) startRef.current = time;
+    const value = Math.min((time - startRef.current) / Math.max(1, duration * 1000), 1);
+    progress.set(value);
+    if (textRef.current) {
+      const resolved = Math.floor(value * children.length);
+      textRef.current.textContent = children
+        .split("")
+        .map((character, index) => {
+          if (character === " " || index < resolved) return character;
+          const seed = (index * 29 + Math.floor(time / 32) * 17) % safeCharacters.length;
+          return safeCharacters[seed];
+        })
+        .join("");
+    }
+    if (value >= 1) {
+      setAnimating(false);
+      if (textRef.current) textRef.current.textContent = children;
+    }
+  });
 
-        if (startTimeRef.current === null) {
-            startTimeRef.current = time;
-        }
-
-        const elapsed = time - startTimeRef.current;
-        const progress = Math.min(elapsed / (duration * 1000), 1);
-
-        if (progress === 1) {
-            setDisplayText(text);
-            setIsAnimating(false);
-            return;
-        }
-
-        const charArray = text.split("");
-        const revealCount = Math.floor(progress * charArray.length);
-
-        const scrambled = charArray.map((char, index) => {
-            if (char === " ") return " ";
-            if (index < revealCount) {
-                return char;
-            }
-            return safeCharacters[Math.floor(Math.random() * safeCharacters.length)];
-        });
-
-        setDisplayText(scrambled.join(""));
-    });
-
-    return (
-        <span ref={ref} className={cn("inline-block whitespace-pre-wrap", className)}>
-            {displayText}
-        </span>
-    );
+  return (
+    <span
+      ref={rootRef}
+      tabIndex={0}
+      onPointerEnter={begin}
+      onFocus={begin}
+      className={cn("relative inline-block whitespace-pre-wrap outline-none", className)}
+    >
+      <span ref={textRef}>{children}</span>
+      {showDecodeFront && (
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-y-[0.08em] w-px bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,.8)]"
+          style={{ left: decodeLeft, opacity: animating ? 1 : 0 }}
+        />
+      )}
+    </span>
+  );
 }
