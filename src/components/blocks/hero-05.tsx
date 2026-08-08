@@ -1,74 +1,110 @@
 "use client";
-import dynamic from "next/dynamic";
-import { WebGLLoader } from "@/components/ui/webgl-loader";
-import { MotionSafe } from "@/components/ui/motion-safe";
 
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { BlurText } from "@/components/ui/blur-text";
-import { KineticButton } from "@/components/ui/kinetic-button";
-const WebGLParticleVortex = dynamic(() => import("@/components/ui/webgl-particle-vortex").then((mod) => mod.WebGLParticleVortex), { ssr: false, loading: () => <WebGLLoader /> });
+import { WebGLLoader } from "@/components/ui/webgl-loader";
+
+const WebGLParticleVortex = dynamic(
+    () => import("@/components/ui/webgl-particle-vortex").then((module) => module.WebGLParticleVortex),
+    { ssr: false, loading: () => <WebGLLoader /> },
+);
+
+const reveal = {
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0 },
+};
 
 export function Hero05() {
     return (
-        <section className="relative w-full min-h-[90vh] flex flex-col overflow-hidden border-y border-white/[0.05]">
-            {/* 
-        The WebGLParticleVortex computes 250,000 independent particles flying through 
-        Curl Noise on the GPU, completely detached from the DOM layer above it. 
-      */}
-            <MotionSafe fallback={<div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(0,255,157,0.12),transparent_55%)]" />}>
-                <WebGLParticleVortex className="absolute inset-0 z-0">
-                    <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center justify-center h-full text-center">
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="mb-8 px-5 py-2.5 border border-[#00ff9d]/30 rounded-full bg-black/40 backdrop-blur-xl flex items-center gap-4 shadow-[0_0_30px_rgba(0,255,157,0.15)]"
-                    >
-                        <div className="w-2 h-2 rounded-full bg-[#00ff9d] shadow-[0_0_15px_rgba(0,255,157,0.8)] animate-pulse" />
-                        <span className="text-[11px] font-mono tracking-[0.3em] text-[#00ff9d] uppercase font-bold">
-                            Compute State: Massive
+        <section className="relative min-h-[720px] w-full overflow-hidden border-y border-white/[0.05] bg-black md:min-h-[780px] lg:min-h-[860px]">
+            <WebGLParticleVortex className="absolute inset-0">
+                <header className="pointer-events-auto flex h-16 w-full shrink-0 items-center justify-between border-b border-white/10 px-5 md:px-8">
+                    <Link href="/" className="flex items-center gap-3 text-sm font-semibold tracking-tight text-white/90">
+                        <span className="grid size-7 place-items-center border border-white/25">
+                            <span className="size-1.5 bg-cyan-300" />
                         </span>
-                    </motion.div>
+                        AuraBitz
+                    </Link>
 
-                    {/* Brutalist AI Typography Over the Vortex */}
-                    <h1 className="text-6xl md:text-[140px] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white/80 to-transparent mb-6 leading-[0.8] overflow-visible py-2 drop-shadow-[0_10px_50px_rgba(0,0,0,0.8)]">
-                        <BlurText splitBy="chars" stagger={0.03} delay={0.1} duration={1.5}>
-                            VORTEX
-                        </BlurText>
-                    </h1>
+                    <nav aria-label="Demo navigation" className="hidden items-center gap-10 text-xs text-white/50 md:flex">
+                        <Link href="/docs" className="transition-colors hover:text-white">Components</Link>
+                        <Link href="/blocks" className="transition-colors hover:text-white">Blocks</Link>
+                        <Link href="/docs" className="transition-colors hover:text-white">Docs</Link>
+                    </nav>
 
-                    {/* Compute Focused Subtext */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-lg md:text-xl text-white/50 font-mono tracking-wide max-w-3xl mb-14 leading-relaxed drop-shadow-[0_4px_10px_rgba(0,0,0,1)] mix-blend-screen"
-                    >
-                        <span className="text-white/80 font-bold">250,000.</span> Simultaneously calculated particle metrics running flawlessly through a 3D curl noise matrix. Engage the architecture. Drag to disrupt the flow state.
-                    </motion.p>
-
-                    {/* Brutalist Action Group */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex flex-col sm:flex-row items-center gap-6 pointer-events-auto"
-                    >
-                        <div className="h-14 w-72 relative group">
-                            <div className="absolute inset-0 bg-[#00ff9d]/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-sm" />
-                            <KineticButton className="w-full h-full bg-[#00ff9d] hover:bg-white text-black font-extrabold rounded-none text-sm tracking-[0.2em] uppercase transition-colors duration-500 shadow-[0_0_30px_rgba(0,255,157,0.2)]">
-                                Initialize Matrix
-                            </KineticButton>
-                        </div>
-
-                        <button className="h-14 px-8 text-xs font-mono tracking-[0.2em] font-semibold text-white/50 rounded-none group transition-all hover:text-[#00ff9d] border-b border-white/10 hover:border-[#00ff9d]/50 bg-black/20 backdrop-blur-md uppercase">
-                            Access Code //
-                        </button>
-                    </motion.div>
+                    <div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-white/55 md:text-[10px]">
+                        <span className="hidden sm:inline">Field stable</span>
+                        <span className="hidden text-white/25 sm:inline">/</span>
+                        <span>Live</span>
+                        <span className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(103,232,249,0.85)]" />
                     </div>
-                </WebGLParticleVortex>
-            </MotionSafe>
+                </header>
+
+                <div className="relative flex flex-1 items-center px-6 py-16 md:px-12 lg:px-16">
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        transition={{ staggerChildren: 0.1, delayChildren: 0.12 }}
+                        className="pointer-events-auto relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center text-center md:items-start md:text-left"
+                    >
+                        <div className="flex max-w-xl flex-col items-center md:items-start">
+                            <motion.p
+                                variants={reveal}
+                                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                                className="mb-8 border-b border-white/30 pb-2 font-mono text-[10px] uppercase tracking-[0.24em] text-white/75"
+                            >
+                                Quantum vortex <span className="mx-2 text-cyan-300">/</span> 05
+                            </motion.p>
+
+                            <motion.h1
+                                variants={reveal}
+                                transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                                className="text-[clamp(2.55rem,5.2vw,6.25rem)] font-light leading-[0.9] tracking-[-0.06em] text-white"
+                            >
+                                BEND THE VOID.
+                            </motion.h1>
+
+                            <motion.p
+                                variants={reveal}
+                                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                                className="mt-8 max-w-xl text-sm leading-6 text-white/65 md:text-base"
+                            >
+                                A continuous particle field held in gravitational orbit.
+                            </motion.p>
+
+                            <motion.div
+                                variants={reveal}
+                                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                                className="mt-10 flex flex-col items-center gap-4 sm:flex-row md:items-start"
+                            >
+                                <Link
+                                    href="#orbit"
+                                    className="group flex h-14 min-w-48 items-center justify-between gap-8 border border-white/60 bg-black/40 px-5 font-mono text-xs text-white/90 backdrop-blur-sm transition-colors hover:border-cyan-300/80 hover:text-cyan-100"
+                                >
+                                    Enter orbit
+                                    <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                                </Link>
+                                <Link
+                                    href="#source"
+                                    className="group flex h-14 min-w-44 items-center justify-between gap-8 border-b border-white/25 px-3 font-mono text-xs text-white/55 transition-colors hover:border-white/70 hover:text-white"
+                                >
+                                    View source
+                                    <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                                </Link>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+
+                    <div className="pointer-events-none absolute bottom-7 left-7 hidden font-mono text-[9px] uppercase tracking-[0.16em] text-white/25 lg:block">
+                        Orbit velocity&nbsp;&nbsp;<span className="text-cyan-300/75">0.82</span>
+                    </div>
+                    <div className="pointer-events-none absolute bottom-7 right-7 hidden font-mono text-[9px] uppercase tracking-[0.16em] text-white/25 lg:block">
+                        Horizon locked&nbsp;&nbsp;/&nbsp;&nbsp;∞
+                    </div>
+                </div>
+            </WebGLParticleVortex>
         </section>
     );
 }
