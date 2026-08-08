@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { blocksNavigation } from "@/config/catalog";
 
 export const blocksSidebarData = blocksNavigation;
+const blockCount = blocksNavigation.slice(1).reduce((total, category) => total + category.links.length, 0);
 
 export function BlocksSidebar() {
     const pathname = usePathname();
@@ -30,14 +31,18 @@ export function BlocksSidebar() {
     }, []);
 
     return (
-        <aside ref={scrollRef} data-lenis-prevent className="w-64 flex-shrink-0 hidden md:block border-r border-white/10 bg-black sticky top-[45px] h-[calc(100vh-45px)] overflow-y-auto pt-8 pb-20">
-            <div className="px-6 flex flex-col gap-8">
+        <aside ref={scrollRef} data-lenis-prevent className="sticky top-[45px] hidden h-[calc(100vh-45px)] w-60 flex-shrink-0 overflow-y-auto border-r border-white/[0.08] bg-black pb-20 pt-7 md:block">
+            <div className="mb-9 flex items-center justify-between border-b border-white/[0.08] px-5 pb-5 font-mono text-[9px] uppercase tracking-[0.2em] text-white/30">
+                <span>Block library</span>
+                <span>{String(blockCount).padStart(2, "0")}</span>
+            </div>
+            <div className="flex flex-col gap-8 px-5">
                 {blocksSidebarData.map((category) => (
                     <div key={category.title}>
-                        <h3 className="grad-text text-[11px] font-extrabold uppercase tracking-[0.2em] mb-3">
+                        <h3 className="mb-3 font-mono text-[9px] uppercase tracking-[0.22em] text-white/30">
                             {category.title}
                         </h3>
-                        <nav className="flex flex-col gap-0.5 -ml-3">
+                        <nav className="-ml-2 flex flex-col">
                             {category.links.map((link) => {
                                 const isActive = pathname === link.href;
                                 return (
@@ -45,15 +50,12 @@ export function BlocksSidebar() {
                                         key={link.href}
                                         href={link.href}
                                         className={cn(
-                                            "relative px-3 py-2 rounded-md text-[13px] font-medium transition-all duration-200 flex items-center gap-3",
+                                            "relative flex items-center gap-3 border-l px-3 py-2 text-[12px] transition-colors duration-200",
                                             isActive
-                                                ? "grad-text font-semibold bg-white/[0.05]"
-                                                : "text-white/60 hover:text-white hover:bg-white/[0.03]"
+                                                ? "border-cyan-300 text-white/90"
+                                                : "border-transparent text-white/42 hover:border-white/20 hover:text-white/75"
                                         )}
                                     >
-                                        {isActive && (
-                                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-r-full bg-gradient-to-b from-white to-white/30" />
-                                        )}
                                         {link.name}
                                     </Link>
                                 );
