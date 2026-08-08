@@ -21,9 +21,10 @@ const SyntaxHighlighter = dynamic(
 interface CodePreviewProps {
     children: React.ReactNode;
     code: string;
+    immersive?: boolean;
 }
 
-export function CodePreview({ children, code }: CodePreviewProps) {
+export function CodePreview({ children, code, immersive = false }: CodePreviewProps) {
     const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
     const [copied, setCopied] = useState(false);
     const resetCopyStateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -56,7 +57,14 @@ export function CodePreview({ children, code }: CodePreviewProps) {
     };
 
     return (
-        <div className="w-full rounded-2xl border border-white/[0.06] bg-[#050505] overflow-hidden mt-10 shadow-[0_0_50px_-12px_rgba(0,0,0,0.8)] ring-1 ring-white/5">
+        <div
+            className={cn(
+                "w-full overflow-hidden border border-white/[0.06] bg-[#050505]",
+                immersive
+                    ? "mt-0 rounded-none border-x-0 border-b-0 shadow-none ring-0"
+                    : "mt-10 rounded-2xl shadow-[0_0_50px_-12px_rgba(0,0,0,0.8)] ring-1 ring-white/5",
+            )}
+        >
             {/* Tabs & Toolbar */}
             <div className="flex items-center justify-between border-b border-white/[0.06] px-2 bg-[#0a0a0a]">
                 <div className="flex gap-1 p-1">
@@ -115,7 +123,22 @@ export function CodePreview({ children, code }: CodePreviewProps) {
             {/* Content Area */}
             <div className="relative w-full">
                 {activeTab === "preview" ? (
-                    <div className="relative flex items-center justify-center min-h-[450px] p-4 md:p-8 overflow-hidden bg-black bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:20px_20px]">
+                    <div
+                        onClickCapture={(event) => {
+                            if (!immersive) return;
+
+                            const target = event.target;
+                            if (target instanceof Element && target.closest("a")) {
+                                event.preventDefault();
+                            }
+                        }}
+                        className={cn(
+                            "relative flex items-center justify-center overflow-hidden bg-black",
+                            immersive
+                                ? "min-h-[calc(100vh-102px)] p-0"
+                                : "min-h-[450px] p-4 md:p-8 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:20px_20px]",
+                        )}
+                    >
                         {/* Top edge subtle highlight */}
                         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none" />
 
@@ -124,7 +147,13 @@ export function CodePreview({ children, code }: CodePreviewProps) {
                         </div>
                     </div>
                 ) : (
-                    <div data-lenis-prevent className="w-full max-h-[600px] overflow-auto bg-[#0a0a0a]">
+                    <div
+                        data-lenis-prevent
+                        className={cn(
+                            "w-full overflow-auto bg-[#0a0a0a]",
+                            immersive ? "h-[calc(100vh-102px)]" : "max-h-[600px]",
+                        )}
+                    >
                         {code ? (
                             <SyntaxHighlighter
                                 language="tsx"
