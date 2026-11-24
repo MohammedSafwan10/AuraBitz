@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aurabitz.nexdark.com"),
+  alternates: {
+    canonical: "./",
+  },
   verification: {
     google: "fFP3iUOk8Gb7r_huT0vdb9ki0jo-TFrjwO6UqlxzkPg",
   },

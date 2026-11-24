@@ -1,0 +1,14 @@
+# AuraBitz (aurabitz.nexdark.com)
+
+> AuraBitz is an open-source React, Next.js, Framer Motion, and Three.js UI component & motion block library created by NexDark Labs (https://nexdark.com).
+> Includes production-ready WebGL backgrounds, 3D holographic cards, kinetic buttons, spotlight cards, hero sections, bento grids, pricing tables, and text animations.
+
+## Links
+- Live Library: https://aurabitz.nexdark.com/
+- Blocks Showcase: https://aurabitz.nexdark.com/blocks
+- Documentation & Components: https://aurabitz.nexdark.com/docs
+- Installation Guide: https://aurabitz.nexdark.com/docs/installation
+- Sitemap: https://aurabitz.nexdark.com/sitemap.xml
+- GitHub Repository: https://github.com/MohammedSafwan10/AuraBitz
+- Parent Studio (NexDark Labs): https://nexdark.com/
+- NexDark 3D Studio: https://3d.nexdark.com/
