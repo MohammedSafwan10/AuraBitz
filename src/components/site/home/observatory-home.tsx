@@ -123,6 +123,71 @@ export function ObservatoryHome() {
           onCopy={handleCopy}
           copied={copied}
         />
+
+        <section
+          aria-label="About AuraBitz UI"
+          className="relative z-10 mx-auto max-w-[1780px] border-t border-white/[0.12] px-5 py-14 sm:px-8 lg:px-14"
+        >
+          <div className="grid gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#25f5d0]">
+                AuraBitz UI · Open-Source Component Library
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-white/95 sm:text-3xl">
+                WebGL shaders, kinetic typography &amp; Framer Motion blocks for React and Next.js.
+              </h2>
+              <p className="mt-4 text-sm leading-6 text-white/60">
+                AuraBitz UI is an open-source frontend component architecture created by{" "}
+                <a href="https://iamsafwan.me/" rel="me" className="text-white/90 underline underline-offset-4 hover:text-[#25f5d0]">
+                  Mohammed Safwan
+                </a>{" "}
+                at{" "}
+                <a href="https://nexdark.com/" className="text-white/90 underline underline-offset-4 hover:text-[#25f5d0]">
+                  NexDark Labs
+                </a>
+                . Copy and paste 28+ production-tested TypeScript, Tailwind CSS, Three.js, and Framer Motion components directly into your Next.js App Router projects — zero vendor lock-in.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3 font-mono text-xs">
+                <Link href="/docs" className="border border-white/15 px-4 py-2 text-white/85 transition-colors hover:border-[#25f5d0] hover:text-[#25f5d0]">
+                  Explore 28+ Components
+                </Link>
+                <Link href="/blocks" className="border border-white/15 px-4 py-2 text-white/85 transition-colors hover:border-[#25f5d0] hover:text-[#25f5d0]">
+                  View UI Blocks
+                </Link>
+                <Link href="/docs/installation" className="border border-white/15 px-4 py-2 text-white/85 transition-colors hover:border-[#25f5d0] hover:text-[#25f5d0]">
+                  Installation Guide
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3 lg:col-span-7">
+              <article className="border border-white/[0.12] bg-black/60 p-5">
+                <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-white/90">What is AuraBitz UI?</h3>
+                <p className="mt-2.5 text-xs leading-5 text-white/55">
+                  A free, open-source React, Next.js, and Three.js UI library focused on tactile WebGL shaders, glass surfaces, kinetic text, and interactive hero blocks.
+                </p>
+              </article>
+              <article className="border border-white/[0.12] bg-black/60 p-5">
+                <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-white/90">Commercial License</h3>
+                <p className="mt-2.5 text-xs leading-5 text-white/55">
+                  Every component ships with clean TypeScript and Tailwind CSS source code you can use in personal, startup, and commercial client projects.
+                </p>
+              </article>
+              <article className="border border-white/[0.12] bg-black/60 p-5">
+                <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-white/90">NexDark Ecosystem</h3>
+                <p className="mt-2.5 text-xs leading-5 text-white/55">
+                  Part of{" "}
+                  <a href="https://nexdark.com/" className="text-white/80 underline underline-offset-2 hover:text-[#25f5d0]">NexDark Labs</a>
+                  {" "}alongside{" "}
+                  <a href="https://3d.nexdark.com/" className="text-white/80 underline underline-offset-2 hover:text-[#25f5d0]">NexDark 3D Studio</a>
+                  {" "}and{" "}
+                  <a href="https://ottero.nexdark.com/" className="text-white/80 underline underline-offset-2 hover:text-[#25f5d0]">Ottero Workspace</a>.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <Noise />
       </main>
     </div>

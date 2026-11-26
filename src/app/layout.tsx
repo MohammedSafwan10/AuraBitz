@@ -26,11 +26,14 @@ export const metadata: Metadata = {
     google: "fFP3iUOk8Gb7r_huT0vdb9ki0jo-TFrjwO6UqlxzkPg",
   },
   title: {
-    default: "AuraBitz | Premium WebGL & Motion UI Component Library",
-    template: "%s | AuraBitz",
+    default: "AuraBitz UI | Open-Source React, Next.js & WebGL Component Library",
+    template: "%s | AuraBitz UI",
   },
-  description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy UI blocks for Next.js and Framer Motion. Build stunning interfaces fast.",
+  description: "AuraBitz UI by NexDark Labs: open-source WebGL backgrounds, kinetic typography, Three.js shaders, and Framer Motion UI blocks for React and Next.js.",
   keywords: [
+    "AuraBitz",
+    "AuraBitz UI",
+    "AuraBitz NexDark",
     "Next.js components",
     "TailwindCSS blocks",
     "Framer Motion",
@@ -39,15 +42,15 @@ export const metadata: Metadata = {
     "Three.js React",
     "Frontend architecture"
   ],
-  authors: [{ name: "Mohammed Safwan", url: "https://github.com/MohammedSafwan10" }],
+  authors: [{ name: "Mohammed Safwan", url: "https://iamsafwan.me/" }],
   creator: "Mohammed Safwan",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://aurabitz.nexdark.com",
-    title: "AuraBitz | Premium WebGL & Motion UI Component Library",
-    description: "Production-ready WebGL backgrounds, kinetic typography, and motion-heavy UI blocks for Next.js and Framer Motion. Build stunning interfaces fast.",
-    siteName: "AuraBitz Component Architecture",
+    title: "AuraBitz UI | Open-Source React, Next.js & WebGL Component Library",
+    description: "AuraBitz UI by NexDark Labs: open-source WebGL backgrounds, kinetic typography, Three.js shaders, and Framer Motion UI blocks for React and Next.js.",
+    siteName: "AuraBitz UI by NexDark Labs",
     images: [
       {
         url: "/og-image.jpg",

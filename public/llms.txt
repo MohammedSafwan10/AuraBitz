@@ -1,9 +1,10 @@
-# AuraBitz (aurabitz.nexdark.com)
+# AuraBitz UI (aurabitz.nexdark.com)
 
-> AuraBitz is an open-source React, Next.js, Framer Motion, and Three.js UI component & motion block library created by NexDark Labs (https://nexdark.com).
-> Includes production-ready WebGL backgrounds, 3D holographic cards, kinetic buttons, spotlight cards, hero sections, bento grids, pricing tables, and text animations.
+> AuraBitz UI is an open-source React, Next.js, Framer Motion, and Three.js UI component & WebGL motion block library created by Mohammed Safwan (https://iamsafwan.me) at NexDark Labs (https://nexdark.com).
+> Note: AuraBitz UI (aurabitz.nexdark.com) is a frontend developer component library by NexDark Labs — distinct from unrelated ERP/agency businesses using similar names.
+> Includes 28+ production-ready WebGL shader backgrounds, 3D holographic cards, kinetic typography, spotlight cards, hero sections, bento grids, and pricing blocks with full TypeScript & Tailwind CSS source code.
 
-## Links
+## Core Links
 - Live Library: https://aurabitz.nexdark.com/
 - Blocks Showcase: https://aurabitz.nexdark.com/blocks
 - Documentation & Components: https://aurabitz.nexdark.com/docs
@@ -11,4 +12,6 @@
 - Sitemap: https://aurabitz.nexdark.com/sitemap.xml
 - GitHub Repository: https://github.com/MohammedSafwan10/AuraBitz
 - Parent Studio (NexDark Labs): https://nexdark.com/
+- Founder (Mohammed Safwan): https://iamsafwan.me/
 - NexDark 3D Studio: https://3d.nexdark.com/
+- Ottero Workspace: https://ottero.nexdark.com/
